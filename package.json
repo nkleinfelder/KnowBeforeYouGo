@@ -10,7 +10,12 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "prepare": "husky",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint",
+    "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.65.0",
@@ -40,6 +45,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-tailwindcss": "^3.18.2",
     "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",
