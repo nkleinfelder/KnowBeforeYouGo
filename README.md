@@ -1,10 +1,37 @@
 # Know Before You Go
 
-## Starting Development
+## Setup Local Development
 
-1. Define your environment variables in `.env` as described in `.example.env`
-2. Run `pnpm install`
-3. Run `pnpm dev`
+### Prerequisites
+
+#### PNPM
+
+If you don't have `pnpm` installed, follow it's [installation guide](https://pnpm.io/installation).
+
+Example ways to install `pnpm`:
+
+- (MacOS) `brew install pnpm`
+- Using `npm`: `npm install -g pnpm`
+
+#### Database
+
+Create an (empty) sqlite database file in the location: `db/database.sqlite`
+
+- MacOS: `mkdir db && touch db/database.sqlite`
+
+#### Environment Variables
+
+Define your environment variables in `.env` as described in `.example.env`
+
+Use the following commands to generate secrets:
+
+- `PAYLOAD_SECRET`: `openssl rand -hex 32`
+- `DATABASE_AUTH_TOKEN`: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+### Starting App
+
+1. Run `pnpm install`
+2. Run `pnpm dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the frontend.
 Open [http://localhost:3000/admin](http://localhost:3000/admin) to get to the PayloadCMS admin dashboard
@@ -31,3 +58,22 @@ Following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0
 - `ci`: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 - `chore`: Other changes that don't modify src or test files
 - `revert`: Reverts a previous commit
+
+### Branch Naming Conventions
+
+Following the [Conventional Branch](https://conventional-branch.github.io/#summary) specification, we use the following branch names/prefixes:
+
+- `main`: The main development branch
+- `feat/`: A new feature
+- `fix/`: A bug fix
+- `hotfix/`: A hotfix
+- `release/`: For branches preparing a release
+- `chore/`: For non-code tasks like dependency, docs updates
+
+Examples:
+
+- `feat/new-sidebar`
+- `fix/broken-link`
+- `hotfix/broken-link`
+- `release/v1.0.0`
+- `chore/update-deps`
