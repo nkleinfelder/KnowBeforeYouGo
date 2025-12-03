@@ -1,0 +1,44 @@
+{
+  "name": "know-before-you-go",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
+  },
+  "dependencies": {
+    "@payloadcms/db-sqlite": "^3.65.0",
+    "@payloadcms/next": "^3.65.0",
+    "@payloadcms/richtext-lexical": "^3.65.0",
+    "graphql": "^16.12.0",
+    "next": "16.0.7",
+    "payload": "^3.65.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/types": "^20.0.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.7",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-tailwindcss": "^3.18.2",
+    "husky": "^9.1.7",
+    "prettier": "3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
