@@ -67,6 +67,9 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    countries: Country;
+    plugTypes: PlugType;
+    media: Media;
     "payload-kv": PayloadKv;
     users: User;
     "payload-locked-documents": PayloadLockedDocument;
@@ -75,6 +78,9 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    countries: CountriesSelect<false> | CountriesSelect<true>;
+    plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     "payload-locked-documents":
@@ -90,10 +96,15 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale:
+    | ("false" | "none" | "null")
+    | false
+    | null
+    | ("en" | "de")
+    | ("en" | "de")[];
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: "en" | "de";
   user: User & {
     collection: "users";
   };
@@ -119,6 +130,179 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: number;
+  name: string;
+  culturalAndSocialNorms?: {
+    eatingCultureVeganVegetarian?: number | null;
+    lgbtqFriendliness?: number | null;
+    avgCostOfLiving?: number | null;
+  };
+  languageAndCommunication?: {
+    languageLearningApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    englishLevel?: ("0" | "1" | "2" | "3" | "4") | null;
+    messengerApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  navigationAndTransportation?: {
+    transportationApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    navigationApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  moneyAndPayments?: {
+    paymentMethods?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          isMostPopular?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+    onlineShoppingApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    secondHandShoppingApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  safetyAndLegal: {
+    visaRequired?: ("1" | "0") | null;
+    emergencyNumbers: {
+      police: string;
+      ambulance: string;
+      fire: string;
+    };
+    naturalHazardsIndex?: number | null;
+    naturalHazards?:
+      | {
+          hazard: string;
+          notes?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    vaccinations?:
+      | {
+          name: string;
+          required?: boolean | null;
+          notes?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  dailyLifeAndLifestyle?: {
+    description?: string | null;
+    findingFlatResources?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    electricalPlugTypes?:
+      | {
+          plugType: number | PlugType;
+          voltage?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    foodDeliveryApps?:
+      | {
+          name: string;
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    socialMediaApps?:
+      | {
+          name: string;
+          url?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    datingApps?:
+      | {
+          name: string;
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    openingDays?: ("mo" | "tu" | "we" | "th" | "fr" | "sa" | "su")[] | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugTypes".
+ */
+export interface PlugType {
+  id: number;
+  code: string;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -167,10 +351,23 @@ export interface User {
  */
 export interface PayloadLockedDocument {
   id: number;
-  document?: {
-    relationTo: "users";
-    value: number | User;
-  } | null;
+  document?:
+    | ({
+        relationTo: "countries";
+        value: number | Country;
+      } | null)
+    | ({
+        relationTo: "plugTypes";
+        value: number | PlugType;
+      } | null)
+    | ({
+        relationTo: "media";
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: "users";
+        value: number | User;
+      } | null);
   globalSlug?: string | null;
   user: {
     relationTo: "users";
@@ -212,6 +409,190 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  name?: T;
+  culturalAndSocialNorms?:
+    | T
+    | {
+        eatingCultureVeganVegetarian?: T;
+        lgbtqFriendliness?: T;
+        avgCostOfLiving?: T;
+      };
+  languageAndCommunication?:
+    | T
+    | {
+        languageLearningApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+        englishLevel?: T;
+        messengerApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  navigationAndTransportation?:
+    | T
+    | {
+        transportationApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+        navigationApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  moneyAndPayments?:
+    | T
+    | {
+        paymentMethods?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              isMostPopular?: T;
+              id?: T;
+            };
+        onlineShoppingApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+        secondHandShoppingApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  safetyAndLegal?:
+    | T
+    | {
+        visaRequired?: T;
+        emergencyNumbers?:
+          | T
+          | {
+              police?: T;
+              ambulance?: T;
+              fire?: T;
+            };
+        naturalHazardsIndex?: T;
+        naturalHazards?:
+          | T
+          | {
+              hazard?: T;
+              notes?: T;
+              id?: T;
+            };
+        vaccinations?:
+          | T
+          | {
+              name?: T;
+              required?: T;
+              notes?: T;
+              id?: T;
+            };
+      };
+  dailyLifeAndLifestyle?:
+    | T
+    | {
+        description?: T;
+        findingFlatResources?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+        electricalPlugTypes?:
+          | T
+          | {
+              plugType?: T;
+              voltage?: T;
+              id?: T;
+            };
+        foodDeliveryApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              id?: T;
+            };
+        socialMediaApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              description?: T;
+              id?: T;
+            };
+        datingApps?:
+          | T
+          | {
+              name?: T;
+              url?: T;
+              id?: T;
+            };
+        openingDays?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugTypes_select".
+ */
+export interface PlugTypesSelect<T extends boolean = true> {
+  code?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
