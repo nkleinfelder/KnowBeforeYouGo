@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@layer components {
+  .country-card {
+    --container-height: calc(24 * 1rem);
+  }
+
+  @media (width >= 48rem /* 768px */) {
+    .country-card {
+      --container-height: calc(18 * 1rem);
+    }
+  }
+
+  .country-card .image-wrapper {
+    height: var(--container-height);
+  }
+
+  .country-card:hover .image-wrapper,
+  .country-card:focus-within .image-wrapper {
+    height: calc(var(--container-height) - var(--content-height));
+  }
+
+  .country-card .image-blur-element {
+    @apply bg-stone-800 backdrop-blur-3xl;
+    content: "";
+
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.7) 60%,
+      rgba(0, 0, 0, 1)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.7) 60%,
+      rgba(0, 0, 0, 1)
+    );
+  }
+}
