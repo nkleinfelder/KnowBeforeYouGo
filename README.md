@@ -6,7 +6,7 @@
 
 #### PNPM
 
-If you don't have `pnpm` installed, follow it's [installation guide](https://pnpm.io/installation).
+If you don't have `pnpm` installed, follow its [installation guide](https://pnpm.io/installation).
 
 Example ways to install `pnpm`:
 
