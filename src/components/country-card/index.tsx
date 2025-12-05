@@ -7,6 +7,7 @@ import { CountryCardContextProvider, useCountryCardContext } from "./context";
 import { cn } from "@/src/lib/utils";
 import "./styles.css";
 import { CSSProperties } from "react";
+import { ProgressiveBlur } from "../progressive-blur";
 
 export type CountryCardProps = {
   name: string;
@@ -41,7 +42,7 @@ function CountryCardInner({ image, ...props }: CountryCardProps) {
     >
       <article
         style={{ height: "var(--container-height)" }}
-        className="grid-stack relative box-content rounded-3xl bg-white p-1.5 shadow-md focus-within:shadow-lg hover:shadow-lg"
+        className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md focus-within:shadow-lg hover:shadow-lg"
       >
         <BackgroundImage image={image} />
         <Content {...props} />
@@ -51,10 +52,11 @@ function CountryCardInner({ image, ...props }: CountryCardProps) {
 }
 
 function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
+  const { contentHeight } = useCountryCardContext();
   return (
     <div
       className={cn(
-        "grid-stack image-wrapper w-full content-center overflow-hidden rounded-[1.125rem] shadow-md transition-all duration-200 ease-in-out",
+        "grid-stack image-wrapper w-full content-center overflow-hidden rounded-[calc(2rem-0.375rem)] shadow-md transition-all duration-200 ease-in-out",
       )}
     >
       <Image
@@ -62,13 +64,14 @@ function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
         alt=""
         width={256}
         height={512}
-        quality={100}
         className="h-full w-full rounded-[inherit] object-cover"
         style={{ height: "var(--container-height)" }}
       />
-      <div
-        className="image-blur-element h-full w-full opacity-100 transition-opacity duration-200 ease-in-out group-focus-within:opacity-0 group-hover:opacity-0"
-        aria-hidden
+      <ProgressiveBlur
+        className="progressive-blur w-full self-end opacity-100 transition-all duration-200 ease-in-out"
+        style={{
+          height: contentHeight,
+        }}
       />
     </div>
   );
@@ -79,7 +82,7 @@ function Content({ name, slogan, tags }: Omit<CountryCardProps, "image">) {
   return (
     <div
       ref={contentRef}
-      className="relative flex flex-col self-end p-2 text-stone-50"
+      className="relative flex flex-col self-end p-3 text-stone-50"
     >
       <h3 className="text-xl font-bold transition-colors duration-200 ease-in-out group-focus-within:text-stone-900 group-hover:text-stone-900">
         {name}

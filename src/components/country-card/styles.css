@@ -20,23 +20,12 @@
     height: calc(var(--container-height) - var(--content-height));
   }
 
-  .country-card .image-blur-element {
-    @apply bg-stone-800 backdrop-blur-3xl;
-    content: "";
+  .country-card .progressive-blur {
+    --blur-opacity: 1;
+  }
 
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0) 40%,
-      rgba(0, 0, 0, 0.7) 60%,
-      rgba(0, 0, 0, 1)
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0) 40%,
-      rgba(0, 0, 0, 0.7) 60%,
-      rgba(0, 0, 0, 1)
-    );
+  .country-card:hover .progressive-blur,
+  .country-card:focus-within .progressive-blur {
+    --blur-opacity: 0;
   }
 }
