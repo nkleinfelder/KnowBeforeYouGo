@@ -7,7 +7,6 @@ import { CountryCardContextProvider, useCountryCardContext } from "./context";
 import { cn } from "@/src/lib/utils";
 import "./styles.css";
 import { CSSProperties } from "react";
-import { ProgressiveBlur } from "../progressive-blur";
 
 export type CountryCardProps = {
   name: string;
@@ -68,10 +67,10 @@ function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
         className="h-full w-full rounded-[inherit] object-cover"
         style={{ height: "var(--container-height)" }}
       />
-      <ProgressiveBlur
-        className="progressive-blur w-full self-end opacity-100 transition-all duration-200 ease-in-out"
+      <div
+        className="image-blur-element w-full self-end bg-stone-800 opacity-100 backdrop-blur-3xl transition-opacity duration-200 ease-in-out group-focus-within:opacity-0 group-hover:opacity-0"
         style={{
-          height: contentHeight,
+          height: contentHeight + 16 * 2,
         }}
       />
     </div>
