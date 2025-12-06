@@ -11,6 +11,7 @@ import { ProgressiveBlur } from "../progressive-blur";
 
 export type CountryCardProps = {
   name: string;
+  slug: string;
   slogan: string;
   image: string;
 
@@ -27,12 +28,12 @@ export function CountryCard({ ...props }: CountryCardProps) {
   );
 }
 
-function CountryCardInner({ image, ...props }: CountryCardProps) {
+function CountryCardInner({ image, slug, ...props }: CountryCardProps) {
   const { contentHeight } = useCountryCardContext();
 
   return (
     <Link
-      href="#"
+      href={`/destination/${slug}`}
       className="country-card group"
       style={
         {
@@ -77,7 +78,11 @@ function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
   );
 }
 
-function Content({ name, slogan, tags }: Omit<CountryCardProps, "image">) {
+function Content({
+  name,
+  slogan,
+  tags,
+}: Omit<CountryCardProps, "image" | "slug">) {
   const { contentRef } = useCountryCardContext();
   return (
     <div
