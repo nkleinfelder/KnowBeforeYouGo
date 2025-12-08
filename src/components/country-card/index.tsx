@@ -48,7 +48,7 @@ function BackgroundImage({ image }: Pick<Destination, "image">) {
   return (
     <div
       className={cn(
-        "grid-stack image-wrapper w-full content-center overflow-hidden rounded-[calc(2rem-0.375rem)] shadow-md transition-all duration-200 ease-in-out",
+        "grid-stack h-(--container-height) w-full content-center overflow-hidden rounded-[calc(2rem-0.375rem)] shadow-md transition-all duration-200 ease-in-out group-focus-within:h-[calc(var(--container-height)-var(--content-height))] group-hover:h-[calc(var(--container-height)-var(--content-height))]",
       )}
     >
       <Image
