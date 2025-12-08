@@ -39,7 +39,7 @@ type ListInfo = BaseInfo & {
   type?: "default" | "alert" | "emergency" | "applications";
 };
 
-type Info = RichTextInfo | CheckstateInfo | RatingInfo | ListInfo;
+export type Info = RichTextInfo | CheckstateInfo | RatingInfo | ListInfo;
 
 type EssentialInfo = {
   visaRequired: {
