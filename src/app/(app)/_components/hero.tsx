@@ -22,7 +22,7 @@ export function Hero() {
           <ScrollButton
             scrollToId="destinations-grid"
             size="lg"
-            variant="outline"
+            variant="secondary"
             className="grow shadow-md"
           >
             <SearchIcon className="size-4" />
@@ -34,7 +34,7 @@ export function Hero() {
         src="/images/home-hero-background.jpg"
         alt=""
         sizes="100vw"
-        className="full-width h-full w-full scale-105 object-cover blur-xs"
+        className="full-width h-full w-full scale-105 object-cover blur-xs brightness-75"
         preload
         fill
       />
