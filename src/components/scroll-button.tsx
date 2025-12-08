@@ -32,13 +32,23 @@ export function BlankScrollButton({
   scrollToId,
   onClick,
   children,
+  scrollTopPercentage = 0.15,
   ...props
-}: { scrollToId: string } & ButtonProps) {
+}: { scrollToId: string; scrollTopPercentage?: number } & ButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const handleScroll = () => {
     const element = document.getElementById(scrollToId);
+
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition =
+        elementPosition - window.innerHeight * scrollTopPercentage;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
       if (ref.current) ref.current.blur();
     }
   };
