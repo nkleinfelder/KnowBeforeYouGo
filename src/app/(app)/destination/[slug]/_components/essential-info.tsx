@@ -1,10 +1,9 @@
 import { Badge } from "@/src/components/ui/badge";
 import {
   Card,
-  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  cardVariants,
 } from "@/src/components/ui/card";
 import { Destination } from "@/src/lib/mock-data/destinations";
 import { cn } from "@/src/lib/utils";
@@ -17,14 +16,7 @@ import {
   ShieldIcon,
 } from "lucide-react";
 import { PropsWithChildren } from "react";
-
-const headerIcons: Record<keyof Destination["essentialInfo"], LucideIcon> = {
-  visaRequired: FileTextIcon,
-  insurance: ShieldIcon,
-  rent: EuroIcon,
-  climate: CloudIcon,
-  university: GraduationCapIcon,
-};
+import * as Primitives from "./primitives";
 
 export function EssentialInfo({
   data,
@@ -32,8 +24,8 @@ export function EssentialInfo({
   data: Destination["essentialInfo"];
 }) {
   return (
-    <section className="flex w-full flex-col gap-5">
-      <h2 className="text-3xl font-bold">Essential Information</h2>
+    <Primitives.Section>
+      <Primitives.Title>Essential Information</Primitives.Title>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-[repeat(auto-fit,minmax(min(100%,15rem),1fr))]">
         <EssentialCard title="Visa Required" Icon={FileTextIcon}>
           <Badge size="lg">{data.visaRequired.state}</Badge>
@@ -57,14 +49,10 @@ export function EssentialInfo({
           <p>{data.university}</p>
         </EssentialCard>
       </div>
-    </section>
+    </Primitives.Section>
   );
 }
 
-const essentialClasses = cardVariants({
-  variant: "primary",
-  size: "default",
-});
 function EssentialCard({
   title,
   Icon,
@@ -76,12 +64,12 @@ function EssentialCard({
   className?: string;
 }>) {
   return (
-    <article className={cn(essentialClasses, "shadow-primary/10", className)}>
-      <header className="flex items-center gap-1.5">
-        <Icon className="size-4.5 text-primary" />
-        <h3 className="text-lg font-semibold">{title}</h3>
-      </header>
-      <main className="text-sm">{children}</main>
-    </article>
+    <Card className={cn("text-sm", className)} variant="primary" size="default">
+      <CardHeader>
+        <Icon />
+        <CardTitle as="h3">{title}</CardTitle>
+      </CardHeader>
+      {children}
+    </Card>
   );
 }
