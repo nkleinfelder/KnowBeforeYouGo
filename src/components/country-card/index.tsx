@@ -1,5 +1,4 @@
 "use client";
-import { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
@@ -7,17 +6,10 @@ import { CountryCardContextProvider, useCountryCardContext } from "./context";
 import { cn } from "@/src/lib/utils";
 import "./styles.css";
 import { CSSProperties } from "react";
+import { Destination } from "@/src/lib/mock-data/destinations";
 
 export type CountryCardProps = {
-  name: string;
-  slug: string;
-  slogan: string;
-  image: string;
-
-  tags: {
-    name: string;
-    icon: LucideIcon;
-  }[];
+  data: Destination;
 };
 export function CountryCard({ ...props }: CountryCardProps) {
   return (
@@ -27,12 +19,12 @@ export function CountryCard({ ...props }: CountryCardProps) {
   );
 }
 
-function CountryCardInner({ image, slug, ...props }: CountryCardProps) {
+function CountryCardInner({ data }: CountryCardProps) {
   const { contentHeight } = useCountryCardContext();
 
   return (
     <Link
-      href={`/destination/${slug}`}
+      href={`/destination/${data.slug}`}
       className="country-card group"
       style={
         {
@@ -44,14 +36,14 @@ function CountryCardInner({ image, slug, ...props }: CountryCardProps) {
         style={{ height: "var(--container-height)" }}
         className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md focus-within:shadow-lg hover:shadow-lg"
       >
-        <BackgroundImage image={image} />
-        <Content {...props} />
+        <BackgroundImage image={data.image} />
+        <Content {...data} />
       </article>
     </Link>
   );
 }
 
-function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
+function BackgroundImage({ image }: Pick<Destination, "image">) {
   const { contentHeight } = useCountryCardContext();
   return (
     <div
@@ -81,7 +73,11 @@ function Content({
   name,
   slogan,
   tags,
-}: Omit<CountryCardProps, "image" | "slug">) {
+}: {
+  name: string;
+  slogan: string;
+  tags: Destination["tags"];
+}) {
   const { contentRef } = useCountryCardContext();
   return (
     <div
@@ -111,7 +107,7 @@ function Content({
   );
 }
 
-function Tag({ data }: { data: CountryCardProps["tags"][number] }) {
+function Tag({ data }: { data: Destination["tags"][number] }) {
   const Icon = data.icon;
 
   return (
