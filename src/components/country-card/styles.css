@@ -11,24 +11,6 @@
     }
   }
 
-  .country-card .image-wrapper {
-    height: var(--container-height);
-  }
-
-  .country-card:hover .image-wrapper,
-  .country-card:focus-within .image-wrapper {
-    height: calc(var(--container-height) - var(--content-height));
-  }
-
-  .country-card .progressive-blur {
-    --blur-opacity: 1;
-  }
-
-  .country-card:hover .progressive-blur,
-  .country-card:focus-within .progressive-blur {
-    --blur-opacity: 0;
-  }
-
   .country-card .image-blur-element {
     --mask-gradient: linear-gradient(
       to bottom,
