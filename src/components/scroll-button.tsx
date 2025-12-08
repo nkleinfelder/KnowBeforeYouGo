@@ -1,4 +1,5 @@
 "use client";
+import { useRef } from "react";
 import { Button, ButtonProps } from "./ui/button";
 
 export function ScrollButton({
@@ -24,5 +25,34 @@ export function ScrollButton({
     >
       {children}
     </Button>
+  );
+}
+
+export function BlankScrollButton({
+  scrollToId,
+  onClick,
+  children,
+  ...props
+}: { scrollToId: string } & ButtonProps) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const handleScroll = () => {
+    const element = document.getElementById(scrollToId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (ref.current) ref.current.blur();
+    }
+  };
+
+  return (
+    <button
+      ref={ref}
+      onClick={(e) => {
+        if (onClick) onClick(e);
+        handleScroll();
+      }}
+      {...props}
+    >
+      {children}
+    </button>
   );
 }

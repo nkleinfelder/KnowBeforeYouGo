@@ -59,7 +59,7 @@
   --muted-foreground: var(--color-stone-500);
   --accent: oklch(0.97 0.001 106.424);
   --accent-foreground: oklch(0.216 0.006 56.043);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: var(--color-red-500);
   --border: oklch(0.923 0.003 48.717);
   --input: oklch(0.923 0.003 48.717);
   --ring: oklch(0.709 0.01 56.259);
@@ -134,7 +134,7 @@
 
   .content-grid {
     --padding-inline: calc(1.5 * var(--spacing-inline));
-    --content-max-width: 52.5rem;
+    --content-max-width: 60rem;
     --breakout-max-width: 80rem;
 
     --breakout-size: calc(

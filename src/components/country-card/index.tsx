@@ -34,7 +34,7 @@ function CountryCardInner({ data }: CountryCardProps) {
     >
       <article
         style={{ height: "var(--container-height)" }}
-        className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md focus-within:shadow-lg hover:shadow-lg"
+        className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md transition-shadow duration-200 ease-in-out focus-within:shadow-xl hover:shadow-xl"
       >
         <BackgroundImage image={data.image} />
         <Content {...data} />

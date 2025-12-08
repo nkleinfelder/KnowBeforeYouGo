@@ -9,11 +9,11 @@ export const cardVariants = cva("flex flex-col rounded-xl border ", {
       default: "bg-card text-card-foreground",
       primary:
         "border-primary/35 bg-gradient-to-br from-primary/10 to-primary/5 shadow-primary/10",
-      warning: "bg-red-200 border-red-300",
+      warning: "bg-destructive/10 border-destructive/20",
     },
     size: {
-      default: "p-5 gap-5 shadow-xs",
-      sm: "p-4 gap-4 shadow-xs",
+      default: "p-5 gap-5 shadow-xs text-sm",
+      sm: "p-4 gap-4 shadow-xs text-sm",
       lg: "p-8 gap-8 shadow-sm",
     },
   },
@@ -43,9 +43,9 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <header
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid grid-cols-1 items-center gap-1.5",
+        "@container/card-header grid grid-cols-1 items-center gap-x-1.5 gap-y-0.5",
         "group-data-[variant=primary]:[&>svg]:text-primary",
-        "group-data-[size=lg]:gap-2 group-data-[size=default]:[&>svg]:size-4.5 group-data-[size=lg]:[&>svg]:size-5 group-data-[size=sm]:[&>svg]:size-4",
+        "group-data-[size=lg]:gap-x-2 group-data-[size=lg]:gap-y-1 group-data-[size=default]:[&>svg]:size-4.5 group-data-[size=lg]:[&>svg]:size-5 group-data-[size=sm]:[&>svg]:size-4",
         "has-[svg]:grid-cols-[auto_1fr] has-[svg]:[&>div[data-slot='card-description']]:col-span-2",
         "has-data-[slot=card-description]:grid-rows-[auto_auto]",
         className,
@@ -66,7 +66,11 @@ function CardTitle({
   return (
     <Comp
       data-slot="card-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn(
+        "text-lg leading-none font-semibold",
+        "group-data-[variant=warning]:text-destructive",
+        className,
+      )}
       {...props}
     />
   );

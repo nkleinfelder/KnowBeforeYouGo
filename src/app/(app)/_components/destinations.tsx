@@ -5,7 +5,7 @@ import { MOCK_DESTINATIONS } from "@/src/lib/mock-data/destinations";
 export function Destinations() {
   return (
     <section
-      className="grid-cols-destinations full-width-no-inherit grid w-full auto-rows-fr gap-2 p-inline"
+      className="grid-cols-destinations breakout grid w-full auto-rows-fr gap-2 p-inline"
       id="destinations-grid"
     >
       {MOCK_DESTINATIONS.map((destination) => (

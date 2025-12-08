@@ -1,7 +1,14 @@
-import { PropsWithChildren } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 
-export function Section({ children }: PropsWithChildren) {
-  return <section className="flex w-full flex-col gap-5">{children}</section>;
+export function Section({
+  children,
+  ...props
+}: PropsWithChildren<ComponentProps<"section">>) {
+  return (
+    <section className="flex w-full flex-col gap-5" {...props}>
+      {children}
+    </section>
+  );
 }
 
 export function Header({ children }: PropsWithChildren) {

@@ -7,7 +7,7 @@ type Tag = {
 };
 
 type BaseInfo = {
-  block: "richtext" | "checkstate" | "rating" | "list";
+  block: "text" | "checkstate" | "rating" | "list";
   title: string;
   description?: string;
 };
@@ -15,6 +15,11 @@ type BaseInfo = {
 type RichTextInfo = BaseInfo & {
   block: "richtext";
   content: SerializedEditorState;
+};
+
+type TextInfo = BaseInfo & {
+  block: "text";
+  text: string;
 };
 
 type CheckstateInfo = BaseInfo & {
@@ -29,7 +34,7 @@ type RatingInfo = BaseInfo & {
   max?: number;
 };
 
-type ListInfo = BaseInfo & {
+export type ListInfo = BaseInfo & {
   block: "list";
   items: {
     text: string;
@@ -39,7 +44,7 @@ type ListInfo = BaseInfo & {
   type?: "default" | "alert" | "emergency" | "applications";
 };
 
-export type Info = RichTextInfo | CheckstateInfo | RatingInfo | ListInfo;
+export type Info = CheckstateInfo | RatingInfo | ListInfo | TextInfo;
 
 type EssentialInfo = {
   visaRequired: {
@@ -142,7 +147,6 @@ export const MOCK_DESTINATIONS: Destination[] = [
           block: "checkstate",
           title: "Vegan/Vegetarian Friendly",
           state: "true",
-          description: "Wie variety of vegan and vegetarian options available.",
         },
         {
           block: "rating",
@@ -159,11 +163,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
           rating: 8,
         },
         {
-          block: "richtext",
+          block: "text",
           title: "Structured & Direct",
-          content: createRichText(
-            "German culture values punctuality, structure, and direct communication. Sunday is strictly a rest day; shops are closed.",
-          ),
+          text: "German culture values punctuality, structure, and direct communication. Sunday is strictly a rest day; shops are closed.",
         },
         {
           block: "list",
@@ -177,6 +179,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
         {
           block: "list",
           title: "Social Taboos",
+          description: "Topics to avoid",
           type: "alert",
           items: [
             {
@@ -195,11 +198,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
           description: "High in cities/universities, lower in bureaucracy.",
         },
         {
-          block: "richtext",
+          block: "text",
           title: "German is Key",
-          content: createRichText(
-            "While you can survive with English, learning basic German is essential for dealing with the Ausländerbehörde (Foreigners Office).",
-          ),
+          text: "While you can survive with English, learning basic German is essential for dealing with the Ausländerbehörde (Foreigners Office).",
         },
       ],
       transportation: [
@@ -223,11 +224,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
       ],
       money: [
         {
-          block: "richtext",
+          block: "text",
           title: "Cash is King",
-          content: createRichText(
-            "Many smaller shops, bakeries, and kiosks ('Späti') still only accept cash (Bargeld). Always carry some euros.",
-          ),
+          text: "Many smaller shops, bakeries, and kiosks ('Späti') still only accept cash (Bargeld). Always carry some euros.",
         },
         {
           block: "list",
@@ -292,11 +291,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     details: {
       culture: [
         {
-          block: "richtext",
+          block: "text",
           title: "Joie de Vivre",
-          content: createRichText(
-            "Food and conversation are central. Politeness (always say 'Bonjour') is crucial in social interactions.",
-          ),
+          text: "Food and conversation are central. Politeness (always say 'Bonjour') is crucial in social interactions.",
         },
       ],
       language: [
@@ -328,11 +325,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
       ],
       money: [
         {
-          block: "richtext",
+          block: "text",
           title: "CAF Housing Aid",
-          content: createRichText(
-            "International students can apply for CAF (Caisse d'Allocations Familiales) to get reimbursement for part of their rent.",
-          ),
+          text: "International students can apply for CAF (Caisse d'Allocations Familiales) to get reimbursement for part of their rent.",
         },
       ],
       safety: [
@@ -377,11 +372,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     details: {
       culture: [
         {
-          block: "richtext",
+          block: "text",
           title: "Expressive & Social",
-          content: createRichText(
-            "Life happens in the piazza. Aperitivo is a ritual. Communication is expressive and often loud.",
-          ),
+          text: "Life happens in the piazza. Aperitivo is a ritual. Communication is expressive and often loud.",
         },
       ],
       language: [
@@ -416,11 +409,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
       ],
       money: [
         {
-          block: "richtext",
+          block: "text",
           title: "Cost of Living",
-          content: createRichText(
-            "Generally affordable, especially the South. Northern cities like Milan are significantly more expensive.",
-          ),
+          text: "Generally affordable, especially the South. Northern cities like Milan are significantly more expensive.",
         },
       ],
       safety: [
@@ -465,11 +456,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     details: {
       culture: [
         {
-          block: "richtext",
+          block: "text",
           title: "Relaxed & Welcoming",
-          content: createRichText(
-            "Portuguese people are incredibly hospitable. The pace of life is slower and more relaxed.",
-          ),
+          text: "Portuguese people are incredibly hospitable. The pace of life is slower and more relaxed.",
         },
       ],
       language: [
@@ -490,11 +479,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
       ],
       money: [
         {
-          block: "richtext",
+          block: "text",
           title: "Affordability",
-          content: createRichText(
-            "One of the most affordable countries in Western Europe. Great value for food and drink.",
-          ),
+          text: "One of the most affordable countries in Western Europe. Great value for food and drink.",
         },
         {
           block: "list",
@@ -515,11 +502,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
           max: 5,
         },
         {
-          block: "richtext",
+          block: "text",
           title: "Peaceful",
-          content: createRichText(
-            "Consistently ranked as one of the safest countries in the world.",
-          ),
+          text: "Consistently ranked as one of the safest countries in the world.",
         },
       ],
       daily: [
@@ -553,11 +538,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     details: {
       culture: [
         {
-          block: "richtext",
+          block: "text",
           title: "Hospitality",
-          content: createRichText(
-            "Turkish hospitality is legendary. You will be offered tea (çay) everywhere you go.",
-          ),
+          text: "Turkish hospitality is legendary. You will be offered tea (çay) everywhere you go.",
         },
       ],
       language: [
@@ -592,11 +575,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
       ],
       money: [
         {
-          block: "richtext",
+          block: "text",
           title: "Currency",
-          content: createRichText(
-            "Turkish Lira (TRY). Inflation can be high, so prices fluctuate. Cash is useful in bazaars.",
-          ),
+          text: "Turkish Lira (TRY). Inflation can be high, so prices fluctuate. Cash is useful in bazaars.",
         },
       ],
       safety: [
@@ -641,11 +622,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     details: {
       culture: [
         {
-          block: "richtext",
+          block: "text",
           title: "Fiesta & Siesta",
-          content: createRichText(
-            "Social life is vibrant and outdoors. The 'Siesta' (mid-day break) still affects shop hours in smaller towns.",
-          ),
+          text: "Social life is vibrant and outdoors. The 'Siesta' (mid-day break) still affects shop hours in smaller towns.",
         },
       ],
       language: [
@@ -677,11 +656,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
       ],
       money: [
         {
-          block: "richtext",
+          block: "text",
           title: "Costs",
-          content: createRichText(
-            "Generally cheaper than northern Europe. Dining out is affordable and common.",
-          ),
+          text: "Generally cheaper than northern Europe. Dining out is affordable and common.",
         },
       ],
       safety: [
@@ -692,11 +669,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
           max: 5,
         },
         {
-          block: "richtext",
+          block: "text",
           title: "Pickpockets",
-          content: createRichText(
-            "Be very careful with belongings in tourist hubs like Barcelona.",
-          ),
+          text: "Be very careful with belongings in tourist hubs like Barcelona.",
         },
       ],
       daily: [
