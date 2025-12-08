@@ -7,13 +7,15 @@ export function DetailInfo({
   title,
   Icon,
   content,
+  id,
 }: {
   title: string;
   Icon: LucideIcon;
   content: Info[];
+  id: string;
 }) {
   return (
-    <Primitives.Section>
+    <Primitives.Section id={id}>
       <Primitives.Header>
         <Icon className="size-6 text-primary" />
         <Primitives.Title>{title}</Primitives.Title>

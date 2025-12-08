@@ -1,12 +1,6 @@
 import { Badge } from "@/src/components/ui/badge";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/src/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { Destination } from "@/src/lib/mock-data/destinations";
-import { cn } from "@/src/lib/utils";
 import {
   CloudIcon,
   EuroIcon,
@@ -24,7 +18,7 @@ export function EssentialInfo({
   data: Destination["essentialInfo"];
 }) {
   return (
-    <Primitives.Section>
+    <Primitives.Section id="essential-info">
       <Primitives.Title>Essential Information</Primitives.Title>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-[repeat(auto-fit,minmax(min(100%,15rem),1fr))]">
         <EssentialCard title="Visa Required" Icon={FileTextIcon}>
@@ -64,7 +58,7 @@ function EssentialCard({
   className?: string;
 }>) {
   return (
-    <Card className={cn("text-sm", className)} variant="primary" size="default">
+    <Card className={className} variant="primary" size="default">
       <CardHeader>
         <Icon />
         <CardTitle as="h3">{title}</CardTitle>

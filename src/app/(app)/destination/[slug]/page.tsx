@@ -1,4 +1,3 @@
-import * as DataElements from "@/src/components/data-elements";
 import { MOCK_DESTINATIONS } from "@/src/lib/mock-data/destinations";
 import { notFound } from "next/navigation";
 import * as Sections from "./_components";
@@ -6,10 +5,12 @@ import {
   CreditCardIcon,
   GlobeIcon,
   HouseIcon,
+  InfoIcon,
   MessagesSquareIcon,
   NavigationIcon,
   ShieldIcon,
 } from "lucide-react";
+import { ScrollAnchorLinks } from "./_components/scroll-anchor-links";
 
 function getData(slug: string) {
   return MOCK_DESTINATIONS.find((d) => d.slug === slug);
@@ -27,6 +28,45 @@ export default async function Page({
     notFound();
   }
 
+  const sections = [
+    {
+      title: "Culture & Social",
+      Icon: GlobeIcon,
+      content: data.details.culture,
+      id: "culture-and-social",
+    },
+    {
+      title: "Language",
+      Icon: MessagesSquareIcon,
+      content: data.details.language,
+      id: "language",
+    },
+    {
+      title: "Transportation",
+      Icon: NavigationIcon,
+      content: data.details.transportation,
+      id: "transportation",
+    },
+    {
+      title: "Money",
+      Icon: CreditCardIcon,
+      content: data.details.money,
+      id: "money",
+    },
+    {
+      title: "Safety",
+      Icon: ShieldIcon,
+      content: data.details.safety,
+      id: "safety",
+    },
+    {
+      title: "Daily Life",
+      Icon: HouseIcon,
+      content: data.details.daily,
+      id: "daily-life",
+    },
+  ];
+
   return (
     <main className="content-grid gap-y-12">
       <Sections.Header
@@ -35,37 +75,19 @@ export default async function Page({
         slogan={data.slogan}
         tags={data.tags}
       />
+      <ScrollAnchorLinks
+        sections={[
+          {
+            Icon: InfoIcon,
+            id: "essential-info",
+          },
+          ...sections,
+        ]}
+      />
       <Sections.EssentialInfo data={data.essentialInfo} />
-      <Sections.DetailInfo
-        title="Culture & Social"
-        Icon={GlobeIcon}
-        content={data.details.culture}
-      />
-      <Sections.DetailInfo
-        title="Language"
-        Icon={MessagesSquareIcon}
-        content={data.details.language}
-      />
-      <Sections.DetailInfo
-        title="Transportation"
-        Icon={NavigationIcon}
-        content={data.details.transportation}
-      />
-      <Sections.DetailInfo
-        title="Money"
-        Icon={CreditCardIcon}
-        content={data.details.money}
-      />
-      <Sections.DetailInfo
-        title="Safety"
-        Icon={ShieldIcon}
-        content={data.details.safety}
-      />
-      <Sections.DetailInfo
-        title="Daily Life"
-        Icon={HouseIcon}
-        content={data.details.daily}
-      />
+      {sections.map((section) => (
+        <Sections.DetailInfo key={section.id} {...section} />
+      ))}
     </main>
   );
 }
