@@ -2,6 +2,7 @@ import { BlankScrollButton } from "@/src/components/scroll-button";
 import { cn } from "@/src/lib/utils";
 import { LucideIcon } from "lucide-react";
 import * as Navigation from "@radix-ui/react-navigation-menu";
+import { ScrollAnchorLinksLine } from "./scroll-anchor-links-line";
 
 export function ScrollAnchorLinks({
   sections,
@@ -20,9 +21,13 @@ export function ScrollAnchorLinks({
               <AnchorLink Icon={section.Icon} id={section.id} />
             </Navigation.Item>
           ))}
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-auto -z-10 h-full w-2 bg-stone-200 shadow-lg"
+          <ScrollAnchorLinksLine
+            sectionIds={sections.map((s) => s.id)}
+            className={cn(
+              "absolute inset-x-auto -z-10 h-full w-2 bg-stone-200 shadow-lg",
+              "after:absolute after:inset-x-0 after:z-10 after:h-full after:w-full after:origin-top after:scale-y-(--scroll-scale) after:bg-primary after:content-['']",
+              "after:transition-transform after:duration-100 after:ease-out",
+            )}
           />
         </Navigation.List>
       </aside>
