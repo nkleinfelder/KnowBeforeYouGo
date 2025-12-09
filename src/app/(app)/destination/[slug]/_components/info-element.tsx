@@ -69,7 +69,7 @@ function ListContent({
           className={cn(
             !defaultList && type === "alert" && "flex items-baseline gap-1",
             type === "emergency" &&
-              "flex justify-between rounded-lg border border-destructive/20 bg-background px-3 py-2 text-lg font-semibold",
+              "flex justify-between rounded-lg border border-destructive/20 bg-card px-3 py-2 text-lg font-semibold",
           )}
         >
           {/* translate makes the icon optically centered with first line of text */}
