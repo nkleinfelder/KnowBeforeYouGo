@@ -14,6 +14,7 @@ export const cardVariants = cva("flex flex-col rounded-xl border ", {
     size: {
       default: "p-5 gap-5 shadow-xs text-sm",
       sm: "p-4 gap-4 shadow-xs text-sm",
+      md: "p-6 gap-6 shadow-sm",
       lg: "p-8 gap-8 shadow-sm",
     },
   },

@@ -68,7 +68,7 @@ export default async function Page({
   ];
 
   return (
-    <main className="content-grid gap-y-12">
+    <main className="content-grid gap-y-12 pb-12">
       <Sections.Header
         image={data.image}
         name={data.name}
@@ -88,6 +88,7 @@ export default async function Page({
       {sections.map((section) => (
         <Sections.DetailInfo key={section.id} {...section} />
       ))}
+      <Sections.ShareExperience countryId={data.slug} countryName={data.name} />
     </main>
   );
 }
