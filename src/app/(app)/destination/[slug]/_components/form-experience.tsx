@@ -56,8 +56,8 @@ export function ShareExperience({
   };
 
   return (
-    <section>
-      <Card className="w-2xl max-w-full" size="md">
+    <section className="w-2xl max-w-full">
+      <Card size="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldSet>
             <FieldLegend>
