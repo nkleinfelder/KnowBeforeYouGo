@@ -9,9 +9,7 @@ export default async function Home() {
   const recommendation = await getRecommendation();
   return (
     <main className="content-grid">
-      <Components.Hero />
-      <Components.Sponsors />
-      <Components.Destinations />
+      <Components.HomeContent />
     </main>
   );
 }

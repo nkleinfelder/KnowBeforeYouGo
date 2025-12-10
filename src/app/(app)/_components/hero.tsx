@@ -1,9 +1,11 @@
+"use client";
+
 import { Button } from "@/src/components/ui/button";
 import { BookTextIcon, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { ScrollButton } from "@/src/components/scroll-button";
 
-export function Hero() {
+export function Hero({ onFindMatch }: { onFindMatch?: () => void }) {
   return (
     <section className="full-width relative min-h-lvh overflow-clip">
       <div className="z-10 flex flex-col items-center justify-center gap-4 text-center">
@@ -15,7 +17,7 @@ export function Hero() {
           personality and studies!
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <Button size="lg" className="grow shadow-md">
+          <Button size="lg" className="grow shadow-md" onClick={onFindMatch}>
             <BookTextIcon className="size-4" />
             <span>Find your Match</span>
           </Button>
@@ -30,6 +32,7 @@ export function Hero() {
           </ScrollButton>
         </div>
       </div>
+      {/* TODO move to new component and also render in match finder view */}
       <Image
         src="/images/home-hero-background.jpg"
         alt=""
