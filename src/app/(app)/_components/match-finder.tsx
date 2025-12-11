@@ -10,6 +10,7 @@ import {
   SparklesIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Preferences = {
   temperature: number;
@@ -76,7 +77,8 @@ const questions = [
   },
 ];
 
-export function MatchFinder({ onBack }: { onBack: () => void }) {
+export function MatchFinder() {
+  const router = useRouter();
   const [preferences, setPreferences] = useState<Partial<Preferences>>({});
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -125,7 +127,7 @@ export function MatchFinder({ onBack }: { onBack: () => void }) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={onBack}
+          onClick={() => router.back()}
           className="self-start text-stone-300 hover:text-stone-100"
         >
           <ArrowLeftIcon className="size-4" />
