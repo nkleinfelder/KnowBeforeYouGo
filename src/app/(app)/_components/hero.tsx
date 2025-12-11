@@ -1,11 +1,11 @@
-"use client";
-
-import { Button } from "@/src/components/ui/button";
+import { buttonVariants } from "@/src/components/ui/button";
 import { BookTextIcon, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { ScrollButton } from "@/src/components/scroll-button";
+import Link from "next/link";
+import { cn } from "@/src/lib/utils";
 
-export function Hero({ onFindMatch }: { onFindMatch?: () => void }) {
+export function Hero() {
   return (
     <section className="full-width relative min-h-lvh overflow-clip">
       <div className="z-10 flex flex-col items-center justify-center gap-4 text-center">
@@ -17,10 +17,13 @@ export function Hero({ onFindMatch }: { onFindMatch?: () => void }) {
           personality and studies!
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <Button size="lg" className="grow shadow-md" onClick={onFindMatch}>
+          <Link
+            className={cn(buttonVariants({ size: "lg" }), "grow shadow-md")}
+            href="/match-finder"
+          >
             <BookTextIcon className="size-4" />
             <span>Find your Match</span>
-          </Button>
+          </Link>
           <ScrollButton
             scrollToId="destinations-grid"
             size="lg"
