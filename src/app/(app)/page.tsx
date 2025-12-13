@@ -8,7 +8,7 @@ async function getRecommendation() {
 export default async function Home() {
   const recommendation = await getRecommendation();
   return (
-    <main className="content-grid">
+    <main className="content-grid pb-96">
       <Components.HomeContent />
     </main>
   );
