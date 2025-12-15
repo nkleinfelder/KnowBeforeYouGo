@@ -139,11 +139,13 @@ export interface Country {
   id: string;
   name: string;
   culturalAndSocialNorms?: {
+    description?: string | null;
     eatingCultureVeganVegetarian?: number | null;
     lgbtqFriendliness?: number | null;
     avgCostOfLiving?: number | null;
   };
   languageAndCommunication?: {
+    description?: string | null;
     languageLearningApps?:
       | {
           name: string;
@@ -163,6 +165,7 @@ export interface Country {
       | null;
   };
   navigationAndTransportation?: {
+    description?: string | null;
     transportationApps?:
       | {
           name: string;
@@ -181,6 +184,7 @@ export interface Country {
       | null;
   };
   moneyAndPayments?: {
+    description?: string | null;
     paymentMethods?:
       | {
           name: string;
@@ -208,6 +212,7 @@ export interface Country {
       | null;
   };
   safetyAndLegal: {
+    description?: string | null;
     visaRequired?: ("1" | "0") | null;
     emergencyNumbers: {
       police: string;
@@ -419,6 +424,7 @@ export interface CountriesSelect<T extends boolean = true> {
   culturalAndSocialNorms?:
     | T
     | {
+        description?: T;
         eatingCultureVeganVegetarian?: T;
         lgbtqFriendliness?: T;
         avgCostOfLiving?: T;
@@ -426,6 +432,7 @@ export interface CountriesSelect<T extends boolean = true> {
   languageAndCommunication?:
     | T
     | {
+        description?: T;
         languageLearningApps?:
           | T
           | {
@@ -447,6 +454,7 @@ export interface CountriesSelect<T extends boolean = true> {
   navigationAndTransportation?:
     | T
     | {
+        description?: T;
         transportationApps?:
           | T
           | {
@@ -467,6 +475,7 @@ export interface CountriesSelect<T extends boolean = true> {
   moneyAndPayments?:
     | T
     | {
+        description?: T;
         paymentMethods?:
           | T
           | {
@@ -496,6 +505,7 @@ export interface CountriesSelect<T extends boolean = true> {
   safetyAndLegal?:
     | T
     | {
+        description?: T;
         visaRequired?: T;
         emergencyNumbers?:
           | T
