@@ -12,7 +12,8 @@ export const moneyAndPayments: Field = {
       type: "array",
       fields: [
         { name: "name", type: "text", required: true },
-        { name: "url", type: "text" },
+        { name: "url_android", label: "Url Android", type: "text" },
+        { name: "url_ios", label: "URL iOS", type: "text" },
         { name: "description", type: "text", localized: true },
         {
           name: "isMostPopular",
@@ -28,7 +29,8 @@ export const moneyAndPayments: Field = {
       type: "array",
       fields: [
         { name: "name", type: "text", required: true },
-        { name: "url", type: "text" },
+        { name: "url_android", label: "Url Android", type: "text" },
+        { name: "url_ios", label: "URL iOS", type: "text" },
         { name: "description", type: "text", localized: true },
       ],
     },
@@ -38,7 +40,8 @@ export const moneyAndPayments: Field = {
       type: "array",
       fields: [
         { name: "name", type: "text", required: true },
-        { name: "url", type: "text" },
+        { name: "url_android", label: "Url Android", type: "text" },
+        { name: "url_ios", label: "URL iOS", type: "text" },
         { name: "description", type: "text", localized: true },
       ],
     },

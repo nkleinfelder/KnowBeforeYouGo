@@ -9,12 +9,7 @@ export const safetyAndLegal: Field = {
     {
       name: "visaRequired",
       label: "Visum required?",
-      type: "select",
-      localized: true,
-      options: [
-        { label: "Yes", value: "1" },
-        { label: "No", value: "0" },
-      ],
+      type: "text",
     },
     {
       name: "emergencyNumbers",
@@ -42,11 +37,16 @@ export const safetyAndLegal: Field = {
       ],
     },
     {
-      name: "naturalHazardsIndex",
+      name: "naturalHazardsIndexEnum",
       label: "Natural hazards index",
-      type: "number",
-      min: 0,
-      max: 10,
+      type: "select",
+      options: [
+        { label: "Very low", value: "Very low" },
+        { label: "Low", value: "Low" },
+        { label: "Medium", value: "Medium" },
+        { label: "High", value: "High" },
+        { label: "Very high", value: "Very high" },
+      ],
     },
     {
       name: "naturalHazards",

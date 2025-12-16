@@ -5,6 +5,7 @@ import { navigationAndTransportation } from "./categories/navigationAndTransport
 import { moneyAndPayments } from "./categories/moneyAndPayments";
 import { safetyAndLegal } from "./categories/safetyAndLegal";
 import { dailyLifeAndLifestyle } from "./categories/dailyLifeAndLifestyle";
+import { health } from "@/src/collections/categories/health";
 
 export const Countries: CollectionConfig = {
   slug: "countries",
@@ -21,11 +22,26 @@ export const Countries: CollectionConfig = {
       type: "text",
       required: true,
     },
+    {
+      name: "images",
+      label: "Images",
+      type: "array",
+      fields: [
+        {
+          name: "image",
+          label: "Image",
+          type: "upload",
+          relationTo: "media",
+          required: true,
+        },
+      ],
+    },
     culturalAndSocialNorms,
     languageAndCommunication,
     navigationAndTransportation,
     moneyAndPayments,
     safetyAndLegal,
     dailyLifeAndLifestyle,
+    health,
   ],
 };

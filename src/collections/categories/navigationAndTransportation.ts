@@ -13,7 +13,8 @@ export const navigationAndTransportation: Field = {
       dbName: "nav_trans_apps",
       fields: [
         { name: "name", type: "text", required: true },
-        { name: "url", type: "text" },
+        { name: "url_android", label: "Url Android", type: "text" },
+        { name: "url_ios", label: "URL iOS", type: "text" },
         { name: "description", type: "text", localized: true },
       ],
     },
@@ -23,7 +24,8 @@ export const navigationAndTransportation: Field = {
       type: "array",
       fields: [
         { name: "name", type: "text", required: true },
-        { name: "url", type: "text" },
+        { name: "url_android", label: "Url Android", type: "text" },
+        { name: "url_ios", label: "URL iOS", type: "text" },
         { name: "description", type: "text", localized: true },
       ],
     },
