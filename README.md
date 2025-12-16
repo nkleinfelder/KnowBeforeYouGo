@@ -15,9 +15,28 @@ Example ways to install `pnpm`:
 
 #### Database
 
-Create an (empty) sqlite database file in the location: `db/database.sqlite`
+Create postgres migration:
 
-- MacOS: `mkdir db && touch db/database.sqlite`
+- for dev:
+
+```
+pnpm run payload migrate
+pnpm run payload migrate:create
+```
+
+- for prod:
+
+```
+NODE_ENV=production pnpm run payload migrate
+NODE_ENV=production pnpm run payload migrate:create
+```
+
+- test prod:
+
+```
+  NODE_ENV=production pnpm run build
+  NODE_ENV=production pnpm run start
+```
 
 #### Environment Variables
 
