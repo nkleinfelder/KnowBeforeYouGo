@@ -1,4 +1,4 @@
-import { MatchFinder } from "../_components";
+import { MatchFinder } from "./components/match-finder";
 
 export default function Page() {
   return (

@@ -139,7 +139,7 @@ export function MatchFinder() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={onBack}
+          onClick={() => router.back()}
           className="self-start text-stone-600 hover:text-stone-800"
         >
           <ArrowLeftIcon className="size-4" />
