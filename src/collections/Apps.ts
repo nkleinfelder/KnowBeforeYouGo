@@ -10,6 +10,12 @@ export const Apps: CollectionConfig = {
     { name: "url_android", label: "Url Android", type: "text" },
     { name: "url_ios", label: "URL iOS", type: "text" },
     {
+      name: "image",
+      label: "Image",
+      type: "upload",
+      relationTo: "media",
+    },
+    {
       name: "isMostPopular",
       label: "Most popular",
       type: "checkbox",
