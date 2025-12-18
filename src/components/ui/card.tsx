@@ -3,26 +3,29 @@ import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 
-export const cardVariants = cva("flex flex-col rounded-xl border ", {
-  variants: {
-    variant: {
-      default: "bg-card text-card-foreground",
-      primary:
-        "border-primary/35 bg-gradient-to-br from-primary/10 to-primary/5 shadow-primary/10",
-      warning: "bg-destructive/10 border-destructive/20",
+export const cardVariants = cva(
+  "flex flex-col rounded-xl border border-border",
+  {
+    variants: {
+      variant: {
+        default: "bg-card text-card-foreground",
+        primary:
+          "border-primary/35 bg-gradient-to-br from-primary/10 to-primary/5 shadow-primary/10",
+        warning: "bg-destructive/10 border-destructive/20",
+      },
+      size: {
+        default: "p-5 gap-5 shadow-xs text-sm",
+        sm: "p-4 gap-4 shadow-xs text-sm",
+        md: "md:p-6 md:gap-6 shadow-sm p-5 gap-5",
+        lg: "p-8 gap-8 shadow-sm",
+      },
     },
-    size: {
-      default: "p-5 gap-5 shadow-xs text-sm",
-      sm: "p-4 gap-4 shadow-xs text-sm",
-      md: "md:p-6 md:gap-6 shadow-sm p-5 gap-5",
-      lg: "p-8 gap-8 shadow-sm",
+    defaultVariants: {
+      variant: "default",
+      size: "default",
     },
   },
-  defaultVariants: {
-    variant: "default",
-    size: "default",
-  },
-});
+);
 
 type CardProps = React.ComponentProps<"div"> &
   VariantProps<typeof cardVariants>;

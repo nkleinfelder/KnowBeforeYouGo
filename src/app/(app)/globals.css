@@ -26,7 +26,7 @@
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
+  --color-accent: var(--color-stone-200);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -78,6 +78,8 @@
   --sidebar-ring: oklch(0.709 0.01 56.259);
   --background: var(--color-neutral-50);
   --foreground: var(--color-neutral-950);
+
+  --ease-bezier-spring: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .dark {
@@ -120,6 +122,14 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    --padding-inline: calc(1.5 * var(--spacing-inline));
+    --content-max-width: 60rem;
+    --breakout-max-width: 80rem;
+
+    --breakout-size: calc(
+      (var(--breakout-max-width) - var(--content-max-width)) / 2
+    );
   }
 }
 
@@ -133,14 +143,6 @@
   }
 
   .content-grid {
-    --padding-inline: calc(1.5 * var(--spacing-inline));
-    --content-max-width: 60rem;
-    --breakout-max-width: 80rem;
-
-    --breakout-size: calc(
-      (var(--breakout-max-width) - var(--content-max-width)) / 2
-    );
-
     justify-items: center;
 
     display: grid;
@@ -179,6 +181,19 @@
   .full-width > .full-width-no-inherit {
     grid-column: full-width !important;
   }
+
+  div:has(> ul[data-slot="navigation-menu-list"].hidden) {
+    @apply hidden;
+  }
+  div:has(> ul[data-slot="navigation-menu-list"].md\:flex) {
+    @apply md:flex;
+  }
+  div:has(> ul[data-slot="navigation-menu-list"].md\:grid) {
+    @apply md:grid;
+  }
+  div:has(> ul[data-slot="navigation-menu-list"].md\:hidden) {
+    @apply md:hidden;
+  }
 }
 
 @layer utilities {
@@ -200,5 +215,9 @@
 
   .grid-cols-destinations {
     grid-template-columns: repeat(auto-fill, minmax(min(13rem, 100%), 1fr));
+  }
+
+  .ease-bezier-spring {
+    --tw-ease: var(--ease-bezier-spring);
   }
 }
