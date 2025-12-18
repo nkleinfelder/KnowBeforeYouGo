@@ -85,6 +85,18 @@ export function MatchFinder() {
   const [recommendations, setRecommendations] = useState<
     Recommendation[] | null
   >(null);
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+
+  const DEFAULT_BG = "/images/home-hero-background.jpg";
+  const countryImagePath = hoveredCountry
+    ? `/images/destinations/${hoveredCountry.toLowerCase()}.webp`
+    : null;
+
+  const backgroundImage =
+    countryImagePath && !failedImages.has(countryImagePath)
+      ? countryImagePath
+      : DEFAULT_BG;
 
   const currentQuestion = questions[currentStep];
   const progress = ((currentStep + 1) / questions.length) * 100;
@@ -127,8 +139,8 @@ export function MatchFinder() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => router.back()}
-          className="self-start text-stone-300 hover:text-stone-100"
+          onClick={onBack}
+          className="self-start text-stone-600 hover:text-stone-800"
         >
           <ArrowLeftIcon className="size-4" />
           Back
@@ -137,17 +149,17 @@ export function MatchFinder() {
         {!recommendations ? (
           <Card
             size="md"
-            className="w-full border-stone-700 bg-stone-900/80 backdrop-blur-sm"
+            className="w-full border-stone-200 bg-white/90 shadow-lg backdrop-blur-sm"
           >
             {/* Progress Bar */}
             <div className="space-y-2">
-              <div className="flex justify-between text-sm text-stone-400">
+              <div className="flex justify-between text-sm text-stone-500">
                 <span>
                   Question {currentStep + 1} of {questions.length}
                 </span>
                 <span>{Math.round(progress)}%</span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-stone-700">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-stone-200">
                 <div
                   className="h-full bg-primary transition-all duration-300"
                   style={{ width: `${progress}%` }}
@@ -157,7 +169,7 @@ export function MatchFinder() {
 
             {/* Question */}
             <div className="py-4 text-center">
-              <h2 className="text-2xl font-semibold text-stone-100">
+              <h2 className="text-2xl font-semibold text-stone-800">
                 {currentQuestion.label}
               </h2>
             </div>
@@ -174,8 +186,8 @@ export function MatchFinder() {
                     onClick={() => handleOptionSelect(value)}
                     className={`rounded-lg border px-4 py-3 text-left transition-all ${
                       isSelected
-                        ? "border-primary bg-primary/20 text-stone-100"
-                        : "border-stone-600 bg-stone-800/50 text-stone-300 hover:border-stone-500 hover:bg-stone-700/50"
+                        ? "border-primary bg-primary/10 text-stone-800"
+                        : "border-stone-300 bg-stone-50 text-stone-600 hover:border-stone-400 hover:bg-stone-100"
                     }`}
                   >
                     {option}
@@ -191,7 +203,7 @@ export function MatchFinder() {
                 size="lg"
                 onClick={handleBack}
                 disabled={currentStep === 0}
-                className="flex-1 border-stone-600 text-black hover:bg-stone-800 hover:text-white"
+                className="flex-1 border-stone-300 text-stone-700 hover:bg-stone-100 hover:text-stone-900"
               >
                 <ArrowLeftIcon className="size-4" />
                 Previous
@@ -232,9 +244,9 @@ export function MatchFinder() {
         ) : (
           <Card
             size="md"
-            className="w-full border-stone-700 bg-stone-900/80 backdrop-blur-sm"
+            className="w-full border-stone-200 bg-white/90 shadow-lg backdrop-blur-sm"
           >
-            <h2 className="text-xl font-semibold text-stone-100">
+            <h2 className="text-xl font-semibold text-stone-800">
               Your Top Matches
             </h2>
 
@@ -242,10 +254,12 @@ export function MatchFinder() {
               {recommendations.slice(0, 3).map((rec, index) => (
                 <div
                   key={rec.country}
-                  className="flex items-center gap-3 rounded-lg border border-stone-700 bg-stone-800/50 px-4 py-3"
+                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 transition-all hover:border-primary hover:bg-primary/5"
+                  onMouseEnter={() => setHoveredCountry(rec.country)}
+                  onMouseLeave={() => setHoveredCountry(null)}
                 >
                   <span className="font-bold text-primary">{index + 1}</span>
-                  <span className="flex-1 text-stone-100">{rec.country}</span>
+                  <span className="flex-1 text-stone-800">{rec.country}</span>
                   <span className="text-lg font-semibold text-primary">
                     {rec.matchScore}%
                   </span>
@@ -260,7 +274,7 @@ export function MatchFinder() {
                 setPreferences({});
                 setCurrentStep(0);
               }}
-              className="w-full border-stone-600 text-black hover:bg-stone-800 hover:text-white"
+              className="w-full border-stone-300 text-stone-700 hover:bg-stone-100 hover:text-stone-900"
             >
               Try Again
             </Button>
@@ -269,11 +283,17 @@ export function MatchFinder() {
       </div>
 
       <Image
-        src="/images/home-hero-background.jpg"
+        key={backgroundImage}
+        src={backgroundImage}
         alt=""
         sizes="100vw"
-        className="full-width h-full w-full scale-105 object-cover blur-xs brightness-50"
+        className="full-width h-full w-full scale-105 object-cover blur-xs brightness-75 transition-opacity duration-300"
         fill
+        onError={() => {
+          if (countryImagePath) {
+            setFailedImages((prev) => new Set(prev).add(countryImagePath));
+          }
+        }}
       />
     </section>
   );
