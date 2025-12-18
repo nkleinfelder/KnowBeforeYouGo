@@ -67,6 +67,12 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    apps: App;
+    countries: Country;
+    "user-requests": UserRequest;
+    "hazards-index": HazardsIndex;
+    plugTypes: PlugType;
+    media: Media;
     "payload-kv": PayloadKv;
     users: User;
     "payload-locked-documents": PayloadLockedDocument;
@@ -75,6 +81,12 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    apps: AppsSelect<false> | AppsSelect<true>;
+    countries: CountriesSelect<false> | CountriesSelect<true>;
+    "user-requests": UserRequestsSelect<false> | UserRequestsSelect<true>;
+    "hazards-index": HazardsIndexSelect<false> | HazardsIndexSelect<true>;
+    plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     "payload-locked-documents":
@@ -88,12 +100,17 @@ export interface Config {
       | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
-  fallbackLocale: null;
+  fallbackLocale:
+    | ("false" | "none" | "null")
+    | false
+    | null
+    | ("en" | "de")
+    | ("en" | "de")[];
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: "en" | "de";
   user: User & {
     collection: "users";
   };
@@ -122,10 +139,186 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apps".
+ */
+export interface App {
+  id: string;
+  name: string;
+  description?: string | null;
+  url_android?: string | null;
+  url_ios?: string | null;
+  image?: (string | null) | Media;
+  isMostPopular?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: string;
+  name: string;
+  slug?: string | null;
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  culturalAndSocialNorms?: {
+    description?: string | null;
+    vegetarianPopulationShare?: number | null;
+    veganPopulationShare?: number | null;
+    lgbtqFriendliness?: number | null;
+    avgCostOfLiving?: number | null;
+  };
+  languageAndCommunication?: {
+    description?: string | null;
+    languageLearningApps?: (string | App)[] | null;
+    englishLevel?: ("4" | "3" | "2" | "1" | "0") | null;
+    messengerApps?: (string | App)[] | null;
+  };
+  navigationAndTransportation?: {
+    description?: string | null;
+    transportationApps?: (string | App)[] | null;
+    navigationApps?: (string | App)[] | null;
+  };
+  moneyAndPayments?: {
+    description?: string | null;
+    paymentMethods?: (string | App)[] | null;
+    onlineShoppingApps?: (string | App)[] | null;
+  };
+  safetyAndLegal: {
+    description?: string | null;
+    visaRequired?: string | null;
+    emergencyNumbers: {
+      police: string;
+      ambulance: string;
+      fire: string;
+    };
+    naturalHazardsIndexEnum?: (string | null) | HazardsIndex;
+    vaccinations?: {
+      requiredVaccinations?:
+        | {
+            name: string;
+            notes?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      riskBasedVaccinations?:
+        | {
+            name: string;
+            notes?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      generalVaccinations?:
+        | {
+            name: string;
+            notes?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+  };
+  dailyLifeAndLifestyle?: {
+    description?: string | null;
+    findingFlatResources?: (string | App)[] | null;
+    electricalPlugTypes?:
+      | {
+          plugType: string | PlugType;
+          voltage?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    foodDeliveryApps?: (string | App)[] | null;
+    socialMediaApps?: (string | App)[] | null;
+    datingApps?: (string | App)[] | null;
+    openingDays?: ("0" | "1" | "2" | "3" | "4" | "5" | "6")[] | null;
+  };
+  health?: {
+    description?: string | null;
+    "Mental health help"?: string | null;
+    findingADoctor?:
+      | {
+          name: string;
+          url_webpage?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    "Anti discrimination help"?: string | null;
+    "Sexual harassment help"?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hazards-index".
+ */
+export interface HazardsIndex {
+  id: string;
+  name: string;
+  description?: string | null;
+  icon?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugTypes".
+ */
+export interface PlugType {
+  id: string;
+  code: string;
+  image: string | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-requests".
+ */
+export interface UserRequest {
+  id: string;
+  title?: string | null;
+  countryExperience?: {
+    hasVisited?: ("yes" | "no") | null;
+    durationOfStay?: string | null;
+  };
+  issue?: {
+    issueType?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -142,7 +335,7 @@ export interface PayloadKv {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -166,15 +359,40 @@ export interface User {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
-  document?: {
-    relationTo: "users";
-    value: number | User;
-  } | null;
+  id: string;
+  document?:
+    | ({
+        relationTo: "apps";
+        value: string | App;
+      } | null)
+    | ({
+        relationTo: "countries";
+        value: string | Country;
+      } | null)
+    | ({
+        relationTo: "user-requests";
+        value: string | UserRequest;
+      } | null)
+    | ({
+        relationTo: "hazards-index";
+        value: string | HazardsIndex;
+      } | null)
+    | ({
+        relationTo: "plugTypes";
+        value: string | PlugType;
+      } | null)
+    | ({
+        relationTo: "media";
+        value: string | Media;
+      } | null)
+    | ({
+        relationTo: "users";
+        value: string | User;
+      } | null);
   globalSlug?: string | null;
   user: {
     relationTo: "users";
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -184,10 +402,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: "users";
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -207,11 +425,203 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apps_select".
+ */
+export interface AppsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  url_android?: T;
+  url_ios?: T;
+  image?: T;
+  isMostPopular?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  culturalAndSocialNorms?:
+    | T
+    | {
+        description?: T;
+        vegetarianPopulationShare?: T;
+        veganPopulationShare?: T;
+        lgbtqFriendliness?: T;
+        avgCostOfLiving?: T;
+      };
+  languageAndCommunication?:
+    | T
+    | {
+        description?: T;
+        languageLearningApps?: T;
+        englishLevel?: T;
+        messengerApps?: T;
+      };
+  navigationAndTransportation?:
+    | T
+    | {
+        description?: T;
+        transportationApps?: T;
+        navigationApps?: T;
+      };
+  moneyAndPayments?:
+    | T
+    | {
+        description?: T;
+        paymentMethods?: T;
+        onlineShoppingApps?: T;
+      };
+  safetyAndLegal?:
+    | T
+    | {
+        description?: T;
+        visaRequired?: T;
+        emergencyNumbers?:
+          | T
+          | {
+              police?: T;
+              ambulance?: T;
+              fire?: T;
+            };
+        naturalHazardsIndexEnum?: T;
+        vaccinations?:
+          | T
+          | {
+              requiredVaccinations?:
+                | T
+                | {
+                    name?: T;
+                    notes?: T;
+                    id?: T;
+                  };
+              riskBasedVaccinations?:
+                | T
+                | {
+                    name?: T;
+                    notes?: T;
+                    id?: T;
+                  };
+              generalVaccinations?:
+                | T
+                | {
+                    name?: T;
+                    notes?: T;
+                    id?: T;
+                  };
+            };
+      };
+  dailyLifeAndLifestyle?:
+    | T
+    | {
+        description?: T;
+        findingFlatResources?: T;
+        electricalPlugTypes?:
+          | T
+          | {
+              plugType?: T;
+              voltage?: T;
+              id?: T;
+            };
+        foodDeliveryApps?: T;
+        socialMediaApps?: T;
+        datingApps?: T;
+        openingDays?: T;
+      };
+  health?:
+    | T
+    | {
+        description?: T;
+        "Mental health help"?: T;
+        findingADoctor?:
+          | T
+          | {
+              name?: T;
+              url_webpage?: T;
+              description?: T;
+              id?: T;
+            };
+        "Anti discrimination help"?: T;
+        "Sexual harassment help"?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-requests_select".
+ */
+export interface UserRequestsSelect<T extends boolean = true> {
+  title?: T;
+  countryExperience?:
+    | T
+    | {
+        hasVisited?: T;
+        durationOfStay?: T;
+      };
+  issue?:
+    | T
+    | {
+        issueType?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hazards-index_select".
+ */
+export interface HazardsIndexSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugTypes_select".
+ */
+export interface PlugTypesSelect<T extends boolean = true> {
+  code?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

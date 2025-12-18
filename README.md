@@ -4,9 +4,13 @@
 
 ### Prerequisites
 
+#### Docker
+
+If you don't have `docker` installed, follow its [installation guide](https://docs.docker.com/desktop/).
+
 #### PNPM
 
-If you don't have `pnpm` installed, follow it's [installation guide](https://pnpm.io/installation).
+If you don't have `pnpm` installed, follow its [installation guide](https://pnpm.io/installation).
 
 Example ways to install `pnpm`:
 
@@ -15,9 +19,32 @@ Example ways to install `pnpm`:
 
 #### Database
 
-Create an (empty) sqlite database file in the location: `db/database.sqlite`
+Create postgres migration:
 
-- MacOS: `mkdir db && touch db/database.sqlite`
+##### Development
+
+> Postgres has to be running for this. See [Starting App](#starting-app)
+
+- for dev:
+
+```
+pnpm run payload migrate
+pnpm run payload migrate:create
+```
+
+- for prod:
+
+```
+NODE_ENV=production pnpm run payload migrate
+NODE_ENV=production pnpm run payload migrate:create
+```
+
+- test prod:
+
+```
+  NODE_ENV=production pnpm run build
+  NODE_ENV=production pnpm run start
+```
 
 #### Environment Variables
 
@@ -29,6 +56,12 @@ Use the following commands to generate secrets:
 - `DATABASE_AUTH_TOKEN`: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 
 ### Starting App
+
+#### Starting Postgres
+
+Run `docker compose -f dev.docker-compose.yml up`
+
+#### Starting Frontend
 
 1. Run `pnpm install`
 2. Run `pnpm dev`
