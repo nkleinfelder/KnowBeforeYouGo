@@ -4,6 +4,10 @@
 
 ### Prerequisites
 
+#### Docker
+
+If you don't have `docker` installed, follow its [installation guide](https://docs.docker.com/desktop/).
+
 #### PNPM
 
 If you don't have `pnpm` installed, follow its [installation guide](https://pnpm.io/installation).
@@ -16,6 +20,10 @@ Example ways to install `pnpm`:
 #### Database
 
 Create postgres migration:
+
+##### Development
+
+> Postgres has to be running for this. See [Starting App](#starting-app)
 
 - for dev:
 
@@ -48,6 +56,12 @@ Use the following commands to generate secrets:
 - `DATABASE_AUTH_TOKEN`: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 
 ### Starting App
+
+#### Starting Postgres
+
+Run `docker compose -f dev.docker-compose.yml up`
+
+#### Starting Frontend
 
 1. Run `pnpm install`
 2. Run `pnpm dev`
