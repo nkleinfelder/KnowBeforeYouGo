@@ -9,13 +9,9 @@ export const languageAndCommunication: Field = {
     {
       name: "languageLearningApps",
       label: "Language Learning Apps",
-      type: "array",
-      dbName: "lang_comm_apps",
-      fields: [
-        { name: "name", type: "text", required: true },
-        { name: "url", type: "text" },
-        { name: "description", type: "text", localized: true },
-      ],
+      type: "relationship",
+      relationTo: "apps",
+      hasMany: true,
     },
     {
       name: "englishLevel",
@@ -32,14 +28,9 @@ export const languageAndCommunication: Field = {
     {
       name: "messengerApps",
       label: "Messenger Apps",
-      type: "array",
-      dbName: "lang_comm_messenger_apps",
-      fields: [
-        { name: "name", type: "text", required: true },
-        { name: "url_android", label: "Url Android", type: "text" },
-        { name: "url_ios", label: "URL iOS", type: "text" },
-        { name: "description", type: "text", localized: true },
-      ],
+      type: "relationship",
+      relationTo: "apps",
+      hasMany: true,
     },
   ],
 };

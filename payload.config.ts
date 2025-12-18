@@ -7,6 +7,9 @@ import { s3Storage } from "@payloadcms/storage-s3";
 import { Countries } from "./src/collections/Countries";
 import { PlugTypes } from "./src/collections/PlugTypes";
 import { Media } from "./src/collections/Media";
+import { Apps } from "@/src/collections/Apps";
+import { HazardsIndex } from "@/src/collections/HazardsIndex";
+import { UserRequests } from "@/src/collections/UserRequests";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -30,7 +33,7 @@ export default buildConfig({
     defaultLocale: "en",
   },
 
-  collections: [Countries, PlugTypes, Media],
+  collections: [Apps, Countries, UserRequests, HazardsIndex, PlugTypes, Media],
 
   plugins: [
     s3Storage({

@@ -67,7 +67,10 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    apps: App;
     countries: Country;
+    "user-requests": UserRequest;
+    "hazards-index": HazardsIndex;
     plugTypes: PlugType;
     media: Media;
     "payload-kv": PayloadKv;
@@ -78,7 +81,10 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    apps: AppsSelect<false> | AppsSelect<true>;
     countries: CountriesSelect<false> | CountriesSelect<true>;
+    "user-requests": UserRequestsSelect<false> | UserRequestsSelect<true>;
+    "hazards-index": HazardsIndexSelect<false> | HazardsIndexSelect<true>;
     plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -133,119 +139,91 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apps".
+ */
+export interface App {
+  id: string;
+  name: string;
+  description?: string | null;
+  url_android?: string | null;
+  url_ios?: string | null;
+  isMostPopular?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "countries".
  */
 export interface Country {
   id: string;
   name: string;
+  slug?: string | null;
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
   culturalAndSocialNorms?: {
     description?: string | null;
-    eatingCultureVeganVegetarian?: number | null;
+    vegetarianPopulationShare?: number | null;
+    veganPopulationShare?: number | null;
     lgbtqFriendliness?: number | null;
     avgCostOfLiving?: number | null;
   };
   languageAndCommunication?: {
     description?: string | null;
-    languageLearningApps?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    englishLevel?: ("0" | "1" | "2" | "3" | "4") | null;
-    messengerApps?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
+    languageLearningApps?: (string | App)[] | null;
+    englishLevel?: ("4" | "3" | "2" | "1" | "0") | null;
+    messengerApps?: (string | App)[] | null;
   };
   navigationAndTransportation?: {
     description?: string | null;
-    transportationApps?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    navigationApps?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
+    transportationApps?: (string | App)[] | null;
+    navigationApps?: (string | App)[] | null;
   };
   moneyAndPayments?: {
     description?: string | null;
-    paymentMethods?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          isMostPopular?: boolean | null;
-          id?: string | null;
-        }[]
-      | null;
-    onlineShoppingApps?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    secondHandShoppingApps?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
+    paymentMethods?: (string | App)[] | null;
+    onlineShoppingApps?: (string | App)[] | null;
   };
   safetyAndLegal: {
     description?: string | null;
-    visaRequired?: ("1" | "0") | null;
+    visaRequired?: string | null;
     emergencyNumbers: {
       police: string;
       ambulance: string;
       fire: string;
     };
-    naturalHazardsIndex?: number | null;
-    naturalHazards?:
-      | {
-          hazard: string;
-          notes?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    vaccinations?:
-      | {
-          name: string;
-          required?: boolean | null;
-          notes?: string | null;
-          id?: string | null;
-        }[]
-      | null;
+    naturalHazardsIndexEnum?: (string | null) | HazardsIndex;
+    vaccinations?: {
+      requiredVaccinations?:
+        | {
+            name: string;
+            notes?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      riskBasedVaccinations?:
+        | {
+            name: string;
+            notes?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      generalVaccinations?:
+        | {
+            name: string;
+            notes?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
   };
   dailyLifeAndLifestyle?: {
     description?: string | null;
-    findingFlatResources?:
-      | {
-          name: string;
-          url?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
+    findingFlatResources?: (string | App)[] | null;
     electricalPlugTypes?:
       | {
           plugType: string | PlugType;
@@ -253,41 +231,25 @@ export interface Country {
           id?: string | null;
         }[]
       | null;
-    foodDeliveryApps?:
+    foodDeliveryApps?: (string | App)[] | null;
+    socialMediaApps?: (string | App)[] | null;
+    datingApps?: (string | App)[] | null;
+    openingDays?: ("0" | "1" | "2" | "3" | "4" | "5" | "6")[] | null;
+  };
+  health?: {
+    description?: string | null;
+    "Mental health help"?: string | null;
+    findingADoctor?:
       | {
           name: string;
-          url?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    socialMediaApps?:
-      | {
-          name: string;
-          url?: string | null;
+          url_webpage?: string | null;
           description?: string | null;
           id?: string | null;
         }[]
       | null;
-    datingApps?:
-      | {
-          name: string;
-          url?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    openingDays?: ("mo" | "tu" | "we" | "th" | "fr" | "sa" | "su")[] | null;
+    "Anti discrimination help"?: string | null;
+    "Sexual harassment help"?: string | null;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugTypes".
- */
-export interface PlugType {
-  id: string;
-  code: string;
-  image: string | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -308,6 +270,47 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hazards-index".
+ */
+export interface HazardsIndex {
+  id: string;
+  name: string;
+  description?: string | null;
+  icon?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugTypes".
+ */
+export interface PlugType {
+  id: string;
+  code: string;
+  image: string | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-requests".
+ */
+export interface UserRequest {
+  id: string;
+  title?: string | null;
+  countryExperience?: {
+    hasVisited?: ("yes" | "no") | null;
+    durationOfStay?: string | null;
+  };
+  issue?: {
+    issueType?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -358,8 +361,20 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
+        relationTo: "apps";
+        value: string | App;
+      } | null)
+    | ({
         relationTo: "countries";
         value: string | Country;
+      } | null)
+    | ({
+        relationTo: "user-requests";
+        value: string | UserRequest;
+      } | null)
+    | ({
+        relationTo: "hazards-index";
+        value: string | HazardsIndex;
       } | null)
     | ({
         relationTo: "plugTypes";
@@ -417,15 +432,36 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apps_select".
+ */
+export interface AppsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  url_android?: T;
+  url_ios?: T;
+  isMostPopular?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "countries_select".
  */
 export interface CountriesSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   culturalAndSocialNorms?:
     | T
     | {
         description?: T;
-        eatingCultureVeganVegetarian?: T;
+        vegetarianPopulationShare?: T;
+        veganPopulationShare?: T;
         lgbtqFriendliness?: T;
         avgCostOfLiving?: T;
       };
@@ -433,74 +469,23 @@ export interface CountriesSelect<T extends boolean = true> {
     | T
     | {
         description?: T;
-        languageLearningApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
+        languageLearningApps?: T;
         englishLevel?: T;
-        messengerApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
+        messengerApps?: T;
       };
   navigationAndTransportation?:
     | T
     | {
         description?: T;
-        transportationApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
-        navigationApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
+        transportationApps?: T;
+        navigationApps?: T;
       };
   moneyAndPayments?:
     | T
     | {
         description?: T;
-        paymentMethods?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              isMostPopular?: T;
-              id?: T;
-            };
-        onlineShoppingApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
-        secondHandShoppingApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
+        paymentMethods?: T;
+        onlineShoppingApps?: T;
       };
   safetyAndLegal?:
     | T
@@ -514,35 +499,38 @@ export interface CountriesSelect<T extends boolean = true> {
               ambulance?: T;
               fire?: T;
             };
-        naturalHazardsIndex?: T;
-        naturalHazards?:
-          | T
-          | {
-              hazard?: T;
-              notes?: T;
-              id?: T;
-            };
+        naturalHazardsIndexEnum?: T;
         vaccinations?:
           | T
           | {
-              name?: T;
-              required?: T;
-              notes?: T;
-              id?: T;
+              requiredVaccinations?:
+                | T
+                | {
+                    name?: T;
+                    notes?: T;
+                    id?: T;
+                  };
+              riskBasedVaccinations?:
+                | T
+                | {
+                    name?: T;
+                    notes?: T;
+                    id?: T;
+                  };
+              generalVaccinations?:
+                | T
+                | {
+                    name?: T;
+                    notes?: T;
+                    id?: T;
+                  };
             };
       };
   dailyLifeAndLifestyle?:
     | T
     | {
         description?: T;
-        findingFlatResources?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              description?: T;
-              id?: T;
-            };
+        findingFlatResources?: T;
         electricalPlugTypes?:
           | T
           | {
@@ -550,30 +538,59 @@ export interface CountriesSelect<T extends boolean = true> {
               voltage?: T;
               id?: T;
             };
-        foodDeliveryApps?:
+        foodDeliveryApps?: T;
+        socialMediaApps?: T;
+        datingApps?: T;
+        openingDays?: T;
+      };
+  health?:
+    | T
+    | {
+        description?: T;
+        "Mental health help"?: T;
+        findingADoctor?:
           | T
           | {
               name?: T;
-              url?: T;
-              id?: T;
-            };
-        socialMediaApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
+              url_webpage?: T;
               description?: T;
               id?: T;
             };
-        datingApps?:
-          | T
-          | {
-              name?: T;
-              url?: T;
-              id?: T;
-            };
-        openingDays?: T;
+        "Anti discrimination help"?: T;
+        "Sexual harassment help"?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-requests_select".
+ */
+export interface UserRequestsSelect<T extends boolean = true> {
+  title?: T;
+  countryExperience?:
+    | T
+    | {
+        hasVisited?: T;
+        durationOfStay?: T;
+      };
+  issue?:
+    | T
+    | {
+        issueType?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hazards-index_select".
+ */
+export interface HazardsIndexSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  icon?: T;
   updatedAt?: T;
   createdAt?: T;
 }

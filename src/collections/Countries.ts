@@ -23,6 +23,31 @@ export const Countries: CollectionConfig = {
       required: true,
     },
     {
+      name: "slug",
+      type: "text",
+      unique: true,
+      admin: {
+        position: "sidebar",
+        readOnly: true,
+      },
+      hooks: {
+        beforeValidate: [
+          ({ data, value }) => {
+            const source = data?.name ?? value;
+
+            if (!source) return value;
+
+            return source
+              .toLowerCase()
+              .trim()
+              .replace(/[^a-z0-9\s-]/g, "")
+              .replace(/\s+/g, "-")
+              .replace(/-+/g, "-");
+          },
+        ],
+      },
+    },
+    {
       name: "images",
       label: "Images",
       type: "array",

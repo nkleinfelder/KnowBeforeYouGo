@@ -8,7 +8,7 @@ export const health: Field = {
     { name: "description", type: "text", localized: true },
     { name: "Mental health help", type: "text", localized: true },
     {
-      name: "findingADoctorApps",
+      name: "findingADoctor",
       label: "Finding a doctor",
       type: "array",
       fields: [

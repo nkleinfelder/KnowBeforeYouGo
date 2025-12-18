@@ -9,41 +9,16 @@ export const moneyAndPayments: Field = {
     {
       name: "paymentMethods",
       label: "Payment Methods (Apps)",
-      type: "array",
-      fields: [
-        { name: "name", type: "text", required: true },
-        { name: "url_android", label: "Url Android", type: "text" },
-        { name: "url_ios", label: "URL iOS", type: "text" },
-        { name: "description", type: "text", localized: true },
-        {
-          name: "isMostPopular",
-          label: "Most popular",
-          type: "checkbox",
-          defaultValue: false,
-        },
-      ],
+      type: "relationship",
+      relationTo: "apps",
+      hasMany: true,
     },
     {
       name: "onlineShoppingApps",
       label: "Online Shopping Apps",
-      type: "array",
-      fields: [
-        { name: "name", type: "text", required: true },
-        { name: "url_android", label: "Url Android", type: "text" },
-        { name: "url_ios", label: "URL iOS", type: "text" },
-        { name: "description", type: "text", localized: true },
-      ],
-    },
-    {
-      name: "secondHandShoppingApps",
-      label: "2nd Hand Shopping Apps",
-      type: "array",
-      fields: [
-        { name: "name", type: "text", required: true },
-        { name: "url_android", label: "Url Android", type: "text" },
-        { name: "url_ios", label: "URL iOS", type: "text" },
-        { name: "description", type: "text", localized: true },
-      ],
+      type: "relationship",
+      relationTo: "apps",
+      hasMany: true,
     },
   ],
 };
