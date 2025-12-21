@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "payload generate:importmap && next build",
+    "migrate-prod": "NODE_ENV=production pnpm run payload migrate && NODE_ENV=production pnpm run payload migrate:create",
     "start": "next start",
     "payload": "payload",
     "lint": "eslint",

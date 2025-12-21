@@ -25,6 +25,10 @@ if (!s3Endpoint) {
   throw new Error("S3 endpoint not configured");
 }
 
+if (!databaseUrl) {
+  throw new Error("Database URL not configured");
+}
+
 export default buildConfig({
   editor: lexicalEditor(),
 
