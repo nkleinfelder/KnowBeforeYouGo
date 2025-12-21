@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit immediately if a command exits with a non-zero status
+set -e
+
 if [ -f .env.prod ]; then
   # "set -a" automatically exports all variables defined subsequently
   set -a
@@ -14,14 +17,15 @@ IMAGE=simonbiel/private
 SERVICE=know-before-you-go
 VERSION=v0.1.0
 ENV=prod
+TAG=$IMAGE:$SERVICE-$VERSION-$ENV
 
-echo "Building $IMAGE:$SERVICE-$VERSION-$ENV"
+echo "Building $TAG"
 
 docker build \
   --platform linux/amd64 \
   -f ./dockerfile \
-  -t $IMAGE:$SERVICE-$VERSION-$ENV \
+  -t $TAG \
   .
 
-docker push $IMAGE:$SERVICE-$VERSION-$ENV
-
+echo "Build successful. Pushing to registry..."
+docker push $TAG
