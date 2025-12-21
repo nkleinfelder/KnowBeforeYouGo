@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "payload generate:importmap && next build --webpack",
+    "build": "payload generate:importmap && next build",
     "start": "next start",
     "payload": "payload",
     "lint": "eslint",
@@ -24,6 +24,7 @@
     "@payloadcms/next": "^3.69.0",
     "@payloadcms/richtext-lexical": "^3.69.0",
     "@payloadcms/storage-s3": "^3.69.0",
+    "@payloadcms/ui": "3.69.0",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-popover": "^1.1.15",
