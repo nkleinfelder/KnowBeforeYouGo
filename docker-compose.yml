@@ -1,0 +1,21 @@
+# Defined in Portainer
+services:
+  know-before-you-go:
+    platform: linux/amd64
+    image: simonbiel/private:know-before-you-go-v0.1.0-prod
+    container_name: know-before-you-go
+    working_dir: /app
+    env_file: stack.env
+    ports:
+      - 3001:3000
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.know-before-you-go.entrypoints=websecure
+      - traefik.http.routers.know-before-you-go.rule=Host(`know-before-you-go.simonbiel.com`)
+      - traefik.http.routers.know-before-you-go.service=know-before-you-go
+      - traefik.http.services.know-before-you-go.loadbalancer.server.port=3000
+
+networks:
+  proxy:
+    external: true
