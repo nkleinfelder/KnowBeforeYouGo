@@ -1,7 +1,11 @@
 import { Info } from "@/src/lib/mock-data/destinations";
 import { LucideIcon } from "lucide-react";
 import * as Primitives from "./primitives";
-import { InfoElement } from "./info-element";
+
+// Kurz reudig zum rebasen
+function InfoElement({ data }: { data: unknown }) {
+  return <div></div>;
+}
 
 export function DetailInfo({
   title,
