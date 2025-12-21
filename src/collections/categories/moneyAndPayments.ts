@@ -6,9 +6,35 @@ export const moneyAndPayments: Field = {
   label: "Money & Payments",
   fields: [
     { name: "description", type: "text", localized: true },
+    { name: "Accepted Currencies", type: "text", localized: true },
     {
       name: "paymentMethods",
-      label: "Payment Methods (Apps)",
+      label: "Payment Methods",
+      type: "group",
+      fields: [
+        {
+          name: "Payment by Card (%)",
+          type: "number",
+          min: 0,
+          max: 100,
+        },
+        {
+          name: "Payment by Cash (%)",
+          type: "number",
+          min: 0,
+          max: 100,
+        },
+        {
+          name: "Payment by App (%)",
+          type: "number",
+          min: 0,
+          max: 100,
+        },
+      ],
+    },
+    {
+      name: "paymentApps",
+      label: "Payment (Apps)",
       type: "relationship",
       relationTo: "apps",
       hasMany: true,

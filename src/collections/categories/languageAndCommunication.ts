@@ -14,6 +14,12 @@ export const languageAndCommunication: Field = {
       hasMany: true,
     },
     {
+      name: "localLanguages",
+      label: "Local Languages",
+      type: "text",
+      localized: true,
+    },
+    {
       name: "englishLevel",
       label: "English Level",
       type: "select",
