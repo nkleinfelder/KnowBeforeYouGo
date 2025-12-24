@@ -1,13 +1,17 @@
 import { Badge } from "@/src/components/ui/badge";
-import { Destination } from "@/src/lib/mock-data/destinations";
 import Image from "next/image";
 
 export function Header({
   image,
   name,
-  slogan,
+  subtitle,
   tags,
-}: Pick<Destination, "image" | "name" | "slogan" | "tags">) {
+}: {
+  image: string;
+  name: string;
+  subtitle?: string;
+  tags?: string[];
+}) {
   return (
     <header className="full-width h-96 w-full overflow-hidden">
       <Image
@@ -20,14 +24,16 @@ export function Header({
       />
       <div className="z-10 row-start-1 row-end-2 flex flex-col gap-2 self-end pb-10 text-stone-50">
         <h1 className="text-6xl font-bold">{name}</h1>
-        <p className="mb-2 text-xl font-medium">{slogan}</p>
-        <div className="flex flex-wrap gap-1">
-          {tags.map((t) => (
-            <Badge variant="translucent" key={t.name}>
-              {t.name}
-            </Badge>
-          ))}
-        </div>
+        {subtitle && <p className="mb-2 text-xl font-medium">{subtitle}</p>}
+        {tags && (
+          <div className="flex flex-wrap gap-1">
+            {tags.map((tag) => (
+              <Badge variant="translucent" key={tag}>
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
     </header>
   );

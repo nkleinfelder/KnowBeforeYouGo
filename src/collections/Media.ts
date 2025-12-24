@@ -4,4 +4,7 @@ export const Media: CollectionConfig = {
   slug: "media",
   upload: true, // simplest upload config
   fields: [],
+  access: {
+    read: () => true,
+  },
 };

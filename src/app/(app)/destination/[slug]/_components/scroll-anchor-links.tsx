@@ -9,6 +9,7 @@ export function ScrollAnchorLinks({
 }: {
   sections: {
     Icon: LucideIcon;
+    title: string;
     id: string;
   }[];
 }) {
@@ -25,7 +26,7 @@ export function ScrollAnchorLinks({
             sectionIds={sections.map((s) => s.id)}
             className={cn(
               "absolute inset-x-auto -z-10 h-full w-2 bg-stone-200 shadow-lg",
-              "after:absolute after:inset-x-0 after:z-10 after:h-full after:w-full after:origin-top after:scale-y-(--scroll-scale) after:bg-primary after:content-['']",
+              "after:absolute after:inset-x-0 after:z-10 after:h-full after:w-full after:origin-top after:scale-y-(--scroll-scale) after:rounded-full after:bg-primary after:content-['']",
               "after:transition-transform after:duration-100 after:ease-out",
             )}
           />
