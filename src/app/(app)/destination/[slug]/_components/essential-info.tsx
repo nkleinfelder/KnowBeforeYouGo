@@ -1,48 +1,48 @@
 import { Badge } from "@/src/components/ui/badge";
 import { Card, CardHeader, CardTitle } from "@/src/components/ui/card";
-import { Destination } from "@/src/lib/mock-data/destinations";
 import {
-  CloudIcon,
   EuroIcon,
   FileTextIcon,
-  GraduationCapIcon,
+  FlagIcon,
   LucideIcon,
   ShieldIcon,
 } from "lucide-react";
 import { PropsWithChildren } from "react";
 import * as Primitives from "./primitives";
 
+type EssentialInfoProps = {
+  id: string;
+  title: string;
+  visaRequired: string;
+  insurance: string;
+  rentAverage: string;
+  englishLevel: string;
+};
 export function EssentialInfo({
-  data,
-}: {
-  data: Destination["essentialInfo"];
-}) {
+  id,
+  title,
+  visaRequired,
+  insurance,
+  rentAverage,
+  englishLevel,
+}: EssentialInfoProps) {
   return (
-    <Primitives.Section id="essential-info">
-      <Primitives.Title>Essential Information</Primitives.Title>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-[repeat(auto-fit,minmax(min(100%,15rem),1fr))]">
+    <Primitives.Section id={id}>
+      <Primitives.Title>{title}</Primitives.Title>
+      <Primitives.Grid>
         <EssentialCard title="Visa Required" Icon={FileTextIcon}>
-          <Badge size="lg">{data.visaRequired.state}</Badge>
+          <Badge size="lg">{visaRequired}</Badge>
         </EssentialCard>
         <EssentialCard title="Insurance" Icon={ShieldIcon}>
-          <p>{data.insurance}</p>
+          <p>{insurance}</p>
         </EssentialCard>
         <EssentialCard title="Rent" Icon={EuroIcon}>
-          <p className="text-xl font-bold text-primary">
-            €{data.rent.min}-{data.rent.max}/month
-          </p>
+          <p className="text-xl font-bold text-primary">{rentAverage}€</p>
         </EssentialCard>
-        <EssentialCard title="Climate" Icon={CloudIcon}>
-          <p>{data.climate}</p>
+        <EssentialCard title="English Level" Icon={FlagIcon}>
+          <p>{englishLevel}</p>
         </EssentialCard>
-        <EssentialCard
-          title="University"
-          Icon={GraduationCapIcon}
-          className="md:col-span-2"
-        >
-          <p>{data.university}</p>
-        </EssentialCard>
-      </div>
+      </Primitives.Grid>
     </Primitives.Section>
   );
 }

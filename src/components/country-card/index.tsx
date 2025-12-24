@@ -6,10 +6,16 @@ import { CountryCardContextProvider, useCountryCardContext } from "./context";
 import { cn } from "@/src/lib/utils";
 import "./styles.css";
 import { CSSProperties } from "react";
-import { Destination } from "@/src/lib/mock-data/destinations";
+import { LucideIcon } from "lucide-react";
 
 export type CountryCardProps = {
-  data: Destination;
+  name: string;
+  slug: string;
+  image: string;
+  tags: {
+    name: string;
+    icon: LucideIcon;
+  }[];
 };
 export function CountryCard({ ...props }: CountryCardProps) {
   return (
@@ -19,12 +25,12 @@ export function CountryCard({ ...props }: CountryCardProps) {
   );
 }
 
-function CountryCardInner({ data }: CountryCardProps) {
+function CountryCardInner({ name, slug, image, tags }: CountryCardProps) {
   const { contentHeight } = useCountryCardContext();
 
   return (
     <Link
-      href={`/destination/${data.slug}`}
+      href={`/destination/${slug}`}
       className="country-card group"
       style={
         {
@@ -36,14 +42,14 @@ function CountryCardInner({ data }: CountryCardProps) {
         style={{ height: "var(--container-height)" }}
         className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md transition-shadow duration-200 ease-in-out focus-within:shadow-xl hover:shadow-xl"
       >
-        <BackgroundImage image={data.image} />
-        <Content {...data} />
+        <BackgroundImage image={image} />
+        <Content name={name} slogan="" tags={tags} />
       </article>
     </Link>
   );
 }
 
-function BackgroundImage({ image }: Pick<Destination, "image">) {
+function BackgroundImage({ image }: { image: string }) {
   const { contentHeight } = useCountryCardContext();
   return (
     <div

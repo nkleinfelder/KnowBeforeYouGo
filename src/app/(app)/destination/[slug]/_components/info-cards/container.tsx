@@ -9,7 +9,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
 import { PropsWithChildren } from "react";
 
-const containerVariants = cva("grid", {
+const containerVariants = cva("grid grid-rows-subgrid row-span-2", {
   variants: {
     variant: {
       default: "",
@@ -45,7 +45,7 @@ export function InfoCard({
 
   return (
     <Card className={cn(containerVariants({ variant }), className)}>
-      <CardHeader className="">
+      <CardHeader className="items-start">
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
