@@ -6,17 +6,26 @@ export const health: Field = {
   label: "Health",
   fields: [
     { name: "description", type: "text", localized: true },
-    { name: "Mental health help", type: "text", localized: true },
     {
-      name: "findingADoctor",
-      label: "Finding a doctor",
-      type: "array",
+      name: "healthInsurance",
+      type: "group",
+      label: "Health Insurance",
       fields: [
-        { name: "name", type: "text", required: true },
-        { name: "url_webpage", label: "Url", type: "text" },
-        { name: "description", type: "text", localized: true },
+        {
+          name: "isRequired",
+          type: "checkbox",
+          label: "Health insurance is mandatory",
+          defaultValue: false,
+        },
+        {
+          name: "description",
+          type: "text",
+          label: "Health insurance details",
+          localized: true,
+        },
       ],
     },
+    { name: "Mental health help", type: "text", localized: true },
     { name: "Anti discrimination help", type: "text", localized: true },
     { name: "Sexual harassment help", type: "text", localized: true },
   ],

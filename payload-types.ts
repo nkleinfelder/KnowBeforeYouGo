@@ -194,17 +194,30 @@ export interface Country {
   languageAndCommunication?: {
     description?: string | null;
     languageLearningApps?: (string | App)[] | null;
+    localLanguages?: string | null;
     englishLevel?: ("4" | "3" | "2" | "1" | "0") | null;
     messengerApps?: (string | App)[] | null;
   };
-  navigationAndTransportation?: {
-    description?: string | null;
-    transportationApps?: (string | App)[] | null;
-    navigationApps?: (string | App)[] | null;
+  navTransport?: {
+    desc?: string | null;
+    transportApps?: (string | App)[] | null;
+    driverPermits?: {
+      idpOk?: boolean | null;
+      euOk?: boolean | null;
+      iadpOk?: boolean | null;
+      aseanOk?: boolean | null;
+    };
+    navApps?: (string | App)[] | null;
   };
   moneyAndPayments?: {
     description?: string | null;
-    paymentMethods?: (string | App)[] | null;
+    "Accepted Currencies"?: string | null;
+    paymentMethods?: {
+      "Payment by Card (%)"?: number | null;
+      "Payment by Cash (%)"?: number | null;
+      "Payment by App (%)"?: number | null;
+    };
+    paymentApps?: (string | App)[] | null;
     onlineShoppingApps?: (string | App)[] | null;
   };
   safetyAndLegal: {
@@ -257,15 +270,11 @@ export interface Country {
   };
   health?: {
     description?: string | null;
+    healthInsurance?: {
+      isRequired?: boolean | null;
+      description?: string | null;
+    };
     "Mental health help"?: string | null;
-    findingADoctor?:
-      | {
-          name: string;
-          url_webpage?: string | null;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
     "Anti discrimination help"?: string | null;
     "Sexual harassment help"?: string | null;
   };
@@ -472,21 +481,38 @@ export interface CountriesSelect<T extends boolean = true> {
     | {
         description?: T;
         languageLearningApps?: T;
+        localLanguages?: T;
         englishLevel?: T;
         messengerApps?: T;
       };
-  navigationAndTransportation?:
+  navTransport?:
     | T
     | {
-        description?: T;
-        transportationApps?: T;
-        navigationApps?: T;
+        desc?: T;
+        transportApps?: T;
+        driverPermits?:
+          | T
+          | {
+              idpOk?: T;
+              euOk?: T;
+              iadpOk?: T;
+              aseanOk?: T;
+            };
+        navApps?: T;
       };
   moneyAndPayments?:
     | T
     | {
         description?: T;
-        paymentMethods?: T;
+        "Accepted Currencies"?: T;
+        paymentMethods?:
+          | T
+          | {
+              "Payment by Card (%)"?: T;
+              "Payment by Cash (%)"?: T;
+              "Payment by App (%)"?: T;
+            };
+        paymentApps?: T;
         onlineShoppingApps?: T;
       };
   safetyAndLegal?:
@@ -549,15 +575,13 @@ export interface CountriesSelect<T extends boolean = true> {
     | T
     | {
         description?: T;
-        "Mental health help"?: T;
-        findingADoctor?:
+        healthInsurance?:
           | T
           | {
-              name?: T;
-              url_webpage?: T;
+              isRequired?: T;
               description?: T;
-              id?: T;
             };
+        "Mental health help"?: T;
         "Anti discrimination help"?: T;
         "Sexual harassment help"?: T;
       };
