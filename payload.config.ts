@@ -10,6 +10,8 @@ import { Media } from "./src/collections/Media";
 import { Apps } from "@/src/collections/Apps";
 import { HazardsIndex } from "@/src/collections/HazardsIndex";
 import { UserRequests } from "@/src/collections/UserRequests";
+import { EnglishLevels } from "@/src/collections/EnglishLevels";
+import { LgbtqLevels } from "@/src/collections/LgbtqLevels";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -37,7 +39,16 @@ export default buildConfig({
     defaultLocale: "en",
   },
 
-  collections: [Apps, Countries, UserRequests, HazardsIndex, PlugTypes, Media],
+  collections: [
+    Apps,
+    Countries,
+    UserRequests,
+    HazardsIndex,
+    EnglishLevels,
+    LgbtqLevels,
+    PlugTypes,
+    Media,
+  ],
 
   plugins: [
     s3Storage({

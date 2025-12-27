@@ -6,30 +6,33 @@ export const languageAndCommunication: Field = {
   label: "Language & Communication",
   fields: [
     { name: "description", type: "text", localized: true },
-    {
-      name: "languageLearningApps",
-      label: "Language Learning Apps",
-      type: "relationship",
-      relationTo: "apps",
-      hasMany: true,
-    },
+    // {
+    //   name: "languageLearningApps",
+    //   label: "Language Learning Apps",
+    //   type: "relationship",
+    //   relationTo: "apps",
+    //   hasMany: true,
+    // },
     {
       name: "localLanguages",
       label: "Local Languages",
-      type: "text",
-      localized: true,
+      type: "array",
+      fields: [
+        {
+          name: "language",
+          label: "Language",
+          type: "text",
+          localized: true,
+          required: true,
+        },
+      ],
     },
     {
-      name: "englishLevel",
+      name: "englishLevels",
       label: "English Level",
-      type: "select",
-      options: [
-        { label: "Very high proficiency", value: "4" },
-        { label: "High proficiency", value: "3" },
-        { label: "Moderate proficiency", value: "2" },
-        { label: "Low proficiency", value: "1" },
-        { label: "Very low proficiency", value: "0" },
-      ],
+      type: "relationship",
+      relationTo: "english-levels",
+      hasMany: false,
     },
     {
       name: "messengerApps",
