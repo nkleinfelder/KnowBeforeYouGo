@@ -23,9 +23,9 @@ export const culturalAndSocialNorms: Field = {
     {
       name: "lgbtqFriendliness",
       label: "LGBTQ friendliness (-23 - 13)",
-      type: "number",
-      min: -23,
-      max: 13,
+      type: "relationship",
+      relationTo: "lgbtq-levels",
+      hasMany: false,
     },
     {
       name: "avgCostOfLiving",

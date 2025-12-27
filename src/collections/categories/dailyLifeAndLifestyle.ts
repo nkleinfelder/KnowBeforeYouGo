@@ -8,10 +8,20 @@ export const dailyLifeAndLifestyle: Field = {
     { name: "description", type: "text", localized: true },
     {
       name: "findingFlatResources",
-      label: "Finding Flat (Apps)",
-      type: "relationship",
-      relationTo: "apps",
-      hasMany: true,
+      label: "Finding Flat Resources",
+      type: "array",
+      fields: [
+        {
+          name: "platform",
+          label: "Website or App",
+          type: "text",
+        },
+        {
+          name: "description",
+          label: "Description",
+          type: "text",
+        },
+      ],
     },
     {
       name: "electricalPlugTypes",

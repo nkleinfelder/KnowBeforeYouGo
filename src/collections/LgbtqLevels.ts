@@ -1,11 +1,12 @@
-import type { CollectionConfig } from "payload";
+import { CollectionConfig } from "payload";
 
-export const HazardsIndex: CollectionConfig = {
-  slug: "hazards-index",
-  labels: { singular: "HazardIndex", plural: "HazardsIndex" },
+export const LgbtqLevels: CollectionConfig = {
+  slug: "lgbtq-levels",
+  labels: { singular: "LgbtqLevel", plural: "LgbtqLevels" },
   admin: { useAsTitle: "name" },
   fields: [
     { name: "name", type: "text", required: true },
+    { name: "range", type: "text" },
     { name: "description", type: "text", localized: true },
     {
       name: "icon",

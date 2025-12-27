@@ -71,6 +71,8 @@ export interface Config {
     countries: Country;
     "user-requests": UserRequest;
     "hazards-index": HazardsIndex;
+    "english-levels": EnglishLevel;
+    "lgbtq-levels": LgbtqLevel;
     plugTypes: PlugType;
     media: Media;
     "payload-kv": PayloadKv;
@@ -85,6 +87,8 @@ export interface Config {
     countries: CountriesSelect<false> | CountriesSelect<true>;
     "user-requests": UserRequestsSelect<false> | UserRequestsSelect<true>;
     "hazards-index": HazardsIndexSelect<false> | HazardsIndexSelect<true>;
+    "english-levels": EnglishLevelsSelect<false> | EnglishLevelsSelect<true>;
+    "lgbtq-levels": LgbtqLevelsSelect<false> | LgbtqLevelsSelect<true>;
     plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -188,14 +192,18 @@ export interface Country {
     description?: string | null;
     vegetarianPopulationShare?: number | null;
     veganPopulationShare?: number | null;
-    lgbtqFriendliness?: number | null;
+    lgbtqFriendliness?: (string | null) | LgbtqLevel;
     avgCostOfLiving?: number | null;
   };
   languageAndCommunication?: {
     description?: string | null;
-    languageLearningApps?: (string | App)[] | null;
-    localLanguages?: string | null;
-    englishLevel?: ("4" | "3" | "2" | "1" | "0") | null;
+    localLanguages?:
+      | {
+          language: string;
+          id?: string | null;
+        }[]
+      | null;
+    englishLevels?: (string | null) | EnglishLevel;
     messengerApps?: (string | App)[] | null;
   };
   navTransport?: {
@@ -211,7 +219,12 @@ export interface Country {
   };
   moneyAndPayments?: {
     description?: string | null;
-    "Accepted Currencies"?: string | null;
+    acceptedCurrencies?:
+      | {
+          currency: string;
+          id?: string | null;
+        }[]
+      | null;
     paymentMethods?: {
       "Payment by Card (%)"?: number | null;
       "Payment by Cash (%)"?: number | null;
@@ -220,15 +233,43 @@ export interface Country {
     paymentApps?: (string | App)[] | null;
     onlineShoppingApps?: (string | App)[] | null;
   };
-  safetyAndLegal: {
+  safetyAndLegal?: {
     description?: string | null;
     visaRequired?: string | null;
-    emergencyNumbers: {
-      police: string;
-      ambulance: string;
-      fire: string;
+    emergencyNumbers?: {
+      police?: string | null;
+      ambulance?: string | null;
+      fire?: string | null;
     };
     naturalHazardsIndexEnum?: (string | null) | HazardsIndex;
+  };
+  dailyLifeAndLifestyle?: {
+    description?: string | null;
+    findingFlatResources?:
+      | {
+          platform?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    electricalPlugTypes?:
+      | {
+          plugType: string | PlugType;
+          voltage?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    foodDeliveryApps?: (string | App)[] | null;
+    socialMediaApps?: (string | App)[] | null;
+    datingApps?: (string | App)[] | null;
+    openingDays?: ("0" | "1" | "2" | "3" | "4" | "5" | "6")[] | null;
+  };
+  health?: {
+    description?: string | null;
+    healthInsurance?: {
+      isRequired?: boolean | null;
+      description?: string | null;
+    };
     vaccinations?: {
       requiredVaccinations?:
         | {
@@ -252,32 +293,35 @@ export interface Country {
           }[]
         | null;
     };
-  };
-  dailyLifeAndLifestyle?: {
-    description?: string | null;
-    findingFlatResources?: (string | App)[] | null;
-    electricalPlugTypes?:
-      | {
-          plugType: string | PlugType;
-          voltage?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    foodDeliveryApps?: (string | App)[] | null;
-    socialMediaApps?: (string | App)[] | null;
-    datingApps?: (string | App)[] | null;
-    openingDays?: ("0" | "1" | "2" | "3" | "4" | "5" | "6")[] | null;
-  };
-  health?: {
-    description?: string | null;
-    healthInsurance?: {
-      isRequired?: boolean | null;
-      description?: string | null;
-    };
     "Mental health help"?: string | null;
     "Anti discrimination help"?: string | null;
     "Sexual harassment help"?: string | null;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lgbtq-levels".
+ */
+export interface LgbtqLevel {
+  id: string;
+  name: string;
+  range?: string | null;
+  description?: string | null;
+  icon?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "english-levels".
+ */
+export interface EnglishLevel {
+  id: string;
+  name: string;
+  description?: string | null;
+  icon?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -387,6 +431,14 @@ export interface PayloadLockedDocument {
         value: string | HazardsIndex;
       } | null)
     | ({
+        relationTo: "english-levels";
+        value: string | EnglishLevel;
+      } | null)
+    | ({
+        relationTo: "lgbtq-levels";
+        value: string | LgbtqLevel;
+      } | null)
+    | ({
         relationTo: "plugTypes";
         value: string | PlugType;
       } | null)
@@ -480,9 +532,13 @@ export interface CountriesSelect<T extends boolean = true> {
     | T
     | {
         description?: T;
-        languageLearningApps?: T;
-        localLanguages?: T;
-        englishLevel?: T;
+        localLanguages?:
+          | T
+          | {
+              language?: T;
+              id?: T;
+            };
+        englishLevels?: T;
         messengerApps?: T;
       };
   navTransport?:
@@ -504,7 +560,12 @@ export interface CountriesSelect<T extends boolean = true> {
     | T
     | {
         description?: T;
-        "Accepted Currencies"?: T;
+        acceptedCurrencies?:
+          | T
+          | {
+              currency?: T;
+              id?: T;
+            };
         paymentMethods?:
           | T
           | {
@@ -528,6 +589,40 @@ export interface CountriesSelect<T extends boolean = true> {
               fire?: T;
             };
         naturalHazardsIndexEnum?: T;
+      };
+  dailyLifeAndLifestyle?:
+    | T
+    | {
+        description?: T;
+        findingFlatResources?:
+          | T
+          | {
+              platform?: T;
+              description?: T;
+              id?: T;
+            };
+        electricalPlugTypes?:
+          | T
+          | {
+              plugType?: T;
+              voltage?: T;
+              id?: T;
+            };
+        foodDeliveryApps?: T;
+        socialMediaApps?: T;
+        datingApps?: T;
+        openingDays?: T;
+      };
+  health?:
+    | T
+    | {
+        description?: T;
+        healthInsurance?:
+          | T
+          | {
+              isRequired?: T;
+              description?: T;
+            };
         vaccinations?:
           | T
           | {
@@ -552,34 +647,6 @@ export interface CountriesSelect<T extends boolean = true> {
                     notes?: T;
                     id?: T;
                   };
-            };
-      };
-  dailyLifeAndLifestyle?:
-    | T
-    | {
-        description?: T;
-        findingFlatResources?: T;
-        electricalPlugTypes?:
-          | T
-          | {
-              plugType?: T;
-              voltage?: T;
-              id?: T;
-            };
-        foodDeliveryApps?: T;
-        socialMediaApps?: T;
-        datingApps?: T;
-        openingDays?: T;
-      };
-  health?:
-    | T
-    | {
-        description?: T;
-        healthInsurance?:
-          | T
-          | {
-              isRequired?: T;
-              description?: T;
             };
         "Mental health help"?: T;
         "Anti discrimination help"?: T;
@@ -615,6 +682,29 @@ export interface UserRequestsSelect<T extends boolean = true> {
  */
 export interface HazardsIndexSelect<T extends boolean = true> {
   name?: T;
+  description?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "english-levels_select".
+ */
+export interface EnglishLevelsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lgbtq-levels_select".
+ */
+export interface LgbtqLevelsSelect<T extends boolean = true> {
+  name?: T;
+  range?: T;
   description?: T;
   icon?: T;
   updatedAt?: T;

@@ -6,7 +6,20 @@ export const moneyAndPayments: Field = {
   label: "Money & Payments",
   fields: [
     { name: "description", type: "text", localized: true },
-    { name: "Accepted Currencies", type: "text", localized: true },
+    {
+      name: "acceptedCurrencies",
+      label: "Accepted Currencies",
+      type: "array",
+      fields: [
+        {
+          name: "currency",
+          label: "Currency",
+          type: "text",
+          localized: true,
+          required: true,
+        },
+      ],
+    },
     {
       name: "paymentMethods",
       label: "Payment Methods",
