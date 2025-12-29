@@ -11,6 +11,7 @@ const textVariants = cva("text-card-foreground", {
     },
     size: {
       default: "",
+      medium: "text-xl font-bold",
       large: "text-3xl font-bold",
     },
   },
@@ -29,8 +30,9 @@ export function Text({
   ...props
 }: PropsWithChildren<{
   cardVariant?: InfoCardProps["variant"];
+  cardSize?: InfoCardProps["size"];
 }> &
-  Omit<InfoCardProps, "variant"> &
+  Omit<InfoCardProps, "variant" | "size"> &
   VariantProps<typeof textVariants>) {
   return (
     <InfoCard variant={cardVariant} {...props}>

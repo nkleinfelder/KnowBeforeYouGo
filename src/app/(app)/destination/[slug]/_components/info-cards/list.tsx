@@ -11,7 +11,7 @@ export function List({
   ...props
 }: {
   items: string[];
-  cardVariant: InfoCardProps["variant"];
+  cardVariant?: InfoCardProps["variant"];
 } & VariantProps<typeof listVariants> &
   Pick<InfoCardProps, "title" | "description" | "image">) {
   return (
@@ -31,7 +31,7 @@ const listVariants = cva("flex flex-col gap-1  list-inside", {
   variants: {
     variant: {
       default: "list-disc",
-      alert: "border-destructive/20 text-lg  ",
+      alert: "border-destructive/20 text-lg",
     },
   },
   defaultVariants: {
@@ -58,7 +58,7 @@ const listItemVariants = cva(
     variants: {
       variant: {
         default: "",
-        alert: "border-destructive/20 text-lg",
+        alert: "border-destructive/20 flex items-baseline gap-x-1.5",
       },
     },
     defaultVariants: {

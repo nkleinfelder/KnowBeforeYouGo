@@ -1,0 +1,60 @@
+import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-cards";
+import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
+import { CountrySectionProps } from "./props";
+
+export function Safety({
+  id,
+  title,
+  Icon,
+  data,
+}: CountrySectionProps<"safetyAndLegal">) {
+  return (
+    <DetailInfo id={id} title={title} Icon={Icon}>
+      {data?.visaRequired && (
+        <InfoCard.Text title="Visa Required" size="medium">
+          {data.visaRequired}
+        </InfoCard.Text>
+      )}
+      {data?.emergencyNumbers && (
+        <InfoCard.Container
+          title="Emergency Numbers"
+          description="Important numbers for emergency calls"
+          cardVariant="warning"
+          className="max-md:row-start-1 md:col-span-2 md:row-span-4"
+        >
+          <InfoCard.List.ListContent className="md:row-span-3">
+            <InfoCard.List.ListItem className="flex flex-1 items-center justify-between gap-2 text-lg">
+              <p>Police</p>
+              <p className="text-xl font-bold text-destructive">
+                {data.emergencyNumbers.police}
+              </p>
+            </InfoCard.List.ListItem>
+            <InfoCard.List.ListItem className="flex flex-1 items-center justify-between gap-2 text-lg">
+              <p>Ambulance</p>
+              <p className="text-xl font-bold text-destructive">
+                {data.emergencyNumbers.ambulance}
+              </p>
+            </InfoCard.List.ListItem>
+            <InfoCard.List.ListItem className="flex flex-1 items-center justify-between gap-2 text-lg">
+              <p>Fire</p>
+              <p className="text-xl font-bold text-destructive">
+                {data.emergencyNumbers.fire}
+              </p>
+            </InfoCard.List.ListItem>
+          </InfoCard.List.ListContent>
+        </InfoCard.Container>
+      )}
+      {data?.naturalHazardsIndexEnum &&
+        typeof data.naturalHazardsIndexEnum !== "string" && (
+          <InfoCard.Text title="Natural hazards index" size="medium">
+            <div>
+              <p>{data.naturalHazardsIndexEnum.name}</p>
+              <p className="text-xs font-medium text-muted-foreground">
+                {data.naturalHazardsIndexEnum.description}
+              </p>
+            </div>
+          </InfoCard.Text>
+        )}
+    </DetailInfo>
+  );
+}

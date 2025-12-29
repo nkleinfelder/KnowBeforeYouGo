@@ -27,7 +27,7 @@ export const cardVariants = cva(
   },
 );
 
-type CardProps = React.ComponentProps<"div"> &
+export type CardProps = React.ComponentProps<"div"> &
   VariantProps<typeof cardVariants>;
 
 function Card({ className, variant, size, ...props }: CardProps) {
@@ -48,7 +48,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-header"
       className={cn(
         "@container/card-header grid grid-cols-1 items-center gap-x-1.5 gap-y-0.5",
-        "group-data-[variant=primary]:[&>svg]:text-primary",
+        "group-data-[variant=primary]:[&_svg]:text-primary",
         "group-data-[size=lg]:gap-x-2 group-data-[size=lg]:gap-y-1 group-data-[size=default]:[&>svg]:size-4.5 group-data-[size=lg]:[&>svg]:size-5 group-data-[size=sm]:[&>svg]:size-4",
         "has-[svg]:grid-cols-[auto_1fr] has-[svg]:[&>div[data-slot='card-description']]:col-span-2",
         "has-data-[slot=card-description]:grid-rows-[auto_auto]",
@@ -71,7 +71,7 @@ function CardTitle({
     <Comp
       data-slot="card-title"
       className={cn(
-        "text-lg leading-none font-semibold",
+        "flex items-center gap-x-1.5 text-lg leading-none font-semibold",
         "group-data-[variant=warning]:text-destructive",
         className,
       )}

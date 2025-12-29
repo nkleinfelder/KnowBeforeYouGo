@@ -1,0 +1,47 @@
+import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-cards";
+import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
+import { CountrySectionProps } from "./props";
+
+export function Cultural({
+  id,
+  title,
+  Icon,
+  data,
+}: CountrySectionProps<"culturalAndSocialNorms">) {
+  return (
+    <DetailInfo id={id} title={title} Icon={Icon}>
+      {data?.veganPopulationShare && (
+        <InfoCard.Rating
+          title="Vegans"
+          description="Population share (in %)"
+          rating={data?.veganPopulationShare}
+        />
+      )}
+      {data?.vegetarianPopulationShare && (
+        <InfoCard.Rating
+          title="Vegetarians"
+          description="Vegetarian population share (in %)"
+          rating={data?.vegetarianPopulationShare}
+        />
+      )}
+      {data?.lgbtqFriendliness &&
+        typeof data.lgbtqFriendliness === "object" && (
+          <InfoCard.Text
+            title="LGBTQ"
+            size="medium"
+            description={data.lgbtqFriendliness.description ?? ""}
+          >
+            {data.lgbtqFriendliness.name}
+          </InfoCard.Text>
+        )}
+      <InfoCard.Text
+        title="Cost of Living"
+        description="Average in €/month"
+        size="large"
+        variant="primary"
+      >
+        {data?.avgCostOfLiving}€
+      </InfoCard.Text>
+    </DetailInfo>
+  );
+}

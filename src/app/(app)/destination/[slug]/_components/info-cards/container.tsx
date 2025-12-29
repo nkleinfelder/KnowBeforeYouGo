@@ -2,12 +2,14 @@ import {
   Card,
   CardDescription,
   CardHeader,
+  CardProps,
   CardTitle,
 } from "@/src/components/ui/card";
+import { Nullable } from "@/src/lib/type-utils";
 import { cn } from "@/src/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
 const containerVariants = cva("grid grid-rows-subgrid row-span-2", {
   variants: {
@@ -16,17 +18,27 @@ const containerVariants = cva("grid grid-rows-subgrid row-span-2", {
       image_right: "md:col-span-2 md:grid-cols-[2fr_1fr]",
       image_bottom: "",
     },
+    color: {
+      default: "",
+      warning: "bg-warning-100 text-warning-800",
+    },
+    size: {
+      default: "",
+      large: "md:col-span-2",
+    },
   },
   defaultVariants: {
     variant: "default",
+    color: "default",
   },
 });
 
 export type InfoCardProps = PropsWithChildren<{
   className?: string;
-  title: string;
-  description?: string;
+  title: string | ReactNode;
+  description?: Nullable<string | ReactNode>;
   image?: string;
+  cardVariant?: CardProps["variant"];
 }> &
   VariantProps<typeof containerVariants>;
 export function InfoCard({
@@ -34,6 +46,8 @@ export function InfoCard({
   title,
   description,
   className,
+  cardVariant,
+  size,
   image,
   variant,
 }: InfoCardProps) {
@@ -44,7 +58,10 @@ export function InfoCard({
     );
 
   return (
-    <Card className={cn(containerVariants({ variant }), className)}>
+    <Card
+      className={cn(containerVariants({ variant, size }), className)}
+      variant={cardVariant}
+    >
       <CardHeader className="items-start">
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}

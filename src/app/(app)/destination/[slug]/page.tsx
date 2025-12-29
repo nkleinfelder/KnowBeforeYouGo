@@ -12,7 +12,7 @@ import {
 import { ScrollAnchorLinks } from "./_components/scroll-anchor-links";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import * as InfoCard from "./_components/info-cards";
+import * as InfoSection from "./_components/sections";
 import { getCountryImage } from "@/src/lib/utils";
 
 const payload = await getPayload({ config });
@@ -77,6 +77,8 @@ export default async function Page({
 
   const country = data.docs[0];
 
+  console.log(country);
+
   return (
     <main className="content-grid gap-y-12 pb-12">
       <Sections.Header
@@ -87,81 +89,61 @@ export default async function Page({
       <Sections.EssentialInfo
         id={SECTIONS.ESSENTIAL.id}
         title={SECTIONS.ESSENTIAL.title}
-        visaRequired={country.safetyAndLegal.visaRequired ?? "Unknown"}
-        insurance=""
+        visaRequired={country.safetyAndLegal?.visaRequired ?? "Unknown"}
+        insurance={
+          country.health?.healthInsurance?.isRequired
+            ? "Required"
+            : "Not required"
+        }
         rentAverage={
           country.culturalAndSocialNorms?.avgCostOfLiving?.toFixed(0) ??
           "unknown"
         }
         englishLevel={
-          country.languageAndCommunication?.englishLevel ?? "unknown"
+          country.languageAndCommunication?.englishLevels &&
+          typeof country.languageAndCommunication?.englishLevels === "object"
+            ? country.languageAndCommunication.englishLevels.name
+            : "unknown"
         }
       />
 
-      <Sections.DetailInfo
+      <InfoSection.Cultural
         id={SECTIONS.CULTURE.id}
         title={SECTIONS.CULTURE.title}
         Icon={SECTIONS.CULTURE.Icon}
-      >
-        <InfoCard.Text
-          title="Vegans"
-          description="Population share (in %)"
-          size="large"
-        >
-          {country.culturalAndSocialNorms?.veganPopulationShare?.toFixed(0)}%
-        </InfoCard.Text>
-        <InfoCard.Text
-          title="Vegetarians"
-          description="Vegetarian population share (in %)"
-          size="large"
-        >
-          {country.culturalAndSocialNorms?.vegetarianPopulationShare?.toFixed(
-            0,
-          )}
-          %
-        </InfoCard.Text>
-        <InfoCard.Rating
-          title="LGBTQ"
-          description={"Friendliness score"}
-          min={-23}
-          max={13}
-          rating={country.culturalAndSocialNorms?.lgbtqFriendliness ?? -10}
-        />
-        <InfoCard.Text
-          title="Cost of Living"
-          description="Average in €/month"
-          size="large"
-          variant="primary"
-        >
-          {country.culturalAndSocialNorms?.avgCostOfLiving}€
-        </InfoCard.Text>
-      </Sections.DetailInfo>
-
-      <Sections.DetailInfo
+        data={country.culturalAndSocialNorms}
+      />
+      <InfoSection.Language
         id={SECTIONS.LANGUAGE.id}
         title={SECTIONS.LANGUAGE.title}
         Icon={SECTIONS.LANGUAGE.Icon}
+        data={country.languageAndCommunication}
       />
-      <Sections.DetailInfo
+      <InfoSection.Transport
         id={SECTIONS.TRANSPORT.id}
         title={SECTIONS.TRANSPORT.title}
         Icon={SECTIONS.TRANSPORT.Icon}
+        data={country.navTransport}
       />
-      <Sections.DetailInfo
+      <InfoSection.Money
         id={SECTIONS.MONEY.id}
         title={SECTIONS.MONEY.title}
         Icon={SECTIONS.MONEY.Icon}
+        data={country.moneyAndPayments}
       />
-      <Sections.DetailInfo
+      <InfoSection.Safety
         id={SECTIONS.SAFETY.id}
         title={SECTIONS.SAFETY.title}
         Icon={SECTIONS.SAFETY.Icon}
+        data={country.safetyAndLegal}
       />
-      <Sections.DetailInfo
+      <InfoSection.Daily
         id={SECTIONS.DAILY.id}
         title={SECTIONS.DAILY.title}
         Icon={SECTIONS.DAILY.Icon}
+        data={country.dailyLifeAndLifestyle}
       />
+
       <Sections.ShareExperience
         countryId={country.slug ?? ""}
         countryName={country.name}

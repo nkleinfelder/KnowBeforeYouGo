@@ -1,9 +1,12 @@
+import { RadialChartStacked } from "@/src/components/charts/radial-chart";
 import { InfoCard, InfoCardProps } from "./container";
+import { cn } from "@/src/lib/utils";
 
 export function Rating({
-  min,
-  max,
+  min = 0,
+  max = 100,
   rating,
+  className,
   ...props
 }: {
   min?: number;
@@ -11,8 +14,16 @@ export function Rating({
   rating: number;
 } & InfoCardProps) {
   return (
-    <InfoCard {...props}>
-      <p>{rating}</p>
+    <InfoCard className={cn(className, "pb-0")} {...props}>
+      <RadialChartStacked
+        className="justify-self-center"
+        data={[{ value: rating, not: max - rating }]}
+        dataKeys={["not", "value"]}
+        innerText={{
+          title: `${rating.toFixed(0)}%`,
+          description: `${min} - ${max}`,
+        }}
+      />
     </InfoCard>
   );
 }

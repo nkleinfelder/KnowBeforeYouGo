@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { PropsWithChildren } from "react";
 import * as Primitives from "./primitives";
+import { InfoCard } from "./info-cards/container";
 
 type EssentialInfoProps = {
   id: string;
@@ -58,12 +59,17 @@ function EssentialCard({
   className?: string;
 }>) {
   return (
-    <Card className={className} variant="primary" size="default">
-      <CardHeader>
-        <Icon />
-        <CardTitle as="h3">{title}</CardTitle>
-      </CardHeader>
+    <InfoCard
+      className={className}
+      cardVariant="primary"
+      title={
+        <>
+          <Icon />
+          <span> {title}</span>
+        </>
+      }
+    >
       {children}
-    </Card>
+    </InfoCard>
   );
 }
