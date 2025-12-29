@@ -14,7 +14,6 @@ export function Daily({
   data,
 }: CountrySectionProps<"dailyLifeAndLifestyle">) {
   const openingDays = data?.openingDays?.map((item) => parseInt(item));
-  console.log(openingDays);
 
   return (
     <DetailInfo
