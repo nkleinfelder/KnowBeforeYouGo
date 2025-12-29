@@ -1,8 +1,8 @@
-import type { CollectionConfig } from "payload";
+import { CollectionConfig } from "payload";
 
-export const HazardsIndex: CollectionConfig = {
-  slug: "hazards-index",
-  labels: { singular: "HazardIndex", plural: "HazardsIndex" },
+export const EnglishLevels: CollectionConfig = {
+  slug: "english-levels",
+  labels: { singular: "EnglishLevel", plural: "EnglishLevels" },
   admin: { useAsTitle: "name" },
   fields: [
     { name: "name", type: "text", required: true },
