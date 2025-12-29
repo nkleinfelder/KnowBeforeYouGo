@@ -1,30 +1,30 @@
-import { Info } from "@/src/lib/mock-data/destinations";
 import { LucideIcon } from "lucide-react";
 import * as Primitives from "./primitives";
-import { InfoElement } from "./info-element";
+import { PropsWithChildren } from "react";
+import { Nullable } from "@/src/lib/type-utils";
 
 export function DetailInfo({
   title,
+  description,
   Icon,
-  content,
   id,
-}: {
+  children,
+}: PropsWithChildren<{
   title: string;
+  description?: Nullable<string>;
   Icon: LucideIcon;
-  content: Info[];
   id: string;
-}) {
+}>) {
   return (
     <Primitives.Section id={id}>
       <Primitives.Header>
-        <Icon className="size-6 text-primary" />
+        <Icon className="size-5 text-primary md:size-6" />
         <Primitives.Title>{title}</Primitives.Title>
+        {description && (
+          <Primitives.Description>{description}</Primitives.Description>
+        )}
       </Primitives.Header>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-[repeat(auto-fit,minmax(min(100%,15rem),1fr))]">
-        {content.map((info) => (
-          <InfoElement key={info.title} data={info} />
-        ))}
-      </div>
+      <Primitives.Grid>{children}</Primitives.Grid>
     </Primitives.Section>
   );
 }

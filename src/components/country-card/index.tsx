@@ -1,15 +1,19 @@
-"use client";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
-import { CountryCardContextProvider, useCountryCardContext } from "./context";
+import { CountryCardContextProvider } from "./context";
 import { cn } from "@/src/lib/utils";
 import "./styles.css";
-import { CSSProperties } from "react";
-import { Destination } from "@/src/lib/mock-data/destinations";
+import { LucideIcon } from "lucide-react";
+import { BlurElement, ContentWrapper, LinkWrapper } from "./client-elements";
 
 export type CountryCardProps = {
-  data: Destination;
+  name: string;
+  slug: string;
+  image: string;
+  tags: {
+    name: string;
+    icon: LucideIcon;
+  }[];
 };
 export function CountryCard({ ...props }: CountryCardProps) {
   return (
@@ -19,32 +23,21 @@ export function CountryCard({ ...props }: CountryCardProps) {
   );
 }
 
-function CountryCardInner({ data }: CountryCardProps) {
-  const { contentHeight } = useCountryCardContext();
-
+function CountryCardInner({ name, slug, image, tags }: CountryCardProps) {
   return (
-    <Link
-      href={`/destination/${data.slug}`}
-      className="country-card group"
-      style={
-        {
-          "--content-height": `${contentHeight}px`,
-        } as CSSProperties
-      }
-    >
+    <LinkWrapper slug={slug}>
       <article
         style={{ height: "var(--container-height)" }}
         className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md transition-shadow duration-200 ease-in-out focus-within:shadow-xl hover:shadow-xl"
       >
-        <BackgroundImage image={data.image} />
-        <Content {...data} />
+        <BackgroundImage image={image} />
+        <Content name={name} slogan="" tags={tags} />
       </article>
-    </Link>
+    </LinkWrapper>
   );
 }
 
-function BackgroundImage({ image }: Pick<Destination, "image">) {
-  const { contentHeight } = useCountryCardContext();
+function BackgroundImage({ image }: { image: string }) {
   return (
     <div
       className={cn(
@@ -59,12 +52,7 @@ function BackgroundImage({ image }: Pick<Destination, "image">) {
         className="h-full w-full rounded-[inherit] object-cover"
         style={{ height: "var(--container-height)" }}
       />
-      <div
-        className="image-blur-element w-full self-end bg-stone-800 opacity-100 backdrop-blur-3xl transition-opacity duration-200 ease-in-out group-focus-within:opacity-0 group-hover:opacity-0"
-        style={{
-          height: contentHeight + 16 * 2,
-        }}
-      />
+      <BlurElement />
     </div>
   );
 }
@@ -76,14 +64,10 @@ function Content({
 }: {
   name: string;
   slogan: string;
-  tags: Destination["tags"];
+  tags: CountryCardProps["tags"];
 }) {
-  const { contentRef } = useCountryCardContext();
   return (
-    <div
-      ref={contentRef}
-      className="relative flex flex-col self-end p-3 text-stone-50"
-    >
+    <ContentWrapper>
       <h3 className="text-xl font-bold transition-colors duration-200 ease-in-out group-focus-within:text-stone-900 group-hover:text-stone-900">
         {name}
       </h3>
@@ -103,16 +87,16 @@ function Content({
       >
         View Details
       </Button>
-    </div>
+    </ContentWrapper>
   );
 }
 
-function Tag({ data }: { data: Destination["tags"][number] }) {
+function Tag({ data }: { data: CountryCardProps["tags"][number] }) {
   const Icon = data.icon;
 
   return (
     <li className="flex items-center justify-center gap-0.5 text-stone-50 group-focus-within:text-stone-800 group-hover:text-stone-800">
-      <Icon className="size-2.5 transition-colors duration-200 ease-in-out" />
+      <Icon className="size-3 transition-colors duration-200 ease-in-out" />
       <span className="text-xs transition-colors duration-200 ease-in-out">
         {data.name}
       </span>
