@@ -47,12 +47,15 @@ export const Countries: CollectionConfig = {
           },
         ],
         afterChange: [
-          ({ data }) => {
-            const slug = data?.slug;
-            if (!slug) return;
+          ({ originalDoc }) => {
+            const slug = originalDoc?.slug;
+            if (!slug) {
+              console.warn("Cannot revalidate path because slug is missing");
+              return;
+            }
 
-            revalidatePath(`/(app)/`);
-            revalidatePath(`/(app)/destination/${slug}`);
+            revalidatePath(`/`);
+            revalidatePath(`/destination/${slug}`);
           },
         ],
       },

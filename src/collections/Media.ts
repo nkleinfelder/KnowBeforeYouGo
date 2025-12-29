@@ -10,11 +10,8 @@ export const Media: CollectionConfig = {
   },
   hooks: {
     afterChange: [
-      ({ data }) => {
-        const slug = data?.slug;
-        if (!slug) return;
-
-        revalidatePath(`(app)/destination/[slug]`, "page");
+      () => {
+        revalidatePath(`/destination/[slug]`, "page");
       },
     ],
   },
