@@ -12,7 +12,7 @@ export function Transport({
   data,
 }: CountrySectionProps<"navTransport">) {
   return (
-    <DetailInfo id={id} title={title} Icon={Icon}>
+    <DetailInfo id={id} title={title} Icon={Icon} description={data?.desc}>
       {data?.driverPermits && (
         <InfoCard.Container
           title="Driving Permits"

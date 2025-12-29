@@ -9,7 +9,12 @@ export function Safety({
   data,
 }: CountrySectionProps<"safetyAndLegal">) {
   return (
-    <DetailInfo id={id} title={title} Icon={Icon}>
+    <DetailInfo
+      id={id}
+      title={title}
+      Icon={Icon}
+      description={data?.description}
+    >
       {data?.visaRequired && (
         <InfoCard.Text title="Visa Required" size="medium">
           {data.visaRequired}
@@ -46,13 +51,15 @@ export function Safety({
       )}
       {data?.naturalHazardsIndexEnum &&
         typeof data.naturalHazardsIndexEnum !== "string" && (
-          <InfoCard.Text title="Natural hazards index" size="medium">
-            <div>
-              <p>{data.naturalHazardsIndexEnum.name}</p>
-              <p className="text-xs font-medium text-muted-foreground">
-                {data.naturalHazardsIndexEnum.description}
-              </p>
-            </div>
+          <InfoCard.Text
+            title="Natural hazards index"
+            size="medium"
+            className="flex flex-col"
+          >
+            <span>{data.naturalHazardsIndexEnum.name}</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              {data.naturalHazardsIndexEnum.description}
+            </span>
           </InfoCard.Text>
         )}
     </DetailInfo>

@@ -9,7 +9,12 @@ export function Cultural({
   data,
 }: CountrySectionProps<"culturalAndSocialNorms">) {
   return (
-    <DetailInfo id={id} title={title} Icon={Icon}>
+    <DetailInfo
+      id={id}
+      title={title}
+      Icon={Icon}
+      description={data?.description}
+    >
       {data?.veganPopulationShare && (
         <InfoCard.Rating
           title="Vegans"

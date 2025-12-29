@@ -9,7 +9,12 @@ export function Language({
   data,
 }: CountrySectionProps<"languageAndCommunication">) {
   return (
-    <DetailInfo id={id} title={title} Icon={Icon}>
+    <DetailInfo
+      id={id}
+      title={title}
+      Icon={Icon}
+      description={data?.description}
+    >
       <InfoCard.List.List
         title="Languages"
         items={data?.localLanguages?.map((item) => item.language) ?? []}

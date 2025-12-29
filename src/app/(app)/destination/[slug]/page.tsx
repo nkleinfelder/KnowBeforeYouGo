@@ -77,8 +77,6 @@ export default async function Page({
 
   const country = data.docs[0];
 
-  console.log(country);
-
   return (
     <main className="content-grid gap-y-12 pb-12">
       <Sections.Header

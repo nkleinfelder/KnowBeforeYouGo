@@ -1,10 +1,7 @@
 import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-cards";
 import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
 import { CountrySectionProps } from "./props";
-import {
-  BarChartDefault,
-  BarChartWithValues,
-} from "@/src/components/charts/bar-chart";
+import { BarChartWithValues } from "@/src/components/charts/bar-chart";
 export function Money({
   id,
   title,
@@ -19,7 +16,12 @@ export function Money({
     );
 
   return (
-    <DetailInfo id={id} title={title} Icon={Icon}>
+    <DetailInfo
+      id={id}
+      title={title}
+      Icon={Icon}
+      description={data?.description}
+    >
       {data?.acceptedCurrencies && data.acceptedCurrencies.length > 0 && (
         <InfoCard.List.List
           title="Accepted Currencies"

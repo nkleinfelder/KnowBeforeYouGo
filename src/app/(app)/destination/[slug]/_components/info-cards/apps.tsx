@@ -27,7 +27,7 @@ export function Apps({
 } & InfoCardProps) {
   return (
     <InfoCard {...props}>
-      <ul className="flex h-fit flex-wrap-reverse items-end gap-2 self-end">
+      <ul className="flex h-fit flex-wrap items-end gap-2 self-end md:flex-wrap-reverse">
         {apps.map(
           (app) =>
             typeof app !== "string" && (
