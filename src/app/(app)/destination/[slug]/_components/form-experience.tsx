@@ -4,15 +4,11 @@ import { Card } from "@/src/components/ui/card";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Field,
-  FieldContent,
   FieldDescription,
-  FieldError,
   FieldGroup,
   FieldLabel,
   FieldLegend,
-  FieldSeparator,
   FieldSet,
-  FieldTitle,
 } from "@/src/components/ui/field";
 import { CheckIcon, Loader2Icon, SendIcon, SquarePenIcon } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
@@ -35,7 +31,6 @@ type Inputs = {
 };
 
 export function ShareExperience({
-  countryId,
   countryName,
 }: {
   countryId: string;

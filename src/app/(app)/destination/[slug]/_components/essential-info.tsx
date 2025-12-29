@@ -1,5 +1,4 @@
 import { Badge } from "@/src/components/ui/badge";
-import { Card, CardHeader, CardTitle } from "@/src/components/ui/card";
 import {
   EuroIcon,
   FileTextIcon,

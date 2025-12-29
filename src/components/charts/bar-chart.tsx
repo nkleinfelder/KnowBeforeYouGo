@@ -1,12 +1,5 @@
 "use client";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
 import { ChartContainer } from "@/src/components/ui/chart";
 import { DataKey } from "recharts/types/util/types";
 
