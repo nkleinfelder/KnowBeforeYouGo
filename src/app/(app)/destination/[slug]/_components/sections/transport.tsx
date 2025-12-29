@@ -62,21 +62,13 @@ function ListItem({
   description?: string;
   accepted: Nullable<boolean>;
 }) {
-  const acceptedString =
-    typeof accepted === "boolean"
-      ? accepted === true
-        ? "is accepted"
-        : "is not accepted"
-      : "";
+  const isAccepted = accepted === true;
+  const acceptedString = isAccepted ? "is accepted" : "is not accepted";
 
   return (
     <InfoCard.List.ListItem className={cn("flex items-center gap-2")}>
-      {accepted === true && (
-        <CheckIcon className="stroke-2.5 size-5 text-green-500" />
-      )}
-      {accepted === false && (
-        <XIcon className="stroke-2.5 size-5 text-red-500" />
-      )}
+      {isAccepted && <CheckIcon className="stroke-2.5 size-5 text-green-500" />}
+      {!isAccepted && <XIcon className="stroke-2.5 size-5 text-red-500" />}
 
       <div className="flex flex-col">
         <h4 className="font-semibold">{title}</h4>

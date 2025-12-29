@@ -63,56 +63,60 @@ function AppElement({
 }) {
   const someUrl = urlAndroid || urlIos;
 
-  if (src)
-    return (
-      <li className="flex">
-        <Popover>
-          <PopoverTrigger>
+  return (
+    <li className="flex">
+      <Popover>
+        <PopoverTrigger>
+          {src ? (
             <Image
               src={src}
               alt={name}
               width={256}
               height={256}
-              className="aspect-square size-14 rounded-sm shadow"
+              className="aspect-square size-14 rounded-md shadow"
             />
-          </PopoverTrigger>
-          <PopoverContent
-            className={cn(
-              "flex w-fit max-w-64 flex-col",
-              !someUrl && "px-3 py-2",
-              someUrl && "p-3",
-            )}
-          >
-            <h4 className="text-lg leading-tight font-semibold text-balance">
-              {name}
-            </h4>
-            {description && (
-              <p className="text-sm text-pretty">{description}</p>
-            )}
+          ) : (
+            <div className="flex aspect-square size-14 items-center justify-center rounded-md bg-muted text-xl font-bold text-muted-foreground shadow">
+              {name
+                .split(" ")
+                .map((word) => word[0])
+                .join("")
+                .substring(0, 2)}
+            </div>
+          )}
+        </PopoverTrigger>
+        <PopoverContent
+          className={cn(
+            "flex w-fit max-w-64 flex-col",
+            !someUrl && "px-3 py-2",
+            someUrl && "p-3",
+          )}
+        >
+          <h4 className="text-lg leading-tight font-semibold text-balance">
+            {name}
+          </h4>
+          {description && <p className="text-sm text-pretty">{description}</p>}
 
-            {someUrl && (
-              <ul className="mt-2.5 flex flex-col gap-1">
-                {urlAndroid && (
-                  <li>
-                    <Link href={urlAndroid}>
-                      <DownloadOnPlaystore
-                        locale="en"
-                        className="h-auto w-32"
-                      />
-                    </Link>
-                  </li>
-                )}
-                {urlIos && (
-                  <li>
-                    <Link href={urlIos}>
-                      <DownloadOnAppStore locale="en" className="h-auto w-32" />
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            )}
-          </PopoverContent>
-        </Popover>
-      </li>
-    );
+          {someUrl && (
+            <ul className="mt-2.5 flex flex-col gap-1">
+              {urlAndroid && (
+                <li>
+                  <Link href={urlAndroid}>
+                    <DownloadOnPlaystore locale="en" className="h-auto w-32" />
+                  </Link>
+                </li>
+              )}
+              {urlIos && (
+                <li>
+                  <Link href={urlIos}>
+                    <DownloadOnAppStore locale="en" className="h-auto w-32" />
+                  </Link>
+                </li>
+              )}
+            </ul>
+          )}
+        </PopoverContent>
+      </Popover>
+    </li>
+  );
 }

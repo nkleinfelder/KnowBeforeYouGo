@@ -51,7 +51,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
         "group-data-[variant=primary]:[&_svg]:text-primary",
         "group-data-[size=lg]:gap-x-2 group-data-[size=lg]:gap-y-1 group-data-[size=default]:[&>svg]:size-4.5 group-data-[size=lg]:[&>svg]:size-5 group-data-[size=sm]:[&>svg]:size-4",
         "has-[svg]:grid-cols-[auto_1fr] has-[svg]:[&>div[data-slot='card-description']]:col-span-2",
-        "has-data-[slot=card-description]:grid-rows-[auto_auto]",
+        "has-data-[slot=card-description]:grid-rows-[auto_1fr]",
         className,
       )}
       {...props}

@@ -53,7 +53,7 @@ export function ListContent({
 }
 
 const listItemVariants = cva(
-  "flex items-baseline justify-start rounded-lg border bg-card px-3 py-2 font-semibold",
+  "flex items-baseline justify-start rounded-lg border border-border bg-card px-3 py-2 font-semibold",
   {
     variants: {
       variant: {
