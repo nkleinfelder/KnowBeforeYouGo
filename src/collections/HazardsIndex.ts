@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { CollectionConfig } from "payload";
 
 export const HazardsIndex: CollectionConfig = {
@@ -14,4 +15,14 @@ export const HazardsIndex: CollectionConfig = {
       relationTo: "media",
     },
   ],
+  hooks: {
+    afterChange: [
+      ({ data }) => {
+        const slug = data?.slug;
+        if (!slug) return;
+
+        revalidatePath(`(app)/destinations/[slug]`, "page");
+      },
+    ],
+  },
 };

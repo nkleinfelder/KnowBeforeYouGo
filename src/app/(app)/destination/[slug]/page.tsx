@@ -149,3 +149,17 @@ export default async function Page({
     </main>
   );
 }
+
+export async function generateStaticParams() {
+  const countries = await payload.find({
+    collection: "countries",
+    select: {
+      slug: true,
+    },
+    limit: 50,
+  });
+
+  return countries.docs.map((country) => ({
+    slug: country.slug,
+  }));
+}

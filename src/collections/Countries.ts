@@ -6,6 +6,7 @@ import { moneyAndPayments } from "./categories/moneyAndPayments";
 import { safetyAndLegal } from "./categories/safetyAndLegal";
 import { dailyLifeAndLifestyle } from "./categories/dailyLifeAndLifestyle";
 import { health } from "@/src/collections/categories/health";
+import { revalidatePath } from "next/cache";
 
 export const Countries: CollectionConfig = {
   slug: "countries",
@@ -43,6 +44,15 @@ export const Countries: CollectionConfig = {
               .replace(/[^a-z0-9\s-]/g, "")
               .replace(/\s+/g, "-")
               .replace(/-+/g, "-");
+          },
+        ],
+        afterChange: [
+          ({ data }) => {
+            const slug = data?.slug;
+            if (!slug) return;
+
+            revalidatePath(`/(app)/`);
+            revalidatePath(`/(app)/destinations/${slug}`);
           },
         ],
       },

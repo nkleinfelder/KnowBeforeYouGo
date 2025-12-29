@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { CollectionConfig } from "payload";
 
 export const PlugTypes: CollectionConfig = {
@@ -24,4 +25,14 @@ export const PlugTypes: CollectionConfig = {
       required: true,
     },
   ],
+  hooks: {
+    afterChange: [
+      ({ data }) => {
+        const slug = data?.slug;
+        if (!slug) return;
+
+        revalidatePath(`(app)/destinations/[slug]`, "page");
+      },
+    ],
+  },
 };

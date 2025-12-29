@@ -73,6 +73,7 @@ export default buildConfig({
     pool: {
       connectionString: databaseUrl,
       ssl: process.env.DATABASE_SSL === "true",
+      max: 5,
     },
     idType: "uuid",
   }),
