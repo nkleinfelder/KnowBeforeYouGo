@@ -52,7 +52,7 @@ export const Countries: CollectionConfig = {
             if (!slug) return;
 
             revalidatePath(`/(app)/`);
-            revalidatePath(`/(app)/destinations/${slug}`);
+            revalidatePath(`/(app)/destination/${slug}`);
           },
         ],
       },

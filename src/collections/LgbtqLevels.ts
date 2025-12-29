@@ -22,7 +22,7 @@ export const LgbtqLevels: CollectionConfig = {
         const slug = data?.slug;
         if (!slug) return;
 
-        revalidatePath(`(app)/destinations/[slug]`, "page");
+        revalidatePath(`(app)/destination/[slug]`, "page");
       },
     ],
   },
