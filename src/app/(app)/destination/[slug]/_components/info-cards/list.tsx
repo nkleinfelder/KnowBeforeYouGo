@@ -3,6 +3,7 @@ import { InfoCard, InfoCardProps } from "./container";
 import { cn } from "@/src/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import { AlertTriangleIcon } from "lucide-react";
+import { Nullable } from "@/src/lib/type-utils";
 
 export function List({
   items,
@@ -53,7 +54,7 @@ export function ListContent({
 }
 
 const listItemVariants = cva(
-  "flex items-baseline justify-start rounded-lg border bg-card px-3 py-2 font-semibold",
+  "flex items-baseline justify-start rounded-lg border border-border bg-card px-3 py-2 font-semibold",
   {
     variants: {
       variant: {
@@ -81,5 +82,26 @@ export function ListItem({
       )}
       {children}
     </li>
+  );
+}
+
+export function ListItemWithTitle({
+  title,
+  description,
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"li"> & {
+  title: string;
+  description?: Nullable<string>;
+}) {
+  return (
+    <ListItem className={cn("flex-col", className)} {...props}>
+      <h4 className="font-semibold">{title}</h4>
+      {description && (
+        <p className="text-xs font-medium break-all text-muted-foreground">
+          {description}
+        </p>
+      )}
+    </ListItem>
   );
 }

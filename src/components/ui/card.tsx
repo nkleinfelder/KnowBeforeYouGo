@@ -28,11 +28,21 @@ export const cardVariants = cva(
 );
 
 export type CardProps = React.ComponentProps<"div"> &
-  VariantProps<typeof cardVariants>;
+  VariantProps<typeof cardVariants> & {
+    as?: React.ElementType;
+  };
 
-function Card({ className, variant, size, ...props }: CardProps) {
+function Card({
+  className,
+  variant,
+  size,
+  as = "article",
+  ...props
+}: CardProps) {
+  const Comp = as;
+
   return (
-    <article
+    <Comp
       data-slot="card"
       className={cn(cardVariants({ variant, size }), "group", className)}
       data-variant={variant}
@@ -51,7 +61,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
         "group-data-[variant=primary]:[&_svg]:text-primary",
         "group-data-[size=lg]:gap-x-2 group-data-[size=lg]:gap-y-1 group-data-[size=default]:[&>svg]:size-4.5 group-data-[size=lg]:[&>svg]:size-5 group-data-[size=sm]:[&>svg]:size-4",
         "has-[svg]:grid-cols-[auto_1fr] has-[svg]:[&>div[data-slot='card-description']]:col-span-2",
-        "has-data-[slot=card-description]:grid-rows-[auto_auto]",
+        "has-data-[slot=card-description]:grid-rows-[auto_1fr]",
         className,
       )}
       {...props}
@@ -71,7 +81,7 @@ function CardTitle({
     <Comp
       data-slot="card-title"
       className={cn(
-        "flex items-center gap-x-1.5 text-lg leading-none font-semibold",
+        "flex items-center gap-x-1.5 text-lg leading-none font-semibold text-balance",
         "group-data-[variant=warning]:text-destructive",
         className,
       )}
@@ -84,7 +94,10 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(
+        "max-w-[60ch] text-sm text-pretty text-muted-foreground",
+        className,
+      )}
       {...props}
     />
   );

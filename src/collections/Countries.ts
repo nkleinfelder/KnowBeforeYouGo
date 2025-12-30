@@ -6,6 +6,7 @@ import { moneyAndPayments } from "./categories/moneyAndPayments";
 import { safetyAndLegal } from "./categories/safetyAndLegal";
 import { dailyLifeAndLifestyle } from "./categories/dailyLifeAndLifestyle";
 import { health } from "@/src/collections/categories/health";
+import { revalidatePath } from "next/cache";
 
 export const Countries: CollectionConfig = {
   slug: "countries",
@@ -43,6 +44,18 @@ export const Countries: CollectionConfig = {
               .replace(/[^a-z0-9\s-]/g, "")
               .replace(/\s+/g, "-")
               .replace(/-+/g, "-");
+          },
+        ],
+        afterChange: [
+          ({ originalDoc }) => {
+            const slug = originalDoc?.slug;
+            if (!slug) {
+              console.warn("Cannot revalidate path because slug is missing");
+              return;
+            }
+
+            revalidatePath(`/`);
+            revalidatePath(`/destination/${slug}`);
           },
         ],
       },

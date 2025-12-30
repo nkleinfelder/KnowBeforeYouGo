@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { CollectionConfig } from "payload";
 
 export const LgbtqLevels: CollectionConfig = {
@@ -15,4 +16,11 @@ export const LgbtqLevels: CollectionConfig = {
       relationTo: "media",
     },
   ],
+  hooks: {
+    afterChange: [
+      () => {
+        revalidatePath(`/destination/[slug]`, "page");
+      },
+    ],
+  },
 };

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { CollectionConfig } from "payload";
 
 export const Apps: CollectionConfig = {
@@ -22,4 +23,11 @@ export const Apps: CollectionConfig = {
       defaultValue: false,
     },
   ],
+  hooks: {
+    afterChange: [
+      () => {
+        revalidatePath(`/destination/[slug]`, "page");
+      },
+    ],
+  },
 };

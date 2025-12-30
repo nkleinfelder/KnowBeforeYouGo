@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { CollectionConfig } from "payload";
 
 export const Media: CollectionConfig = {
@@ -6,5 +7,12 @@ export const Media: CollectionConfig = {
   fields: [],
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [
+      () => {
+        revalidatePath(`/destination/[slug]`, "page");
+      },
+    ],
   },
 };

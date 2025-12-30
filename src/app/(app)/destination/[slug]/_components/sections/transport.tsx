@@ -17,7 +17,11 @@ export function Transport({
         <InfoCard.Container
           title="Driving Permits"
           description="Check if international and regional driving permits are accepted here"
-          className="md:col-span-2 md:row-span-4"
+          className={cn(
+            "md:col-span-2",
+            "md:group-has-[>:nth-child(3)]:row-span-4",
+            "md:group-not-has-[>:nth-child(2)]:col-span-3",
+          )}
         >
           <InfoCard.List.ListContent className="md:row-span-3">
             <ListItem
@@ -62,21 +66,13 @@ function ListItem({
   description?: string;
   accepted: Nullable<boolean>;
 }) {
-  const acceptedString =
-    typeof accepted === "boolean"
-      ? accepted === true
-        ? "is accepted"
-        : "is not accepted"
-      : "";
+  const isAccepted = accepted === true;
+  const acceptedString = isAccepted ? "is accepted" : "is not accepted";
 
   return (
     <InfoCard.List.ListItem className={cn("flex items-center gap-2")}>
-      {accepted === true && (
-        <CheckIcon className="stroke-2.5 size-5 text-green-500" />
-      )}
-      {accepted === false && (
-        <XIcon className="stroke-2.5 size-5 text-red-500" />
-      )}
+      {isAccepted && <CheckIcon className="stroke-2.5 size-5 text-green-500" />}
+      {!isAccepted && <XIcon className="stroke-2.5 size-5 text-red-500" />}
 
       <div className="flex flex-col">
         <h4 className="font-semibold">{title}</h4>

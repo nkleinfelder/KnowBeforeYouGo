@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { CollectionConfig } from "payload";
 
 export const EnglishLevels: CollectionConfig = {
@@ -14,4 +15,11 @@ export const EnglishLevels: CollectionConfig = {
       relationTo: "media",
     },
   ],
+  hooks: {
+    afterChange: [
+      () => {
+        revalidatePath(`/destination/[slug]`, "page");
+      },
+    ],
+  },
 };
