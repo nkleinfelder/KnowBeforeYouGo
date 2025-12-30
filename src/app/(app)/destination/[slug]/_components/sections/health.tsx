@@ -137,7 +137,7 @@ function HealthInsurance({
   description,
 }: {
   required: boolean;
-  description?: string;
+  description?: Nullable<string>;
 }) {
   return (
     <InfoCard.Container
