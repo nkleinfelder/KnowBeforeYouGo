@@ -32,7 +32,7 @@ export function Daily({
             {data.findingFlatResources.map(
               (item) =>
                 item.platform && (
-                  <FlatListItem
+                  <InfoCard.List.ListItemWithTitle
                     key={item.platform}
                     title={item.platform}
                     description={item.description}
@@ -91,25 +91,6 @@ export function Daily({
         />
       )}
     </DetailInfo>
-  );
-}
-
-function FlatListItem({
-  title,
-  description,
-}: {
-  title: string;
-  description?: Nullable<string>;
-}) {
-  return (
-    <InfoCard.List.ListItem className="flex flex-col">
-      <h4 className="font-semibold">{title}</h4>
-      {description && (
-        <p className="text-xs font-medium text-muted-foreground">
-          {description}
-        </p>
-      )}
-    </InfoCard.List.ListItem>
   );
 }
 

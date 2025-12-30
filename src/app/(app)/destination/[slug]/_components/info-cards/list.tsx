@@ -3,6 +3,7 @@ import { InfoCard, InfoCardProps } from "./container";
 import { cn } from "@/src/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import { AlertTriangleIcon } from "lucide-react";
+import { Nullable } from "@/src/lib/type-utils";
 
 export function List({
   items,
@@ -81,5 +82,26 @@ export function ListItem({
       )}
       {children}
     </li>
+  );
+}
+
+export function ListItemWithTitle({
+  title,
+  description,
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"li"> & {
+  title: string;
+  description?: Nullable<string>;
+}) {
+  return (
+    <ListItem className={cn("flex-col", className)} {...props}>
+      <h4 className="font-semibold">{title}</h4>
+      {description && (
+        <p className="text-xs font-medium break-all text-muted-foreground">
+          {description}
+        </p>
+      )}
+    </ListItem>
   );
 }
