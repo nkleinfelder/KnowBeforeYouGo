@@ -5,6 +5,7 @@ import { Nullable } from "@/src/lib/type-utils";
 import {
   AlertTriangleIcon,
   AwardIcon,
+  GhostIcon,
   LucideIcon,
   UserRoundSearchIcon,
 } from "lucide-react";
@@ -61,33 +62,30 @@ export function Health({
         description="Recommendations are based on a Report from the RKI Germany. We do not take accountability for the completness of this list."
         className="col-span-full auto-rows-auto grid-cols-subgrid grid-rows-none"
       >
-        {data?.vaccinations?.requiredVaccinations &&
-          data?.vaccinations?.requiredVaccinations.length > 0 && (
-            <VaccinationList
-              title="Required"
-              description="These vaccinations are mandatory"
-              data={data.vaccinations.requiredVaccinations}
-              Icon={AlertTriangleIcon}
-            />
-          )}
-        {data?.vaccinations?.riskBasedVaccinations &&
-          data?.vaccinations?.riskBasedVaccinations.length > 0 && (
-            <VaccinationList
-              title="Specific risks"
-              description="Check if these risks apply to you"
-              data={data.vaccinations.riskBasedVaccinations}
-              Icon={UserRoundSearchIcon}
-            />
-          )}
-        {data?.vaccinations?.generalVaccinations &&
-          data?.vaccinations?.generalVaccinations.length > 0 && (
-            <VaccinationList
-              title="Recommended"
-              description="It's best to get these vaccinations"
-              data={data.vaccinations.generalVaccinations}
-              Icon={AwardIcon}
-            />
-          )}
+        {data?.vaccinations?.requiredVaccinations && (
+          <VaccinationList
+            title="Required"
+            description="These vaccinations are mandatory"
+            data={data.vaccinations.requiredVaccinations}
+            Icon={AlertTriangleIcon}
+          />
+        )}
+        {data?.vaccinations?.riskBasedVaccinations && (
+          <VaccinationList
+            title="Specific risks"
+            description="Check if these risks apply to you"
+            data={data.vaccinations.riskBasedVaccinations}
+            Icon={UserRoundSearchIcon}
+          />
+        )}
+        {data?.vaccinations?.generalVaccinations && (
+          <VaccinationList
+            title="Recommended"
+            description="It's best to get these vaccinations"
+            data={data.vaccinations.generalVaccinations}
+            Icon={AwardIcon}
+          />
+        )}
       </InfoCard.Container>
     </DetailInfo>
   );
@@ -113,21 +111,25 @@ function VaccinationList({
         </h4>
         <p className="text-xs text-muted-foreground">{description}</p>
       </header>
-      <InfoCard.List.ListContent>
-        {data.map((item) => (
-          <li
-            key={item.name}
-            className="flex flex-col rounded-sm border border-border px-2 py-1.5"
-          >
-            <h5 className="text-sm leading-tight font-semibold">{item.name}</h5>
-            {item.notes && (
-              <p className="text-xs font-normal text-muted-foreground">
-                {item.notes}
-              </p>
-            )}
-          </li>
-        ))}
-      </InfoCard.List.ListContent>
+      {data.length > 0 && (
+        <InfoCard.List.ListContent>
+          {data.map((item) => (
+            <li
+              key={item.name}
+              className="flex flex-col rounded-sm border border-border px-2 py-1.5"
+            >
+              <h5 className="text-sm leading-tight font-semibold">
+                {item.name}
+              </h5>
+              {item.notes && (
+                <p className="text-xs font-normal text-muted-foreground">
+                  {item.notes}
+                </p>
+              )}
+            </li>
+          ))}
+        </InfoCard.List.ListContent>
+      )}
     </article>
   );
 }
