@@ -4,7 +4,7 @@ export function Checkstate({
   state,
   ...props
 }: {
-  state: "true" | "false" | "indeterminate";
+  state: true | false | "indeterminate";
 } & InfoCardProps) {
   return (
     <InfoCard {...props}>

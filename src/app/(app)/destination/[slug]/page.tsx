@@ -3,6 +3,7 @@ import * as Sections from "./_components";
 import {
   CreditCardIcon,
   GlobeIcon,
+  HeartIcon,
   HouseIcon,
   InfoIcon,
   MessagesSquareIcon,
@@ -47,6 +48,11 @@ const SECTIONS = {
     id: "safety",
     title: "Safety",
     Icon: ShieldIcon,
+  },
+  HEALTH: {
+    id: "health",
+    title: "Health",
+    Icon: HeartIcon,
   },
   DAILY: {
     id: "daily-life",
@@ -134,6 +140,12 @@ export default async function Page({
         title={SECTIONS.SAFETY.title}
         Icon={SECTIONS.SAFETY.Icon}
         data={country.safetyAndLegal}
+      />
+      <InfoSection.Health
+        id={SECTIONS.HEALTH.id}
+        title={SECTIONS.HEALTH.title}
+        Icon={SECTIONS.HEALTH.Icon}
+        data={country.health}
       />
       <InfoSection.Daily
         id={SECTIONS.DAILY.id}

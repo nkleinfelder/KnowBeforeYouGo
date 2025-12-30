@@ -17,7 +17,11 @@ export function Transport({
         <InfoCard.Container
           title="Driving Permits"
           description="Check if international and regional driving permits are accepted here"
-          className="md:col-span-2 md:row-span-4"
+          className={cn(
+            "md:col-span-2",
+            "md:group-has-[>:nth-child(3)]:row-span-4",
+            "md:group-not-has-[>:nth-child(2)]:col-span-3",
+          )}
         >
           <InfoCard.List.ListContent className="md:row-span-3">
             <ListItem

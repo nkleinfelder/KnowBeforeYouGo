@@ -3,7 +3,7 @@ import { InfoCard, InfoCardProps } from "./container";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/src/lib/utils";
 
-const textVariants = cva("text-card-foreground", {
+const textVariants = cva("text-card-foreground flex flex-col ", {
   variants: {
     variant: {
       default: "",
@@ -14,10 +14,15 @@ const textVariants = cva("text-card-foreground", {
       medium: "text-xl font-bold",
       large: "text-3xl font-bold",
     },
+    alignment: {
+      default: "",
+      center: "justify-center",
+    },
   },
   defaultVariants: {
     variant: "default",
     size: "default",
+    alignment: "default",
   },
 });
 
@@ -26,6 +31,7 @@ export function Text({
   className,
   variant,
   size,
+  alignment,
   cardVariant,
   ...props
 }: PropsWithChildren<{
@@ -36,7 +42,7 @@ export function Text({
   VariantProps<typeof textVariants>) {
   return (
     <InfoCard variant={cardVariant} {...props}>
-      <p className={cn(textVariants({ variant, size }), className)}>
+      <p className={cn(textVariants({ variant, size, alignment }), className)}>
         {children}
       </p>
     </InfoCard>

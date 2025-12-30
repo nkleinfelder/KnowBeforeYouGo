@@ -40,7 +40,8 @@ export type InfoCardProps = PropsWithChildren<{
   image?: string;
   cardVariant?: CardProps["variant"];
 }> &
-  VariantProps<typeof containerVariants>;
+  VariantProps<typeof containerVariants> &
+  Pick<CardProps, "as">;
 export function InfoCard({
   children,
   title,
@@ -50,6 +51,7 @@ export function InfoCard({
   size,
   image,
   variant,
+  as,
 }: InfoCardProps) {
   const showImage =
     image &&
@@ -61,8 +63,9 @@ export function InfoCard({
     <Card
       className={cn(containerVariants({ variant, size }), className)}
       variant={cardVariant}
+      as={as}
     >
-      <CardHeader className="items-start">
+      <CardHeader className="col-span-full items-start">
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>

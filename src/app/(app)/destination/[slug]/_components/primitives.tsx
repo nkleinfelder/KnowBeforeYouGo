@@ -13,7 +13,7 @@ export function Section({
 
 export function Grid({ children }: PropsWithChildren) {
   return (
-    <div className="grid grid-cols-1 grid-rows-[auto_1fr] gap-3 md:grid-cols-[repeat(auto-fill,minmax(min(100%,15rem),1fr))]">
+    <div className="group grid grid-cols-1 grid-rows-[auto_1fr] gap-3 md:grid-cols-[repeat(auto-fill,minmax(min(100%,15rem),1fr))]">
       {children}
     </div>
   );

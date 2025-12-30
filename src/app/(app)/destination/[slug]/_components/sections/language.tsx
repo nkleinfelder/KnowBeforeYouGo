@@ -22,10 +22,13 @@ export function Language({
       {data?.englishLevels && typeof data.englishLevels === "object" && (
         <InfoCard.Text
           title="English level"
+          description="English Proficiency Index"
           size="medium"
-          description={data.englishLevels.description}
         >
           {data.englishLevels.name}
+          <span className="text-xs font-normal text-muted-foreground">
+            {data.englishLevels.description}
+          </span>
         </InfoCard.Text>
       )}
       {data?.messengerApps && data.messengerApps.length > 0 && (

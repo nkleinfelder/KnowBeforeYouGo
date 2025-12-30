@@ -33,10 +33,13 @@ export function Cultural({
         typeof data.lgbtqFriendliness === "object" && (
           <InfoCard.Text
             title="LGBTQ"
+            description={"Spartacus Gay Travel Index"}
             size="medium"
-            description={data.lgbtqFriendliness.description ?? ""}
           >
             {data.lgbtqFriendliness.name}
+            <span className="text-xs font-normal text-muted-foreground">
+              {data.lgbtqFriendliness.description}
+            </span>
           </InfoCard.Text>
         )}
       <InfoCard.Text
