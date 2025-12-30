@@ -3,7 +3,7 @@ import { InfoCard, InfoCardProps } from "./container";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/src/lib/utils";
 
-const textVariants = cva("text-card-foreground flex flex-col ", {
+const textVariants = cva("text-card-foreground flex flex-col text-pretty", {
   variants: {
     variant: {
       default: "",
