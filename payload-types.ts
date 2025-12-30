@@ -13,53 +13,53 @@
  * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
-  | "Pacific/Midway"
-  | "Pacific/Niue"
-  | "Pacific/Honolulu"
-  | "Pacific/Rarotonga"
-  | "America/Anchorage"
-  | "Pacific/Gambier"
-  | "America/Los_Angeles"
-  | "America/Tijuana"
-  | "America/Denver"
-  | "America/Phoenix"
-  | "America/Chicago"
-  | "America/Guatemala"
-  | "America/New_York"
-  | "America/Bogota"
-  | "America/Caracas"
-  | "America/Santiago"
-  | "America/Buenos_Aires"
-  | "America/Sao_Paulo"
-  | "Atlantic/South_Georgia"
-  | "Atlantic/Azores"
-  | "Atlantic/Cape_Verde"
-  | "Europe/London"
-  | "Europe/Berlin"
-  | "Africa/Lagos"
-  | "Europe/Athens"
-  | "Africa/Cairo"
-  | "Europe/Moscow"
-  | "Asia/Riyadh"
-  | "Asia/Dubai"
-  | "Asia/Baku"
-  | "Asia/Karachi"
-  | "Asia/Tashkent"
-  | "Asia/Calcutta"
-  | "Asia/Dhaka"
-  | "Asia/Almaty"
-  | "Asia/Jakarta"
-  | "Asia/Bangkok"
-  | "Asia/Shanghai"
-  | "Asia/Singapore"
-  | "Asia/Tokyo"
-  | "Asia/Seoul"
-  | "Australia/Brisbane"
-  | "Australia/Sydney"
-  | "Pacific/Guam"
-  | "Pacific/Noumea"
-  | "Pacific/Auckland"
-  | "Pacific/Fiji";
+  | 'Pacific/Midway'
+  | 'Pacific/Niue'
+  | 'Pacific/Honolulu'
+  | 'Pacific/Rarotonga'
+  | 'America/Anchorage'
+  | 'Pacific/Gambier'
+  | 'America/Los_Angeles'
+  | 'America/Tijuana'
+  | 'America/Denver'
+  | 'America/Phoenix'
+  | 'America/Chicago'
+  | 'America/Guatemala'
+  | 'America/New_York'
+  | 'America/Bogota'
+  | 'America/Caracas'
+  | 'America/Santiago'
+  | 'America/Buenos_Aires'
+  | 'America/Sao_Paulo'
+  | 'Atlantic/South_Georgia'
+  | 'Atlantic/Azores'
+  | 'Atlantic/Cape_Verde'
+  | 'Europe/London'
+  | 'Europe/Berlin'
+  | 'Africa/Lagos'
+  | 'Europe/Athens'
+  | 'Africa/Cairo'
+  | 'Europe/Moscow'
+  | 'Asia/Riyadh'
+  | 'Asia/Dubai'
+  | 'Asia/Baku'
+  | 'Asia/Karachi'
+  | 'Asia/Tashkent'
+  | 'Asia/Calcutta'
+  | 'Asia/Dhaka'
+  | 'Asia/Almaty'
+  | 'Asia/Jakarta'
+  | 'Asia/Bangkok'
+  | 'Asia/Shanghai'
+  | 'Asia/Singapore'
+  | 'Asia/Tokyo'
+  | 'Asia/Seoul'
+  | 'Australia/Brisbane'
+  | 'Australia/Sydney'
+  | 'Pacific/Guam'
+  | 'Pacific/Noumea'
+  | 'Pacific/Auckland'
+  | 'Pacific/Fiji';
 
 export interface Config {
   auth: {
@@ -69,54 +69,43 @@ export interface Config {
   collections: {
     apps: App;
     countries: Country;
-    "user-requests": UserRequest;
-    "hazards-index": HazardsIndex;
-    "english-levels": EnglishLevel;
-    "lgbtq-levels": LgbtqLevel;
+    'user-requests': UserRequest;
+    'hazards-index': HazardsIndex;
+    'english-levels': EnglishLevel;
+    'lgbtq-levels': LgbtqLevel;
     plugTypes: PlugType;
     media: Media;
-    "payload-kv": PayloadKv;
+    'payload-kv': PayloadKv;
     users: User;
-    "payload-locked-documents": PayloadLockedDocument;
-    "payload-preferences": PayloadPreference;
-    "payload-migrations": PayloadMigration;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
     apps: AppsSelect<false> | AppsSelect<true>;
     countries: CountriesSelect<false> | CountriesSelect<true>;
-    "user-requests": UserRequestsSelect<false> | UserRequestsSelect<true>;
-    "hazards-index": HazardsIndexSelect<false> | HazardsIndexSelect<true>;
-    "english-levels": EnglishLevelsSelect<false> | EnglishLevelsSelect<true>;
-    "lgbtq-levels": LgbtqLevelsSelect<false> | LgbtqLevelsSelect<true>;
+    'user-requests': UserRequestsSelect<false> | UserRequestsSelect<true>;
+    'hazards-index': HazardsIndexSelect<false> | HazardsIndexSelect<true>;
+    'english-levels': EnglishLevelsSelect<false> | EnglishLevelsSelect<true>;
+    'lgbtq-levels': LgbtqLevelsSelect<false> | LgbtqLevelsSelect<true>;
     plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    "payload-locked-documents":
-      | PayloadLockedDocumentsSelect<false>
-      | PayloadLockedDocumentsSelect<true>;
-    "payload-preferences":
-      | PayloadPreferencesSelect<false>
-      | PayloadPreferencesSelect<true>;
-    "payload-migrations":
-      | PayloadMigrationsSelect<false>
-      | PayloadMigrationsSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
     defaultIDType: string;
   };
-  fallbackLocale:
-    | ("false" | "none" | "null")
-    | false
-    | null
-    | ("en" | "de")
-    | ("en" | "de")[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de') | ('en' | 'de')[];
   globals: {};
   globalsSelect: {};
-  locale: "en" | "de";
+  locale: 'en' | 'de';
   user: User & {
-    collection: "users";
+    collection: 'users';
   };
   jobs: {
     tasks: unknown;
@@ -226,9 +215,9 @@ export interface Country {
         }[]
       | null;
     paymentMethods?: {
-      "Payment by Card (%)"?: number | null;
-      "Payment by Cash (%)"?: number | null;
-      "Payment by App (%)"?: number | null;
+      'Payment by Card (%)'?: number | null;
+      'Payment by Cash (%)'?: number | null;
+      'Payment by App (%)'?: number | null;
     };
     paymentApps?: (string | App)[] | null;
     onlineShoppingApps?: (string | App)[] | null;
@@ -262,7 +251,7 @@ export interface Country {
     foodDeliveryApps?: (string | App)[] | null;
     socialMediaApps?: (string | App)[] | null;
     datingApps?: (string | App)[] | null;
-    openingDays?: ("0" | "1" | "2" | "3" | "4" | "5" | "6")[] | null;
+    openingDays?: ('0' | '1' | '2' | '3' | '4' | '5' | '6')[] | null;
   };
   health?: {
     description?: string | null;
@@ -293,9 +282,9 @@ export interface Country {
           }[]
         | null;
     };
-    "Mental health help"?: string | null;
-    "Anti discrimination help"?: string | null;
-    "Sexual harassment help"?: string | null;
+    'Mental health help'?: string | null;
+    'Anti discrimination help'?: string | null;
+    'Sexual harassment help'?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -356,7 +345,7 @@ export interface UserRequest {
   id: string;
   title?: string | null;
   countryExperience?: {
-    hasVisited?: ("yes" | "no") | null;
+    hasVisited?: ('yes' | 'no') | null;
     durationOfStay?: string | null;
   };
   issue?: {
@@ -415,44 +404,44 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: "apps";
+        relationTo: 'apps';
         value: string | App;
       } | null)
     | ({
-        relationTo: "countries";
+        relationTo: 'countries';
         value: string | Country;
       } | null)
     | ({
-        relationTo: "user-requests";
+        relationTo: 'user-requests';
         value: string | UserRequest;
       } | null)
     | ({
-        relationTo: "hazards-index";
+        relationTo: 'hazards-index';
         value: string | HazardsIndex;
       } | null)
     | ({
-        relationTo: "english-levels";
+        relationTo: 'english-levels';
         value: string | EnglishLevel;
       } | null)
     | ({
-        relationTo: "lgbtq-levels";
+        relationTo: 'lgbtq-levels';
         value: string | LgbtqLevel;
       } | null)
     | ({
-        relationTo: "plugTypes";
+        relationTo: 'plugTypes';
         value: string | PlugType;
       } | null)
     | ({
-        relationTo: "media";
+        relationTo: 'media';
         value: string | Media;
       } | null)
     | ({
-        relationTo: "users";
+        relationTo: 'users';
         value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: "users";
+    relationTo: 'users';
     value: string | User;
   };
   updatedAt: string;
@@ -465,7 +454,7 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: "users";
+    relationTo: 'users';
     value: string | User;
   };
   key?: string | null;
@@ -569,9 +558,9 @@ export interface CountriesSelect<T extends boolean = true> {
         paymentMethods?:
           | T
           | {
-              "Payment by Card (%)"?: T;
-              "Payment by Cash (%)"?: T;
-              "Payment by App (%)"?: T;
+              'Payment by Card (%)'?: T;
+              'Payment by Cash (%)'?: T;
+              'Payment by App (%)'?: T;
             };
         paymentApps?: T;
         onlineShoppingApps?: T;
@@ -648,9 +637,9 @@ export interface CountriesSelect<T extends boolean = true> {
                     id?: T;
                   };
             };
-        "Mental health help"?: T;
-        "Anti discrimination help"?: T;
-        "Sexual harassment help"?: T;
+        'Mental health help'?: T;
+        'Anti discrimination help'?: T;
+        'Sexual harassment help'?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -807,6 +796,7 @@ export interface Auth {
   [k: string]: unknown;
 }
 
-declare module "payload" {
+
+declare module 'payload' {
   export interface GeneratedTypes extends Config {}
 }
