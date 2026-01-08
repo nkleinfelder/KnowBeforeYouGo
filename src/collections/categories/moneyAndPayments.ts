@@ -18,6 +18,11 @@ export const moneyAndPayments: Field = {
           localized: true,
           required: true,
         },
+        {
+          name: "currency symbol",
+          label: "Currency symbol",
+          type: "text",
+        },
       ],
     },
     {

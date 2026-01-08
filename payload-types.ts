@@ -222,6 +222,7 @@ export interface Country {
     acceptedCurrencies?:
       | {
           currency: string;
+          "currency symbol"?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -247,6 +248,7 @@ export interface Country {
     description?: string | null;
     findingFlatResources?:
       | {
+          "Platform name"?: string | null;
           platform?: string | null;
           description?: string | null;
           id?: string | null;
@@ -564,6 +566,7 @@ export interface CountriesSelect<T extends boolean = true> {
           | T
           | {
               currency?: T;
+              "currency symbol"?: T;
               id?: T;
             };
         paymentMethods?:
@@ -597,6 +600,7 @@ export interface CountriesSelect<T extends boolean = true> {
         findingFlatResources?:
           | T
           | {
+              "Platform name"?: T;
               platform?: T;
               description?: T;
               id?: T;

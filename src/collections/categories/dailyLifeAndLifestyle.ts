@@ -12,6 +12,11 @@ export const dailyLifeAndLifestyle: Field = {
       type: "array",
       fields: [
         {
+          name: "Platform name",
+          label: "Platform name",
+          type: "text",
+        },
+        {
           name: "platform",
           label: "Website or App",
           type: "text",
