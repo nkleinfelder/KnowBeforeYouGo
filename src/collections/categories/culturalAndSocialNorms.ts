@@ -22,10 +22,17 @@ export const culturalAndSocialNorms: Field = {
     },
     {
       name: "lgbtqFriendliness",
-      label: "LGBTQ friendliness (-23 - 13)",
+      label: "LGBTQ friendliness",
       type: "relationship",
       relationTo: "lgbtq-levels",
       hasMany: false,
+    },
+    {
+      name: "lgbtqFriendlinessScore",
+      label: "LGBTQ Friendliness Score (-23 - 13)",
+      type: "number",
+      min: -23,
+      max: 13,
     },
     {
       name: "avgCostOfLiving",

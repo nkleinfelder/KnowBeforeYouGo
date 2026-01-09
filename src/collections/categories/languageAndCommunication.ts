@@ -35,6 +35,13 @@ export const languageAndCommunication: Field = {
       hasMany: false,
     },
     {
+      name: "englishLevelScore",
+      label: "English Level Score (390 - 624)",
+      type: "number",
+      min: 390,
+      max: 624,
+    },
+    {
       name: "messengerApps",
       label: "Messenger Apps",
       type: "relationship",
