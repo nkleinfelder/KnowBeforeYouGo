@@ -193,6 +193,7 @@ export interface Country {
     vegetarianPopulationShare?: number | null;
     veganPopulationShare?: number | null;
     lgbtqFriendliness?: (string | null) | LgbtqLevel;
+    lgbtqFriendlinessScore?: number | null;
     avgCostOfLiving?: number | null;
   };
   languageAndCommunication?: {
@@ -204,6 +205,7 @@ export interface Country {
         }[]
       | null;
     englishLevels?: (string | null) | EnglishLevel;
+    englishLevelScore?: number | null;
     messengerApps?: (string | App)[] | null;
   };
   navTransport?: {
@@ -295,9 +297,21 @@ export interface Country {
           }[]
         | null;
     };
-    "Mental health help"?: string | null;
-    "Anti discrimination help"?: string | null;
-    "Sexual harassment help"?: string | null;
+    mentalHealthHelp?: {
+      name?: string | null;
+      phone?: string | null;
+      website?: string | null;
+    };
+    antiDiscriminationHelp?: {
+      name?: string | null;
+      phone?: string | null;
+      website?: string | null;
+    };
+    sexualHarassmentHelp?: {
+      name?: string | null;
+      phone?: string | null;
+      website?: string | null;
+    };
   };
   updatedAt: string;
   createdAt: string;
@@ -528,6 +542,7 @@ export interface CountriesSelect<T extends boolean = true> {
         vegetarianPopulationShare?: T;
         veganPopulationShare?: T;
         lgbtqFriendliness?: T;
+        lgbtqFriendlinessScore?: T;
         avgCostOfLiving?: T;
       };
   languageAndCommunication?:
@@ -541,6 +556,7 @@ export interface CountriesSelect<T extends boolean = true> {
               id?: T;
             };
         englishLevels?: T;
+        englishLevelScore?: T;
         messengerApps?: T;
       };
   navTransport?:
@@ -652,9 +668,27 @@ export interface CountriesSelect<T extends boolean = true> {
                     id?: T;
                   };
             };
-        "Mental health help"?: T;
-        "Anti discrimination help"?: T;
-        "Sexual harassment help"?: T;
+        mentalHealthHelp?:
+          | T
+          | {
+              name?: T;
+              phone?: T;
+              website?: T;
+            };
+        antiDiscriminationHelp?:
+          | T
+          | {
+              name?: T;
+              phone?: T;
+              website?: T;
+            };
+        sexualHarassmentHelp?:
+          | T
+          | {
+              name?: T;
+              phone?: T;
+              website?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

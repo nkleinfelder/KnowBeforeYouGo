@@ -90,8 +90,75 @@ export const health: Field = {
         },
       ],
     },
-    { name: "Mental health help", type: "text", localized: true },
-    { name: "Anti discrimination help", type: "text", localized: true },
-    { name: "Sexual harassment help", type: "text", localized: true },
+    {
+      name: "mentalHealthHelp",
+      label: "Mental health help",
+      type: "group",
+      fields: [
+        {
+          name: "name",
+          label: "Institute name",
+          type: "text",
+          localized: true,
+        },
+        {
+          name: "phone",
+          label: "Phone number",
+          type: "text",
+        },
+        {
+          name: "website",
+          label: "Website",
+          type: "text",
+        },
+      ],
+    },
+    // { name: "Mental health help", type: "text", localized: true },
+    {
+      name: "antiDiscriminationHelp",
+      label: "Anti-discrimination help",
+      type: "group",
+      fields: [
+        {
+          name: "name",
+          label: "Institute name",
+          type: "text",
+          localized: true,
+        },
+        {
+          name: "phone",
+          label: "Phone number",
+          type: "text",
+        },
+        {
+          name: "website",
+          label: "Website",
+          type: "text",
+        },
+      ],
+    },
+    {
+      name: "sexualHarassmentHelp",
+      label: "Sexual harassment help",
+      type: "group",
+      fields: [
+        {
+          name: "name",
+          label: "Institute name",
+          type: "text",
+          localized: true,
+        },
+        {
+          name: "phone",
+          label: "Phone number",
+          type: "text",
+        },
+        {
+          name: "website",
+          label: "Website",
+          type: "text",
+        },
+      ],
+    },
   ],
 };
