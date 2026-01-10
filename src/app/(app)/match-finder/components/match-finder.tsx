@@ -10,88 +10,107 @@ import {
   SparklesIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Preferences = {
-  temperature: number;
   costOfLiving: number;
-  safety: number;
-  nightlife: number;
-  nature: number;
   englishProficiency: number;
-  publicTransport: number;
-  foodScene: number;
+  lgbtqFriendliness: number;
+  safety: number;
+  dietaryFriendliness: number;
+  cashlessPayment: number;
 };
 
 type Recommendation = {
   country: string;
+  slug: string;
   matchScore: number;
+  image?: string;
 };
 
 const questions = [
   {
-    key: "temperature" as const,
-    label: "Climate",
-    options: ["Cold", "Cool", "Moderate", "Warm", "Hot"],
-  },
-  {
     key: "costOfLiving" as const,
     label: "Budget",
-    options: ["Very low", "Low", "Medium", "High", "Very high"],
+    description: "What's your monthly budget for living expenses?",
+    options: [
+      "Very tight",
+      "Budget-friendly",
+      "Moderate",
+      "Comfortable",
+      "Flexible",
+    ],
   },
   {
-    key: "safety" as const,
-    label: "Safety",
+    key: "englishProficiency" as const,
+    label: "English",
+    description: "How important is English proficiency in the country?",
     options: [
-      "Not important",
-      "Slightly",
+      "Not needed",
+      "Basic is fine",
       "Moderate",
       "Important",
       "Essential",
     ],
   },
   {
-    key: "nightlife" as const,
-    label: "Nightlife",
-    options: ["Quiet", "Casual", "Moderate", "Active", "Vibrant"],
+    key: "lgbtqFriendliness" as const,
+    label: "LGBTQ+ Friendly",
+    description: "How important is LGBTQ+ acceptance to you?",
+    options: ["Not a factor", "Slightly", "Moderate", "Important", "Essential"],
   },
   {
-    key: "nature" as const,
-    label: "Nature",
-    options: ["Urban", "Mostly urban", "Balanced", "Nature lover", "Essential"],
+    key: "safety" as const,
+    label: "Safety",
+    description: "How concerned are you about natural hazards?",
+    options: [
+      "Not concerned",
+      "Slightly",
+      "Moderate",
+      "Concerned",
+      "Very concerned",
+    ],
   },
   {
-    key: "englishProficiency" as const,
-    label: "English",
-    options: ["Not needed", "Basic", "Moderate", "Important", "Essential"],
+    key: "dietaryFriendliness" as const,
+    label: "Dietary Options",
+    description: "How important are vegetarian/vegan food options?",
+    options: [
+      "Not important",
+      "Nice to have",
+      "Moderate",
+      "Important",
+      "Essential",
+    ],
   },
   {
-    key: "publicTransport" as const,
-    label: "Transport",
-    options: ["Not needed", "Basic", "Moderate", "Important", "Excellent"],
-  },
-  {
-    key: "foodScene" as const,
-    label: "Food",
-    options: ["Basic", "Simple", "Nice", "Important", "Essential"],
+    key: "cashlessPayment" as const,
+    label: "Cashless Payment",
+    description: "Do you prefer paying with card over cash?",
+    options: [
+      "Cash preferred",
+      "Mostly cash",
+      "Either works",
+      "Prefer card",
+      "Card essential",
+    ],
   },
 ];
 
 export function MatchFinder() {
-  const router = useRouter();
   const [preferences, setPreferences] = useState<Partial<Preferences>>({});
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recommendations, setRecommendations] = useState<
     Recommendation[] | null
   >(null);
-  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+  const [hoveredCountry, setHoveredCountry] = useState<Recommendation | null>(
+    null,
+  );
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   const DEFAULT_BG = "/images/home-hero-background.jpg";
-  const countryImagePath = hoveredCountry
-    ? `/images/destinations/${hoveredCountry.toLowerCase()}.webp`
-    : null;
+  const countryImagePath = hoveredCountry?.image;
 
   const backgroundImage =
     countryImagePath && !failedImages.has(countryImagePath)
@@ -105,6 +124,7 @@ export function MatchFinder() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    console.log("Chosen options:", preferences);
     try {
       const response = await fetch("/api/recommendation", {
         method: "POST",
@@ -113,6 +133,7 @@ export function MatchFinder() {
       });
 
       const data = await response.json();
+      console.log("Country values:", data.recommendations);
       setRecommendations(data.recommendations);
     } catch (error) {
       console.error("Failed to get recommendations:", error);
@@ -136,16 +157,6 @@ export function MatchFinder() {
   return (
     <section className="full-width relative flex min-h-lvh items-center justify-center overflow-clip">
       <div className="z-10 flex w-full max-w-md flex-col items-center gap-4 px-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => router.back()}
-          className="self-start text-stone-600 hover:text-stone-800"
-        >
-          <ArrowLeftIcon className="size-4" />
-          Back
-        </Button>
-
         {!recommendations ? (
           <Card
             size="md"
@@ -250,22 +261,31 @@ export function MatchFinder() {
               Your Top Matches
             </h2>
 
-            <div className="flex flex-col gap-3">
-              {recommendations.slice(0, 3).map((rec, index) => (
-                <div
-                  key={rec.country}
-                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 transition-all hover:border-primary hover:bg-primary/5"
-                  onMouseEnter={() => setHoveredCountry(rec.country)}
-                  onMouseLeave={() => setHoveredCountry(null)}
-                >
-                  <span className="font-bold text-primary">{index + 1}</span>
-                  <span className="flex-1 text-stone-800">{rec.country}</span>
-                  <span className="text-lg font-semibold text-primary">
-                    {rec.matchScore}%
-                  </span>
-                </div>
-              ))}
-            </div>
+            {recommendations.length === 0 ? (
+              <div className="py-8 text-center">
+                <p className="text-stone-600">
+                  No destinations found. Please add countries to the CMS first.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {recommendations.slice(0, 3).map((rec, index) => (
+                  <Link
+                    href={`/destination/${rec.slug}`}
+                    key={rec.country}
+                    className="flex cursor-pointer items-center gap-3 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 transition-all hover:border-primary hover:bg-primary/5"
+                    onMouseEnter={() => setHoveredCountry(rec)}
+                    onMouseLeave={() => setHoveredCountry(null)}
+                  >
+                    <span className="font-bold text-primary">{index + 1}</span>
+                    <span className="flex-1 text-stone-800">{rec.country}</span>
+                    <span className="text-lg font-semibold text-primary">
+                      {rec.matchScore}%
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
 
             <Button
               variant="outline"
@@ -291,7 +311,7 @@ export function MatchFinder() {
         fill
         onError={() => {
           if (countryImagePath) {
-            setFailedImages((prev) => new Set(prev).add(countryImagePath));
+            setFailedImages((prev) => new Set([...prev, countryImagePath]));
           }
         }}
       />
