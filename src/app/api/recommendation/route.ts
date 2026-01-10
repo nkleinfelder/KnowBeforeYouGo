@@ -143,27 +143,21 @@ function calculateMatchScore(
 ): number {
   const scores: { score: number; weight: number }[] = [];
 
-  // Cost of Living: User preference 1 = tight budget wants cheap (score 1)
-  // So we match user pref to country cost level
   const countryCost = normalizeCostOfLiving(
     country.culturalAndSocialNorms?.avgCostOfLiving,
   );
   const costMatch = 100 - Math.abs(countryCost - preferences.costOfLiving) * 25;
   scores.push({ score: costMatch, weight: 1.5 }); // Higher weight for budget
 
-  // English: User wants high English, country has high English = good match
   const countryEnglish = normalizeEnglishLevel(
     country.languageAndCommunication,
   );
-  // If user needs English (high pref), they want high country score
-  // If user doesn't need (low pref), any country is fine
   const englishMatch =
     preferences.englishProficiency <= 2
       ? 100 // Don't care about English
       : 100 - Math.max(0, preferences.englishProficiency - countryEnglish) * 25;
   scores.push({ score: englishMatch, weight: 1 });
 
-  // LGBTQ: Similar logic - if important, match needed
   const countryLgbtq = normalizeLgbtqLevel(country.culturalAndSocialNorms);
   const lgbtqMatch =
     preferences.lgbtqFriendliness <= 2
@@ -171,7 +165,6 @@ function calculateMatchScore(
       : 100 - Math.max(0, preferences.lgbtqFriendliness - countryLgbtq) * 25;
   scores.push({ score: lgbtqMatch, weight: 1 });
 
-  // Safety: User concerned about hazards wants safe country
   const countrySafety = normalizeHazardsIndex(country.safetyAndLegal);
   const safetyMatch =
     preferences.safety <= 2
@@ -179,7 +172,6 @@ function calculateMatchScore(
       : 100 - Math.max(0, preferences.safety - countrySafety) * 25;
   scores.push({ score: safetyMatch, weight: 1.2 });
 
-  // Dietary: If important, need good veg options
   const countryDietary = normalizeDietaryFriendliness(
     country.culturalAndSocialNorms,
   );
@@ -190,13 +182,11 @@ function calculateMatchScore(
         Math.max(0, preferences.dietaryFriendliness - countryDietary) * 25;
   scores.push({ score: dietaryMatch, weight: 0.8 });
 
-  // Cashless: Match payment preference
   const countryCashless = normalizeCashlessPayment(country.moneyAndPayments);
   const cashlessMatch =
     100 - Math.abs(countryCashless - preferences.cashlessPayment) * 20;
   scores.push({ score: cashlessMatch, weight: 0.7 });
 
-  // Calculate weighted average
   const totalWeight = scores.reduce((sum, s) => sum + s.weight, 0);
   const weightedSum = scores.reduce((sum, s) => sum + s.score * s.weight, 0);
 
@@ -205,25 +195,18 @@ function calculateMatchScore(
 
 async function getRecommendations(
   preferences: UserPreferences,
-  topN: number = 5,
+  topN: number = 3,
 ): Promise<CountryScore[]> {
-  console.log("\n=== User Preferences (Chosen Options) ===");
-  console.log(preferences);
-
   const data = await payload.find({
     collection: "countries",
     limit: 100,
-    depth: 1, // Populate relationships
+    depth: 1,
   });
 
-  console.log(`\nFound ${data.docs.length} countries in CMS`);
-
   if (data.docs.length === 0) {
-    console.log("No countries found in CMS database");
     return [];
   }
 
-  console.log("\n=== Country Values ===");
   const scored: CountryScore[] = data.docs.map((country) => {
     const countryValues = {
       costOfLiving: normalizeCostOfLiving(
@@ -240,8 +223,6 @@ async function getRecommendations(
       cashlessPayment: normalizeCashlessPayment(country.moneyAndPayments),
     };
     const matchScore = calculateMatchScore(country, preferences);
-
-    console.log(`${country.name}:`, { ...countryValues, matchScore });
 
     return {
       country: country.name,
@@ -274,7 +255,7 @@ export async function POST(request: Request) {
       "dietaryFriendliness",
       "cashlessPayment",
     ];
-
+    // safety should never be needed
     for (const field of requiredFields) {
       if (
         typeof body[field] !== "number" ||
@@ -299,14 +280,20 @@ export async function POST(request: Request) {
       cashlessPayment: body.cashlessPayment,
     };
 
-    const topN = body.topN || 5;
+    const topN = body.topN || 3;
     const recommendations = await getRecommendations(preferences, topN);
 
     return NextResponse.json({
       recommendations,
       userPreferences: preferences,
     });
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "Invalid JSON body",
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 400 },
+    );
   }
 }
