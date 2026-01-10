@@ -2,18 +2,33 @@ import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-c
 import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
 import { CountrySectionProps } from "./props";
 import { BarChartWithValues } from "@/src/components/charts/bar-chart";
+import { Country } from "@/payload-types";
+
+type PaymentMethodsPossiblyUndefined = NonNullable<
+  Country["moneyAndPayments"]
+>["paymentMethods"];
+type PaymentMethodsRequired = Required<
+  NonNullable<PaymentMethodsPossiblyUndefined>
+>;
+type PaymentMethods = {
+  [key in keyof PaymentMethodsRequired]: number;
+};
+
+function checkPaymentMethodsType(
+  data: PaymentMethodsPossiblyUndefined,
+): data is PaymentMethods {
+  if (!data) return false;
+  return Object.values(data).every((value) => typeof value === "number");
+}
+
 export function Money({
   id,
   title,
   Icon,
   data,
 }: CountrySectionProps<"moneyAndPayments">) {
-  const allPaymentMethodsPresent =
-    data &&
-    data.paymentMethods &&
-    Object.values(data.paymentMethods).every(
-      (value) => !!value && typeof value === "number",
-    );
+  const paymentMethods = data?.paymentMethods;
+  const allPaymentMethodsPresent = checkPaymentMethodsType(paymentMethods);
 
   return (
     <DetailInfo
@@ -35,29 +50,26 @@ export function Money({
             data={[
               {
                 label: "Card",
-                value: data.paymentMethods!["Payment by Card (%)"],
+                value: paymentMethods["Payment by Card (%)"],
                 fill: getBarColor(
-                  data.paymentMethods!["Payment by Card (%)"] ?? 0,
-                  // @ts-expect-error copmiler doesn't recognize that it's checked
-                  Object.values(data.paymentMethods),
+                  paymentMethods["Payment by Card (%)"],
+                  Object.values(paymentMethods),
                 ),
               },
               {
                 label: "Cash",
-                value: data.paymentMethods!["Payment by Cash (%)"],
+                value: paymentMethods["Payment by Cash (%)"],
                 fill: getBarColor(
-                  data.paymentMethods!["Payment by Cash (%)"] ?? 0,
-                  // @ts-expect-error copmiler doesn't recognize that it's checked
-                  Object.values(data.paymentMethods),
+                  paymentMethods["Payment by Cash (%)"],
+                  Object.values(paymentMethods),
                 ),
               },
               {
                 label: "App",
-                value: data.paymentMethods!["Payment by App (%)"],
+                value: paymentMethods["Payment by App (%)"],
                 fill: getBarColor(
-                  data.paymentMethods!["Payment by App (%)"] ?? 0,
-                  // @ts-expect-error copmiler doesn't recognize that it's checked
-                  Object.values(data.paymentMethods),
+                  paymentMethods["Payment by App (%)"],
+                  Object.values(paymentMethods),
                 ),
               },
             ]}
