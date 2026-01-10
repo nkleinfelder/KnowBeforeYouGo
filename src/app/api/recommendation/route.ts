@@ -1,159 +1,255 @@
 import { NextResponse } from "next/server";
+import { getPayload } from "payload";
+import config from "@payload-config";
+import type {
+  Country,
+  EnglishLevel,
+  LgbtqLevel,
+  HazardsIndex,
+} from "@/payload-types";
 
-// Country data with normalized scores (1-5 scale)
-// 1 = low/cold/cheap, 5 = high/hot/expensive
-interface CountryData {
-  name: string;
-  temperature: number; // 1 = cold, 5 = hot
-  costOfLiving: number; // 1 = cheap, 5 = expensive
-  safety: number; // 1 = less safe, 5 = very safe
-  nightlife: number; // 1 = quiet, 5 = vibrant
-  nature: number; // 1 = urban, 5 = nature-focused
-  englishProficiency: number; // 1 = low, 5 = high
-  publicTransport: number; // 1 = poor, 5 = excellent
-  foodScene: number; // 1 = basic, 5 = excellent
+const payload = await getPayload({ config });
+
+// User preferences from quiz (1-5 scale)
+interface UserPreferences {
+  costOfLiving: number; // 1 = tight budget, 5 = flexible
+  englishProficiency: number; // 1 = not needed, 5 = essential
+  lgbtqFriendliness: number; // 1 = not a factor, 5 = essential
+  safety: number; // 1 = not concerned, 5 = very concerned (about hazards)
+  dietaryFriendliness: number; // 1 = not important, 5 = essential
+  cashlessPayment: number; // 1 = cash preferred, 5 = card essential
 }
 
-const countries: CountryData[] = [
-  {
-    name: "Thailand",
-    temperature: 5,
-    costOfLiving: 1,
-    safety: 3,
-    nightlife: 4,
-    nature: 4,
-    englishProficiency: 2,
-    publicTransport: 3,
-    foodScene: 5,
-  },
-  {
-    name: "Japan",
-    temperature: 3,
-    costOfLiving: 4,
-    safety: 5,
-    nightlife: 4,
-    nature: 4,
-    englishProficiency: 2,
-    publicTransport: 5,
-    foodScene: 5,
-  },
-  {
-    name: "Portugal",
-    temperature: 4,
-    costOfLiving: 2,
-    safety: 5,
-    nightlife: 4,
-    nature: 3,
-    englishProficiency: 4,
-    publicTransport: 4,
-    foodScene: 4,
-  },
-  {
-    name: "Germany",
-    temperature: 2,
-    costOfLiving: 3,
-    safety: 5,
-    nightlife: 4,
-    nature: 3,
-    englishProficiency: 4,
-    publicTransport: 5,
-    foodScene: 3,
-  },
-  {
-    name: "Canada",
-    temperature: 1,
-    costOfLiving: 3,
-    safety: 5,
-    nightlife: 3,
-    nature: 5,
-    englishProficiency: 5,
-    publicTransport: 3,
-    foodScene: 3,
-  },
-  {
-    name: "Spain",
-    temperature: 4,
-    costOfLiving: 2,
-    safety: 4,
-    nightlife: 5,
-    nature: 3,
-    englishProficiency: 3,
-    publicTransport: 4,
-    foodScene: 5,
-  },
-];
+interface CountryScore {
+  country: string;
+  slug: string;
+  image?: string;
+  matchScore: number;
+}
 
-// User preferences from quiz (same scale 1-5)
-interface UserPreferences {
-  temperature: number;
-  costOfLiving: number;
-  safety: number;
-  nightlife: number;
-  nature: number;
-  englishProficiency: number;
-  publicTransport: number;
-  foodScene: number;
-  // Optional weights for each preference (default to 1)
-  weights?: {
-    temperature?: number;
-    costOfLiving?: number;
-    safety?: number;
-    nightlife?: number;
-    nature?: number;
-    englishProficiency?: number;
-    publicTransport?: number;
-    foodScene?: number;
-  };
+// Helper to get image URL from country
+function getCountryImage(images: Country["images"]): string | undefined {
+  const firstImage = images?.[0];
+  if (!firstImage) return undefined;
+  if (typeof firstImage.image === "string") return firstImage.image;
+  return firstImage.image?.url ?? undefined;
+}
+
+// Normalize cost of living to 1-5 scale (inverted: low cost = high score for budget travelers)
+function normalizeCostOfLiving(cost: number | null | undefined): number {
+  if (!cost) return 3; // Default to middle
+  // Assuming cost range roughly 400-2000€
+  if (cost <= 500) return 1; // Very cheap
+  if (cost <= 700) return 2; // Cheap
+  if (cost <= 1000) return 3; // Moderate
+  if (cost <= 1400) return 4; // Expensive
+  return 5; // Very expensive
+}
+
+// Convert English level relationship to 1-5 scale
+function normalizeEnglishLevel(
+  level: Country["languageAndCommunication"],
+): number {
+  const englishLevel = level?.englishLevels;
+  if (!englishLevel) return 3;
+
+  // If it's populated as an object
+  if (typeof englishLevel === "object" && "name" in englishLevel) {
+    const name = (englishLevel as EnglishLevel).name.toLowerCase();
+    if (name.includes("very high") || name.includes("excellent")) return 5;
+    if (name.includes("high")) return 4;
+    if (name.includes("moderate") || name.includes("medium")) return 3;
+    if (name.includes("low")) return 2;
+    if (name.includes("very low") || name.includes("minimal")) return 1;
+  }
+  return 3;
+}
+
+// Convert LGBTQ level relationship to 1-5 scale
+function normalizeLgbtqLevel(
+  cultural: Country["culturalAndSocialNorms"],
+): number {
+  const lgbtqLevel = cultural?.lgbtqFriendliness;
+  if (!lgbtqLevel) return 3;
+
+  if (typeof lgbtqLevel === "object" && "name" in lgbtqLevel) {
+    const name = (lgbtqLevel as LgbtqLevel).name.toLowerCase();
+    // Based on typical LGBTQ index naming
+    if (
+      name.includes("very friendly") ||
+      name.includes("excellent") ||
+      name.includes("high")
+    )
+      return 5;
+    if (name.includes("friendly") || name.includes("good")) return 4;
+    if (name.includes("moderate") || name.includes("mixed")) return 3;
+    if (name.includes("unfriendly") || name.includes("low")) return 2;
+    if (
+      name.includes("hostile") ||
+      name.includes("dangerous") ||
+      name.includes("very low")
+    )
+      return 1;
+  }
+  return 3;
+}
+
+// Convert hazards index to safety score (inverted: low hazards = high safety)
+function normalizeHazardsIndex(safety: Country["safetyAndLegal"]): number {
+  const hazards = safety?.naturalHazardsIndexEnum;
+  if (!hazards) return 3;
+
+  if (typeof hazards === "object" && "name" in hazards) {
+    const name = (hazards as HazardsIndex).name.toLowerCase();
+    // Inverted: low hazards = safe
+    if (name.includes("very low") || name.includes("minimal")) return 5;
+    if (name.includes("low")) return 4;
+    if (name.includes("moderate") || name.includes("medium")) return 3;
+    if (name.includes("high")) return 2;
+    if (name.includes("very high") || name.includes("extreme")) return 1;
+  }
+  return 3;
+}
+
+// Calculate dietary friendliness from veg percentages
+function normalizeDietaryFriendliness(
+  cultural: Country["culturalAndSocialNorms"],
+): number {
+  const vegShare = cultural?.vegetarianPopulationShare ?? 0;
+  const veganShare = cultural?.veganPopulationShare ?? 0;
+  const combinedShare = vegShare + veganShare;
+
+  if (combinedShare >= 15) return 5; // Very veg-friendly
+  if (combinedShare >= 10) return 4;
+  if (combinedShare >= 6) return 3;
+  if (combinedShare >= 3) return 2;
+  return 1; // Low veg population
+}
+
+// Calculate cashless payment score from card payment percentage
+function normalizeCashlessPayment(money: Country["moneyAndPayments"]): number {
+  const cardPercent = money?.paymentMethods?.["Payment by Card (%)"] ?? 50;
+
+  if (cardPercent >= 80) return 5; // Very cashless
+  if (cardPercent >= 60) return 4;
+  if (cardPercent >= 40) return 3;
+  if (cardPercent >= 20) return 2;
+  return 1; // Cash-heavy society
 }
 
 function calculateMatchScore(
-  country: CountryData,
+  country: Country,
   preferences: UserPreferences,
 ): number {
-  const weights = preferences.weights || {};
-  const defaultWeight = 1;
+  const scores: { score: number; weight: number }[] = [];
 
-  const criteria: (keyof Omit<CountryData, "name">)[] = [
-    "temperature",
-    "costOfLiving",
-    "safety",
-    "nightlife",
-    "nature",
-    "englishProficiency",
-    "publicTransport",
-    "foodScene",
-  ];
+  // Cost of Living: User preference 1 = tight budget wants cheap (score 1)
+  // So we match user pref to country cost level
+  const countryCost = normalizeCostOfLiving(
+    country.culturalAndSocialNorms?.avgCostOfLiving,
+  );
+  const costMatch = 100 - Math.abs(countryCost - preferences.costOfLiving) * 25;
+  scores.push({ score: costMatch, weight: 1.5 }); // Higher weight for budget
 
-  let totalScore = 0;
-  let totalWeight = 0;
+  // English: User wants high English, country has high English = good match
+  const countryEnglish = normalizeEnglishLevel(
+    country.languageAndCommunication,
+  );
+  // If user needs English (high pref), they want high country score
+  // If user doesn't need (low pref), any country is fine
+  const englishMatch =
+    preferences.englishProficiency <= 2
+      ? 100 // Don't care about English
+      : 100 - Math.max(0, preferences.englishProficiency - countryEnglish) * 25;
+  scores.push({ score: englishMatch, weight: 1 });
 
-  for (const criterion of criteria) {
-    const weight = weights[criterion] ?? defaultWeight;
-    const difference = Math.abs(country[criterion] - preferences[criterion]);
-    // Convert difference to a 0-100 score (0 difference = 100, 4 difference = 0)
-    const score = Math.max(0, 100 - difference * 25);
-    totalScore += score * weight;
-    totalWeight += weight;
-  }
+  // LGBTQ: Similar logic - if important, match needed
+  const countryLgbtq = normalizeLgbtqLevel(country.culturalAndSocialNorms);
+  const lgbtqMatch =
+    preferences.lgbtqFriendliness <= 2
+      ? 100
+      : 100 - Math.max(0, preferences.lgbtqFriendliness - countryLgbtq) * 25;
+  scores.push({ score: lgbtqMatch, weight: 1 });
 
-  return Math.round(totalScore / totalWeight);
+  // Safety: User concerned about hazards wants safe country
+  const countrySafety = normalizeHazardsIndex(country.safetyAndLegal);
+  const safetyMatch =
+    preferences.safety <= 2
+      ? 100
+      : 100 - Math.max(0, preferences.safety - countrySafety) * 25;
+  scores.push({ score: safetyMatch, weight: 1.2 });
+
+  // Dietary: If important, need good veg options
+  const countryDietary = normalizeDietaryFriendliness(
+    country.culturalAndSocialNorms,
+  );
+  const dietaryMatch =
+    preferences.dietaryFriendliness <= 2
+      ? 100
+      : 100 -
+        Math.max(0, preferences.dietaryFriendliness - countryDietary) * 25;
+  scores.push({ score: dietaryMatch, weight: 0.8 });
+
+  // Cashless: Match payment preference
+  const countryCashless = normalizeCashlessPayment(country.moneyAndPayments);
+  const cashlessMatch =
+    100 - Math.abs(countryCashless - preferences.cashlessPayment) * 20;
+  scores.push({ score: cashlessMatch, weight: 0.7 });
+
+  // Calculate weighted average
+  const totalWeight = scores.reduce((sum, s) => sum + s.weight, 0);
+  const weightedSum = scores.reduce((sum, s) => sum + s.score * s.weight, 0);
+
+  return Math.round(Math.max(0, Math.min(100, weightedSum / totalWeight)));
 }
 
-function getRecommendations(preferences: UserPreferences, topN: number = 5) {
-  const scored = countries.map((country) => ({
-    country: country.name,
-    matchScore: calculateMatchScore(country, preferences),
-    details: {
-      temperature: country.temperature,
-      costOfLiving: country.costOfLiving,
-      safety: country.safety,
-      nightlife: country.nightlife,
-      nature: country.nature,
-      englishProficiency: country.englishProficiency,
-      publicTransport: country.publicTransport,
-      foodScene: country.foodScene,
-    },
-  }));
+async function getRecommendations(
+  preferences: UserPreferences,
+  topN: number = 5,
+): Promise<CountryScore[]> {
+  console.log("\n=== User Preferences (Chosen Options) ===");
+  console.log(preferences);
+
+  const data = await payload.find({
+    collection: "countries",
+    limit: 100,
+    depth: 1, // Populate relationships
+  });
+
+  console.log(`\nFound ${data.docs.length} countries in CMS`);
+
+  if (data.docs.length === 0) {
+    console.log("No countries found in CMS database");
+    return [];
+  }
+
+  console.log("\n=== Country Values ===");
+  const scored: CountryScore[] = data.docs.map((country) => {
+    const countryValues = {
+      costOfLiving: normalizeCostOfLiving(
+        country.culturalAndSocialNorms?.avgCostOfLiving,
+      ),
+      englishProficiency: normalizeEnglishLevel(
+        country.languageAndCommunication,
+      ),
+      lgbtqFriendliness: normalizeLgbtqLevel(country.culturalAndSocialNorms),
+      safety: normalizeHazardsIndex(country.safetyAndLegal),
+      dietaryFriendliness: normalizeDietaryFriendliness(
+        country.culturalAndSocialNorms,
+      ),
+      cashlessPayment: normalizeCashlessPayment(country.moneyAndPayments),
+    };
+    const matchScore = calculateMatchScore(country, preferences);
+
+    console.log(`${country.name}:`, { ...countryValues, matchScore });
+
+    return {
+      country: country.name,
+      slug: country.slug ?? country.name.toLowerCase().replace(/\s+/g, "-"),
+      image: getCountryImage(country.images),
+      matchScore,
+    };
+  });
 
   // Sort by match score descending
   scored.sort((a, b) => b.matchScore - a.matchScore);
@@ -162,7 +258,7 @@ function getRecommendations(preferences: UserPreferences, topN: number = 5) {
 }
 
 export async function GET() {
-  return NextResponse.json({ message: " \n Recommendation endpoint working" });
+  return NextResponse.json({ message: "Recommendation endpoint working" });
 }
 
 export async function POST(request: Request) {
@@ -171,14 +267,12 @@ export async function POST(request: Request) {
 
     // Validate required fields
     const requiredFields = [
-      "temperature",
       "costOfLiving",
-      "safety",
-      "nightlife",
-      "nature",
       "englishProficiency",
-      "publicTransport",
-      "foodScene",
+      "lgbtqFriendliness",
+      "safety",
+      "dietaryFriendliness",
+      "cashlessPayment",
     ];
 
     for (const field of requiredFields) {
@@ -197,19 +291,16 @@ export async function POST(request: Request) {
     }
 
     const preferences: UserPreferences = {
-      temperature: body.temperature,
       costOfLiving: body.costOfLiving,
-      safety: body.safety,
-      nightlife: body.nightlife,
-      nature: body.nature,
       englishProficiency: body.englishProficiency,
-      publicTransport: body.publicTransport,
-      foodScene: body.foodScene,
-      weights: body.weights,
+      lgbtqFriendliness: body.lgbtqFriendliness,
+      safety: body.safety,
+      dietaryFriendliness: body.dietaryFriendliness,
+      cashlessPayment: body.cashlessPayment,
     };
 
     const topN = body.topN || 5;
-    const recommendations = getRecommendations(preferences, topN);
+    const recommendations = await getRecommendations(preferences, topN);
 
     return NextResponse.json({
       recommendations,
