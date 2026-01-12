@@ -6,8 +6,7 @@ import "./styles.css";
 import { LucideIcon } from "lucide-react";
 import { BlurElement, ContentWrapper, LinkWrapper } from "./client-elements";
 import { Nullable } from "@/src/lib/type-utils";
-
-const FALLBACK_IMAGE = "/images/country-fallback.webp";
+import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
 
 export type CountryCardProps = {
   name: string;
@@ -41,7 +40,7 @@ function CountryCardInner({ name, slug, image, tags }: CountryCardProps) {
 }
 
 function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
-  const imageSrc = image ?? FALLBACK_IMAGE;
+  const imageSrc = image ?? COUNTRY_FALLBACK_IMAGE;
 
   return (
     <div
@@ -52,10 +51,11 @@ function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
       <Image
         src={imageSrc}
         alt=""
-        width={256}
+        width={512}
         height={512}
         className="h-full w-full rounded-[inherit] object-cover"
         style={{ height: "var(--container-height)" }}
+        quality={90}
       />
       <BlurElement />
     </div>
