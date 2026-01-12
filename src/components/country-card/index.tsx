@@ -5,11 +5,14 @@ import { cn } from "@/src/lib/utils";
 import "./styles.css";
 import { LucideIcon } from "lucide-react";
 import { BlurElement, ContentWrapper, LinkWrapper } from "./client-elements";
+import { Nullable } from "@/src/lib/type-utils";
+
+const FALLBACK_IMAGE = "/images/country-fallback.webp";
 
 export type CountryCardProps = {
   name: string;
   slug: string;
-  image: string;
+  image?: Nullable<string>;
   tags: {
     name: string;
     icon: LucideIcon;
@@ -37,7 +40,9 @@ function CountryCardInner({ name, slug, image, tags }: CountryCardProps) {
   );
 }
 
-function BackgroundImage({ image }: { image: string }) {
+function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
+  const imageSrc = image ?? FALLBACK_IMAGE;
+
   return (
     <div
       className={cn(
@@ -45,7 +50,7 @@ function BackgroundImage({ image }: { image: string }) {
       )}
     >
       <Image
-        src={image}
+        src={imageSrc}
         alt=""
         width={256}
         height={512}
