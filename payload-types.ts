@@ -75,6 +75,7 @@ export interface Config {
     "lgbtq-levels": LgbtqLevel;
     plugTypes: PlugType;
     media: Media;
+    erasmusfundings: Erasmusfunding;
     "payload-kv": PayloadKv;
     users: User;
     "payload-locked-documents": PayloadLockedDocument;
@@ -91,6 +92,7 @@ export interface Config {
     "lgbtq-levels": LgbtqLevelsSelect<false> | LgbtqLevelsSelect<true>;
     plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    erasmusfundings: ErasmusfundingsSelect<false> | ErasmusfundingsSelect<true>;
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     "payload-locked-documents":
@@ -195,6 +197,7 @@ export interface Country {
     lgbtqFriendliness?: (string | null) | LgbtqLevel;
     lgbtqFriendlinessScore?: number | null;
     avgCostOfLiving?: number | null;
+    erasmusFunding?: (string | null) | Erasmusfunding;
   };
   languageAndCommunication?: {
     description?: string | null;
@@ -326,6 +329,21 @@ export interface LgbtqLevel {
   range?: string | null;
   description?: string | null;
   icon?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "erasmusfundings".
+ */
+export interface Erasmusfunding {
+  id: string;
+  groupName: string;
+  description?: string | null;
+  monthlyFunding: {
+    min: number;
+    max: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -463,6 +481,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: "erasmusfundings";
+        value: string | Erasmusfunding;
+      } | null)
+    | ({
         relationTo: "users";
         value: string | User;
       } | null);
@@ -544,6 +566,7 @@ export interface CountriesSelect<T extends boolean = true> {
         lgbtqFriendliness?: T;
         lgbtqFriendlinessScore?: T;
         avgCostOfLiving?: T;
+        erasmusFunding?: T;
       };
   languageAndCommunication?:
     | T
@@ -774,6 +797,22 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "erasmusfundings_select".
+ */
+export interface ErasmusfundingsSelect<T extends boolean = true> {
+  groupName?: T;
+  description?: T;
+  monthlyFunding?:
+    | T
+    | {
+        min?: T;
+        max?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

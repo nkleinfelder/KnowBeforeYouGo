@@ -12,6 +12,7 @@ import { HazardsIndex } from "@/src/collections/HazardsIndex";
 import { UserRequests } from "@/src/collections/UserRequests";
 import { EnglishLevels } from "@/src/collections/EnglishLevels";
 import { LgbtqLevels } from "@/src/collections/LgbtqLevels";
+import ErasmusFundings from "@/src/collections/ErasmusFundings";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -48,6 +49,7 @@ export default buildConfig({
     LgbtqLevels,
     PlugTypes,
     Media,
+    ErasmusFundings,
   ],
 
   plugins: [
