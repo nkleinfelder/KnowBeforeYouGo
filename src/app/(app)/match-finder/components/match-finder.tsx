@@ -34,6 +34,7 @@ type Recommendation = {
 };
 
 // Constants
+const FALLBACK_IMAGE = "/images/destinations/fallback.webp";
 const BACKGROUND_IMAGE = "/images/home-hero-background.jpg";
 
 const RANK_CONFIG = [
@@ -130,8 +131,8 @@ const QUESTIONS: {
 
 // TODO: Fetch hidden gems from CMS
 const HIDDEN_GEMS = [
-  { country: "Slovenia", slug: "slovenia" },
-  { country: "Estonia", slug: "estonia" },
+  { country: "Slovenia", slug: "slovenia", image: FALLBACK_IMAGE },
+  { country: "Estonia", slug: "estonia", image: FALLBACK_IMAGE },
 ];
 
 // Components
@@ -186,7 +187,7 @@ function RecommendationCard({
       <CountryCard
         name={rec.country}
         slug={rec.slug}
-        image={rec.image}
+        image={rec.image || FALLBACK_IMAGE}
         tags={tags}
       />
     </div>
@@ -203,7 +204,12 @@ function HiddenGemCard({ gem }: { gem: (typeof HIDDEN_GEMS)[number] }) {
       <div className="absolute -top-2 left-4 z-10 rounded-full bg-gradient-to-r from-purple-400 to-violet-500 px-2 py-0.5 text-xs font-bold text-white shadow-md">
         💎 Hidden Gem
       </div>
-      <CountryCard name={gem.country} slug={gem.slug} tags={tags} />
+      <CountryCard
+        name={gem.country}
+        slug={gem.slug}
+        image={gem.image}
+        tags={tags}
+      />
     </div>
   );
 }
