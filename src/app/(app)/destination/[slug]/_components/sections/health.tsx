@@ -5,8 +5,10 @@ import { Nullable } from "@/src/lib/type-utils";
 import {
   AlertTriangleIcon,
   AwardIcon,
-  GhostIcon,
+  Link2Icon,
+  LinkIcon,
   LucideIcon,
+  PhoneIcon,
   UserRoundSearchIcon,
 } from "lucide-react";
 import { cn } from "@/src/lib/utils";
@@ -17,21 +19,35 @@ export function Health({
   Icon,
   data,
 }: CountrySectionProps<"health">) {
-  const helplines: { label: string; value: string }[] = [];
-  if (!!data?.["Mental health help"])
+  const helplines: {
+    label: string;
+    name?: Nullable<string>;
+    phone?: Nullable<string>;
+    website?: Nullable<string>;
+  }[] = [];
+  if (
+    !!data?.mentalHealthHelp &&
+    (data.mentalHealthHelp.phone || data.mentalHealthHelp.website)
+  )
     helplines.push({
       label: "Mental health help",
-      value: data["Mental health help"],
+      ...data.mentalHealthHelp,
     });
-  if (!!data?.["Anti discrimination help"])
+  if (
+    !!data?.antiDiscriminationHelp &&
+    (data.antiDiscriminationHelp.phone || data.antiDiscriminationHelp.website)
+  )
     helplines.push({
       label: "Anti discrimination help",
-      value: data["Anti discrimination help"],
+      ...data.antiDiscriminationHelp,
     });
-  if (!!data?.["Sexual harassment help"])
+  if (
+    !!data?.sexualHarassmentHelp &&
+    (data.sexualHarassmentHelp.phone || data.sexualHarassmentHelp.website)
+  )
     helplines.push({
       label: "Sexual harassment help",
-      value: data["Sexual harassment help"],
+      ...data.sexualHarassmentHelp,
     });
 
   return (
@@ -47,12 +63,38 @@ export function Health({
       />
       <InfoCard.Container title="Helplines" className="md:col-[2/-1]">
         <InfoCard.List.ListContent>
-          {helplines.map(({ label, value }) => (
-            <InfoCard.List.ListItemWithTitle
+          {helplines.map(({ label, name, phone, website }) => (
+            <InfoCard.List.ListItem
               key={label}
-              title={label}
-              description={value}
-            />
+              className="gap grid flex-col pb-3 font-normal"
+            >
+              <h4 className="text-sm font-semibold">{label}</h4>
+              {name && <p className="">{name}</p>}
+              <div className="mt-2 flex flex-wrap gap-1">
+                {phone && (
+                  <a
+                    className="flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1.5 shadow transition-colors duration-150 ease-in-out hover:border-primary/20 hover:bg-primary/7 focus-visible:border-primary/20 focus-visible:bg-primary/7"
+                    href={`tel:${phone}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <PhoneIcon className="size-3.5 text-primary" />
+                    <span className="text-muted-foreground">{phone}</span>
+                  </a>
+                )}
+                {website && (
+                  <a
+                    className="flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1.5 shadow transition-colors duration-150 ease-in-out hover:border-primary/20 hover:bg-primary/7 focus-visible:border-primary/20 focus-visible:bg-primary/7"
+                    href={website}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <LinkIcon className="size-4 text-primary" />
+                    <span className="text-muted-foreground">{website}</span>
+                  </a>
+                )}
+              </div>
+            </InfoCard.List.ListItem>
           ))}
         </InfoCard.List.ListContent>
       </InfoCard.Container>

@@ -8,13 +8,13 @@ export function Sponsors() {
       <h2 className="text-center text-stone-300">Supported By</h2>
       <div className="grid auto-cols-[7rem] gap-x-12 gap-y-4 md:grid-flow-col">
         <Sponsor
-          href=""
+          href="https://www.uni-koeln.de/"
           image="/images/sponsors/uni-koeln.webp"
           name="Universität zu Köln"
           className="rounded-full"
         />
         <Sponsor
-          href=""
+          href="https://gateway-unikoeln.de/"
           image="/images/sponsors/gateway.webp"
           name="Gateway Cologne"
         />

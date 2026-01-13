@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getCountryImage(images: Country["images"]) {
   const firstImage = images?.[0];
-  if (!firstImage) return "error";
+  if (!firstImage) return null;
 
   if (typeof firstImage.image === "string") return firstImage.image;
   return firstImage.image?.url ?? "error";

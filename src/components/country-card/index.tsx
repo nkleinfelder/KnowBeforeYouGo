@@ -5,11 +5,13 @@ import { cn } from "@/src/lib/utils";
 import "./styles.css";
 import { LucideIcon } from "lucide-react";
 import { BlurElement, ContentWrapper, LinkWrapper } from "./client-elements";
+import { Nullable } from "@/src/lib/type-utils";
+import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
 
 export type CountryCardProps = {
   name: string;
   slug: string;
-  image: string;
+  image?: Nullable<string>;
   tags: {
     name: string;
     icon: LucideIcon;
@@ -37,7 +39,9 @@ function CountryCardInner({ name, slug, image, tags }: CountryCardProps) {
   );
 }
 
-function BackgroundImage({ image }: { image: string }) {
+function BackgroundImage({ image }: Pick<CountryCardProps, "image">) {
+  const imageSrc = image ?? COUNTRY_FALLBACK_IMAGE;
+
   return (
     <div
       className={cn(
@@ -45,12 +49,13 @@ function BackgroundImage({ image }: { image: string }) {
       )}
     >
       <Image
-        src={image}
+        src={imageSrc}
         alt=""
-        width={256}
+        width={512}
         height={512}
         className="h-full w-full rounded-[inherit] object-cover"
         style={{ height: "var(--container-height)" }}
+        quality={90}
       />
       <BlurElement />
     </div>

@@ -1,4 +1,6 @@
 import { Badge } from "@/src/components/ui/badge";
+import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
+import { Nullable } from "@/src/lib/type-utils";
 import Image from "next/image";
 
 export function Header({
@@ -7,7 +9,7 @@ export function Header({
   subtitle,
   tags,
 }: {
-  image: string;
+  image?: Nullable<string>;
   name: string;
   subtitle?: string;
   tags?: string[];
@@ -15,10 +17,11 @@ export function Header({
   return (
     <header className="full-width h-96 w-full overflow-hidden">
       <Image
-        src={image}
+        src={image ?? COUNTRY_FALLBACK_IMAGE}
         alt=""
         width={1920}
         height={1080}
+        quality={90}
         sizes="100vw"
         className="full-width row-start-1 row-end-2 h-full w-full scale-105 overflow-hidden bg-stone-800 mask-linear-180 mask-linear-from-stone-800 mask-linear-from-60% mask-linear-to-transparent mask-linear-to-[calc(100%-2.5%)] object-cover object-center blur-xs brightness-75"
       />
