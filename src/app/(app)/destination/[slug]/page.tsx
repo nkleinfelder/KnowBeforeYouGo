@@ -11,12 +11,11 @@ import {
   ShieldIcon,
 } from "lucide-react";
 import { ScrollAnchorLinks } from "./_components/scroll-anchor-links";
-import { getPayload } from "payload";
-import config from "@payload-config";
 import * as InfoSection from "./_components/sections";
 import { getCountryImage } from "@/src/lib/utils";
+import { getConfiguredPayload } from "@/src/lib/payload";
 
-const payload = await getPayload({ config });
+const payload = await getConfiguredPayload();
 
 const SECTIONS = {
   ESSENTIAL: {
@@ -90,6 +89,7 @@ export default async function Page({
         name={country.name}
       />
       <ScrollAnchorLinks sections={ANCHOR_LINKS} />
+      <Sections.OriginSelect />
       <Sections.EssentialInfo
         id={SECTIONS.ESSENTIAL.id}
         title={SECTIONS.ESSENTIAL.title}
@@ -154,10 +154,7 @@ export default async function Page({
         data={country.dailyLifeAndLifestyle}
       />
 
-      <Sections.ShareExperience
-        countryId={country.slug ?? ""}
-        countryName={country.name}
-      />
+      <Sections.ShareExperience countryId={slug} countryName={country.name} />
     </main>
   );
 }

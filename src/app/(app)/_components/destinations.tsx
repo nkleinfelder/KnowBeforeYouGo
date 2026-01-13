@@ -1,10 +1,9 @@
 import { CountryCard, CountryCardProps } from "@/src/components/country-card";
-import { getPayload } from "payload";
-import config from "@payload-config";
 import { getCountryImage } from "@/src/lib/utils";
 import { EuroIcon } from "lucide-react";
+import { getConfiguredPayload } from "@/src/lib/payload";
 
-const payload = await getPayload({ config });
+const payload = await getConfiguredPayload();
 
 export async function Destinations() {
   const data = await payload.find({

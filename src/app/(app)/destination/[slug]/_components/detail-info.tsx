@@ -9,11 +9,13 @@ export function DetailInfo({
   Icon,
   id,
   children,
+  className,
 }: PropsWithChildren<{
   title: string;
   description?: Nullable<string>;
   Icon: LucideIcon;
   id: string;
+  className?: string;
 }>) {
   return (
     <Primitives.Section id={id}>
@@ -24,7 +26,7 @@ export function DetailInfo({
           <Primitives.Description>{description}</Primitives.Description>
         )}
       </Primitives.Header>
-      <Primitives.Grid>{children}</Primitives.Grid>
+      <Primitives.Grid className={className}>{children}</Primitives.Grid>
     </Primitives.Section>
   );
 }

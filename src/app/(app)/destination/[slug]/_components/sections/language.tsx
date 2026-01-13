@@ -1,6 +1,7 @@
 import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-cards";
 import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
 import { CountrySectionProps } from "./props";
+import { EnglishLevel } from "./compare-to-origin-items";
 
 export function Language({
   id,
@@ -19,18 +20,15 @@ export function Language({
         title="Languages"
         items={data?.localLanguages?.map((item) => item.language) ?? []}
       />
-      {data?.englishLevels && typeof data.englishLevels === "object" && (
-        <InfoCard.Text
-          title="English level"
-          description="English Proficiency Index"
-          size="medium"
-        >
-          {data.englishLevels.name}
-          <span className="text-xs font-normal text-muted-foreground">
-            {data.englishLevels.description}
-          </span>
-        </InfoCard.Text>
-      )}
+      {data?.englishLevels &&
+        typeof data.englishLevels === "object" &&
+        data.englishLevelScore && (
+          <EnglishLevel
+            name={data.englishLevels.name}
+            description={data.englishLevels.description ?? ""}
+            score={data.englishLevelScore}
+          />
+        )}
       {data?.messengerApps && data.messengerApps.length > 0 && (
         <InfoCard.Apps title="Messenger Apps" apps={data.messengerApps} />
       )}

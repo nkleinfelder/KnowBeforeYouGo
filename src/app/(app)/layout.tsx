@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/src/components/header";
+import { TRPCReactProvider } from "@/src/server/react";
 
 const bodyFont = Manrope({
   variable: "--font-normal",
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${bodyFont.variable} antialiased`}>
-        <Header />
-        {children}
+        <TRPCReactProvider>
+          <Header />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );
