@@ -14,6 +14,7 @@ import {
   SparklesIcon,
   TrophyIcon,
 } from "lucide-react";
+import { InfoPopover } from "@/src/components/ui-extensions/info-popover";
 
 // Types
 type Preferences = {
@@ -45,66 +46,85 @@ const QUESTIONS: {
   key: keyof Preferences;
   label: string;
   options: string[];
+  extraInfo?: string;
 }[] = [
   {
     key: "costOfLiving",
-    label: "Budget",
+    label: "Budget Constraints",
     options: [
-      "Very tight",
-      "Budget-friendly",
-      "Moderate",
-      "Comfortable",
-      "Flexible",
+      "Minimal priority",
+      "Low priority",
+      "Neutral",
+      "High priority",
+      "Top priority",
     ],
+    extraInfo:
+      "Reflect on how much emphasis you want to place on keeping overall trip costs low (accommodation, meals, transport, activities).",
   },
   {
     key: "englishProficiency",
-    label: "English",
+    label: "English Usage",
     options: [
-      "Not needed",
-      "Basic is fine",
-      "Moderate",
-      "Important",
-      "Essential",
+      "Minimal priority",
+      "Low priority",
+      "Neutral",
+      "High priority",
+      "Top priority",
     ],
+    extraInfo:
+      "Consider how much you value destinations where English is commonly spoken by locals, staff, or on signage/menus.",
   },
   {
     key: "lgbtqFriendliness",
-    label: "LGBTQ+ Friendly",
-    options: ["Not a factor", "Slightly", "Moderate", "Important", "Essential"],
+    label: "LGBTQ+ Acceptance",
+    options: [
+      "Minimal priority",
+      "Low priority",
+      "Neutral",
+      "High priority",
+      "Top priority",
+    ],
+    extraInfo:
+      "Think about how important a supportive environment (legal protections, social attitudes, visible inclusivity) is for you.",
   },
   {
     key: "safety",
-    label: "Safety",
+    label: "Personal Safety",
     options: [
-      "Not concerned",
-      "Slightly",
-      "Moderate",
-      "Concerned",
-      "Very concerned",
+      "Minimal priority",
+      "Low priority",
+      "Neutral",
+      "High priority",
+      "Top priority",
     ],
+    extraInfo:
+      "Weigh how much you prioritize low crime, stable conditions, reliable healthcare, and overall security.",
   },
   {
     key: "dietaryFriendliness",
-    label: "Dietary Options",
+    label: "Dietary Needs",
     options: [
-      "Not important",
-      "Nice to have",
-      "Moderate",
-      "Important",
-      "Essential",
+      "Minimal priority",
+      "Low priority",
+      "Neutral",
+      "High priority",
+      "Top priority",
     ],
+    extraInfo:
+      "Consider ease of finding food matching your preferences or requirements (e.g., plant-based, religious, allergies).",
   },
   {
     key: "cashlessPayment",
-    label: "Cashless Payment",
+    label: "Payment Methods",
     options: [
-      "Cash preferred",
-      "Mostly cash",
-      "Either works",
-      "Prefer card",
-      "Card essential",
+      "Minimal priority",
+      "Low priority",
+      "Neutral",
+      "High priority",
+      "Top priority",
     ],
+    extraInfo:
+      "Reflect on your preference for card/mobile payments versus cash availability and acceptance.",
   },
 ];
 
@@ -259,9 +279,16 @@ export function MatchFinder() {
 
             {/* Question */}
             <div className="py-4 text-center">
-              <h2 className="text-2xl font-semibold text-stone-800">
-                {currentQuestion.label}
-              </h2>
+              <div className="flex items-center justify-center gap-1">
+                <h2 className="text-2xl font-semibold text-stone-800">
+                  {currentQuestion.label}
+                </h2>
+                {currentQuestion.extraInfo && (
+                  <InfoPopover contentClassName="max-w-xs text-stone-600">
+                    {currentQuestion.extraInfo}
+                  </InfoPopover>
+                )}
+              </div>
             </div>
 
             {/* Options */}
