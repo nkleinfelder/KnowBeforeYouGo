@@ -14,6 +14,10 @@ import { ScrollAnchorLinks } from "./_components/scroll-anchor-links";
 import * as InfoSection from "./_components/sections";
 import { getCountryImage } from "@/src/lib/utils";
 import { getConfiguredPayload } from "@/src/lib/payload";
+import {
+  OriginCountryPicker,
+  OriginPickerDialog,
+} from "@/src/components/origin-country-picker";
 
 const payload = await getConfiguredPayload();
 
@@ -84,12 +88,12 @@ export default async function Page({
 
   return (
     <main className="content-grid gap-y-12 pb-12">
+      <OriginPickerDialog onboardingVariant />
       <Sections.Header
         image={getCountryImage(country.images)}
         name={country.name}
       />
       <ScrollAnchorLinks sections={ANCHOR_LINKS} />
-      <Sections.OriginSelect />
       <Sections.EssentialInfo
         id={SECTIONS.ESSENTIAL.id}
         title={SECTIONS.ESSENTIAL.title}
@@ -155,6 +159,7 @@ export default async function Page({
       />
 
       <Sections.ShareExperience countryId={slug} countryName={country.name} />
+      <OriginCountryPicker />
     </main>
   );
 }

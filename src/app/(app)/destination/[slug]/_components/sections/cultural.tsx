@@ -45,6 +45,7 @@ export function Cultural({
         description="Average in €/month"
         size="large"
         variant="primary"
+        tooltip="Note that the value is based on the average cost of single appartments. Most important is the comparison to your home country, so select one and check!"
       >
         {data?.avgCostOfLiving}€
       </InfoCard.Text>

@@ -15,6 +15,7 @@ export function Language({
       title={title}
       Icon={Icon}
       description={data?.description}
+      className="md:has-[&>:nth-child(4):last-child]:grid-cols-2 md:has-[&>:nth-child(2):last-child]:grid-cols-2"
     >
       <InfoCard.List.List
         title="Languages"
