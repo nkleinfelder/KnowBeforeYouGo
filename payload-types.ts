@@ -184,6 +184,7 @@ export interface Country {
   id: string;
   name: string;
   slug?: string | null;
+  hiddenGem?: boolean | null;
   images?:
     | {
         image: string | Media;
@@ -551,6 +552,7 @@ export interface AppsSelect<T extends boolean = true> {
 export interface CountriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  hiddenGem?: T;
   images?:
     | T
     | {

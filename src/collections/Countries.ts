@@ -61,6 +61,12 @@ export const Countries: CollectionConfig = {
       },
     },
     {
+      name: "hiddenGem",
+      label: "Hidden Gem",
+      type: "checkbox",
+      defaultValue: false,
+    },
+    {
       name: "images",
       label: "Images",
       type: "array",
