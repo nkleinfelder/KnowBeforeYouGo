@@ -2,7 +2,13 @@
 import { ChartConfig, ChartContainer } from "@/src/components/ui/chart";
 import { cn } from "@/src/lib/utils";
 import { ReactNode } from "react";
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
+import {
+  Customized,
+  Label,
+  PolarRadiusAxis,
+  RadialBar,
+  RadialBarChart,
+} from "recharts";
 import { DataKey } from "recharts/types/util/types";
 
 const chartConfig: ChartConfig = {};
@@ -90,12 +96,16 @@ export function RadialChartStacked<T extends Record<string, unknown>[]>({
           />
         ))}
         {referenceValue !== undefined && (
-          <ReferenceLine
-            value={referenceValue}
-            maxValue={maxValue}
-            minValue={minValue}
-            innerRadius={80}
-            outerRadius={130}
+          <Customized
+            component={
+              <ReferenceLine
+                value={referenceValue}
+                maxValue={maxValue}
+                minValue={minValue}
+                innerRadius={80}
+                outerRadius={130}
+              />
+            }
           />
         )}
       </RadialBarChart>
