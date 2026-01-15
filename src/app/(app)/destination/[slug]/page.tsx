@@ -11,12 +11,15 @@ import {
   ShieldIcon,
 } from "lucide-react";
 import { ScrollAnchorLinks } from "./_components/scroll-anchor-links";
-import { getPayload } from "payload";
-import config from "@payload-config";
 import * as InfoSection from "./_components/sections";
 import { getCountryImage } from "@/src/lib/utils";
+import { getConfiguredPayload } from "@/src/lib/payload";
+import {
+  OriginCountryPicker,
+  OriginPickerDialog,
+} from "@/src/components/origin-country-picker";
 
-const payload = await getPayload({ config });
+const payload = await getConfiguredPayload();
 
 const SECTIONS = {
   ESSENTIAL: {
@@ -85,6 +88,7 @@ export default async function Page({
 
   return (
     <main className="content-grid gap-y-12 pb-12">
+      <OriginPickerDialog onboardingVariant />
       <Sections.Header
         image={getCountryImage(country.images)}
         name={country.name}
@@ -154,10 +158,8 @@ export default async function Page({
         data={country.dailyLifeAndLifestyle}
       />
 
-      <Sections.ShareExperience
-        countryId={country.slug ?? ""}
-        countryName={country.name}
-      />
+      <Sections.ShareExperience countryId={slug} countryName={country.name} />
+      <OriginCountryPicker />
     </main>
   );
 }

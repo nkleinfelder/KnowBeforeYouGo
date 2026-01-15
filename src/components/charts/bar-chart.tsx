@@ -1,5 +1,5 @@
 "use client";
-import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, BarProps, LabelList, XAxis, YAxis } from "recharts";
 import { ChartContainer } from "@/src/components/ui/chart";
 import { DataKey } from "recharts/types/util/types";
 
@@ -7,6 +7,7 @@ type Props<T extends Record<string, unknown>[]> = {
   data: T | undefined;
   xAxis: keyof T[number];
   yAxis: keyof T[number];
+  yAxisReference?: keyof T[number];
   barColor?: string;
   barRadius?: number;
   cells?: React.ReactNode;
@@ -42,6 +43,7 @@ export function BarChartWithValues<T extends Record<string, unknown>[]>({
   data,
   xAxis,
   yAxis,
+  yAxisReference,
   barColor = "var(--color-primary-400)",
   barRadius = 8,
   cells,
@@ -67,6 +69,14 @@ export function BarChartWithValues<T extends Record<string, unknown>[]>({
           tickMargin={10}
           axisLine={false}
         />
+        {yAxisReference && (
+          <XAxis
+            dataKey={xAxis as DataKey<T>}
+            xAxisId={"reference-axis"}
+            hide
+          />
+        )}
+
         <Bar dataKey={yAxis as DataKey<T>} fill={barColor} radius={barRadius}>
           <LabelList
             position="top"
@@ -80,6 +90,37 @@ export function BarChartWithValues<T extends Record<string, unknown>[]>({
             }
           />
         </Bar>
+        {yAxisReference && (
+          <Bar
+            dataKey={yAxisReference as DataKey<T>}
+            xAxisId="reference-axis"
+            fill="transparent"
+            // We use a custom shape to draw the line instead of a bar rectangle
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            shape={(props: any) => {
+              const { x, y, width, payload } = props;
+
+              // Only render if the data entry actually has this value
+              if (payload && payload[yAxisReference] === undefined) {
+                return <g />;
+              }
+
+              return (
+                <line
+                  x1={x - 8}
+                  y1={y}
+                  x2={x + width + 8}
+                  y2={y}
+                  stroke="var(--chart-4)"
+                  strokeWidth={3}
+                  strokeDasharray="5 5"
+                  strokeLinecap="round"
+                  className="animate-in fade-in"
+                />
+              );
+            }}
+          />
+        )}
         {cells}
       </BarChart>
     </ChartContainer>

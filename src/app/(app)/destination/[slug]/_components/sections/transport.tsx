@@ -5,6 +5,8 @@ import { Nullable } from "@/src/lib/type-utils";
 import { CheckIcon, XIcon } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 
+// TODO: compare driving permits
+
 export function Transport({
   id,
   title,

@@ -2,7 +2,13 @@
 import { ChartConfig, ChartContainer } from "@/src/components/ui/chart";
 import { cn } from "@/src/lib/utils";
 import { ReactNode } from "react";
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
+import {
+  Customized,
+  Label,
+  PolarRadiusAxis,
+  RadialBar,
+  RadialBarChart,
+} from "recharts";
 import { DataKey } from "recharts/types/util/types";
 
 const chartConfig: ChartConfig = {};
@@ -11,6 +17,9 @@ type Props<T extends Record<string, unknown>[]> = {
   data: T | undefined;
   dataKeys: (keyof T[number])[];
   cells?: React.ReactNode;
+  referenceValue?: number;
+  maxValue?: number;
+  minValue?: number;
   className?: string;
   innerText?: {
     title: ReactNode;
@@ -27,6 +36,9 @@ export function RadialChartStacked<T extends Record<string, unknown>[]>({
   data,
   innerText,
   dataKeys,
+  referenceValue,
+  maxValue = 100,
+  minValue = 0,
   className,
 }: Props<T>) {
   return (
@@ -80,9 +92,56 @@ export function RadialChartStacked<T extends Record<string, unknown>[]>({
             stackId="a"
             cornerRadius={5}
             className="translate-y-9 stroke-transparent stroke-2"
+            animationDuration={300}
           />
         ))}
+        {referenceValue !== undefined && (
+          <Customized
+            component={
+              <ReferenceLine
+                value={referenceValue}
+                maxValue={maxValue}
+                minValue={minValue}
+                innerRadius={80}
+                outerRadius={130}
+              />
+            }
+          />
+        )}
       </RadialBarChart>
     </ChartContainer>
+  );
+}
+
+function ReferenceLine({
+  value,
+  maxValue,
+  minValue,
+  innerRadius,
+  outerRadius,
+}: {
+  value: number;
+  maxValue: number;
+  minValue: number;
+  innerRadius: number;
+  outerRadius: number;
+}) {
+  const lineLength = innerRadius + (outerRadius - innerRadius) / 2;
+  const range = maxValue - minValue;
+  const rotation = 180 + ((value - minValue) / range) * 180;
+
+  return (
+    <path
+      d={`M0,0l${lineLength},0`}
+      stroke="var(--chart-4)"
+      strokeWidth={3}
+      strokeDashoffset={15 - innerRadius}
+      strokeDasharray="5 5 5 5 5 5 5 5 5 5 500"
+      strokeLinecap="round"
+      style={{
+        transform: `translate(50%, calc(100% - 1rem)) rotate(${rotation}deg)`,
+        transformOrigin: "0px 0px",
+      }}
+    />
   );
 }

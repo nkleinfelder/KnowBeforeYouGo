@@ -68,7 +68,7 @@ export function Daily({
           className="md:col-start-3 md:row-span-4 md:row-start-1"
         >
           <InfoCard.List.ListContent className="md:row-span-3">
-            {[1, 2, 3, 4, 5, 6, 0].map((day) => (
+            {([1, 2, 3, 4, 5, 6, 0] as const).map((day) => (
               <OpeningDay
                 day={day}
                 isOpen={openingDays?.includes(day) ?? false}
@@ -128,12 +128,22 @@ function PlugTypeListItem({
   );
 }
 
-function OpeningDay({ day, isOpen }: { day: number; isOpen: boolean }) {
-  const dayDate = new Date(new Date().setDate(day));
-  const dayName = dayDate.toLocaleString("en-us", {
-    weekday: "long",
-  });
-
+const WEEKDAYS = {
+  0: "Sunday",
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
+} as const satisfies Record<number, string>;
+function OpeningDay({
+  day,
+  isOpen,
+}: {
+  day: keyof typeof WEEKDAYS;
+  isOpen: boolean;
+}) {
   return (
     <InfoCard.List.ListItem
       className="group flex items-center gap-x-1.5 px-2"
@@ -145,7 +155,7 @@ function OpeningDay({ day, isOpen }: { day: number; isOpen: boolean }) {
         <XIcon className="size-4 text-red-500" />
       )}
       <h4 className="text-xs font-medium group-data-[state=closed]:text-muted-foreground">
-        {dayName}
+        {WEEKDAYS[day]}
       </h4>
     </InfoCard.List.ListItem>
   );
