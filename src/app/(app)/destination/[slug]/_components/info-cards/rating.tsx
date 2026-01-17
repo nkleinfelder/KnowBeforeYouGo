@@ -1,8 +1,15 @@
+"use client";
 import { RadialChartStacked } from "@/src/components/charts/radial-chart";
 import { InfoCard, InfoCardProps } from "./container";
 import { cn } from "@/src/lib/utils";
+import { useLocalStorage } from "usehooks-ts";
 
 export function ReferenceValueLabel({ className }: { className?: string }) {
+  const [originCountry] = useLocalStorage<{
+    name: string;
+    slug: string;
+  } | null>("originCountry", null);
+
   return (
     <p
       className={cn(
@@ -11,7 +18,7 @@ export function ReferenceValueLabel({ className }: { className?: string }) {
       )}
     >
       <span className="size-2 rounded-xs bg-chart-4" />
-      Your Country
+      {originCountry?.name}
     </p>
   );
 }
