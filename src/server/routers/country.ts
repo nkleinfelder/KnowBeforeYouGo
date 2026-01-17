@@ -47,6 +47,7 @@ export const countryRouter = createTRPCRouter({
             lgbtqFriendlinessScore: true,
             veganPopulationShare: true,
             vegetarianPopulationShare: true,
+            avgCostOfLiving: true,
           },
           moneyAndPayments: {
             paymentMethods: true,
@@ -97,6 +98,7 @@ export const countryRouter = createTRPCRouter({
         vegetarianPopulationShare:
           data.culturalAndSocialNorms?.vegetarianPopulationShare ?? undefined,
         paymentMethods: data.moneyAndPayments?.paymentMethods,
+        costOfLiving: data.culturalAndSocialNorms?.avgCostOfLiving ?? undefined,
       };
     }),
 });

@@ -26,7 +26,37 @@ function useCompareInfo() {
       : skipToken,
   );
 
-  return data;
+  return { ...data, compareTo: originCountry?.name };
+}
+
+export function CostOfLiving({
+  value,
+}: CompareProps<{
+  value: number;
+}>) {
+  const data = useCompareInfo();
+
+  return (
+    <InfoCard.Text
+      title="Cost of Living"
+      description="Average in €/month"
+      size="large"
+      variant="primary"
+      tooltip="Note that the value is based on the average cost of single appartments. Most important is the comparison to your home country, so select one and check!"
+      className="flex-row gap-8"
+      as="div"
+    >
+      <p>{value.toFixed(0)}€</p>
+      {data?.costOfLiving && (
+        <section className="text-chart-4 flex flex-col">
+          <p className="leading-none">{data?.costOfLiving}€</p>
+          <p className="text-xs text-muted-foreground font-normal leading-none">
+            {data.compareTo}
+          </p>
+        </section>
+      )}
+    </InfoCard.Text>
+  );
 }
 
 export function EnglishLevel({
@@ -46,7 +76,7 @@ export function EnglishLevel({
       description="English Proficiency Index"
       tooltip={description}
       rating={score}
-      referenceScore={compareInfo?.englishLevel.score}
+      referenceScore={compareInfo?.englishLevel?.score}
       customLabels={{
         title: score.toFixed(0),
         description: name,
@@ -183,7 +213,7 @@ export function LGBTQFriendliness({
       description={"Spartacus Gay Travel Index"}
       tooltip={description}
       rating={score}
-      referenceScore={compareInfo?.lgbtqFriendliness.score}
+      referenceScore={compareInfo?.lgbtqFriendliness?.score}
       customLabels={{
         title: score.toFixed(0),
         description: label,
