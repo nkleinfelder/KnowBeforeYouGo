@@ -41,6 +41,29 @@ export const navigationAndTransportation: Field = {
       ],
     },
     {
+      name: "driverPermitType",
+      label: "This countries drivers permit type",
+      type: "select",
+      options: [
+        {
+          label: "International Driving Permit",
+          value: "internationalDp",
+        },
+        {
+          label: "EU Drivers Permit",
+          value: "euDp",
+        },
+        {
+          label: "Inter-American Driving Permit",
+          value: "iaDp",
+        },
+        {
+          label: "ASEAN Drivers Permit",
+          value: "aseanDp",
+        },
+      ],
+    },
+    {
       name: "navApps",
       label: "Navigation Apps",
       type: "relationship",

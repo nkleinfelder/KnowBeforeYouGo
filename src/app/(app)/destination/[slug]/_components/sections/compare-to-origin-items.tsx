@@ -7,6 +7,11 @@ import { useLocalStorage } from "usehooks-ts";
 import type { PaymentMethods as PaymentMethodsType } from "@/src/lib/types";
 import { usePathname } from "next/navigation";
 import { ReferenceValueLabel } from "../info-cards/rating";
+import { Country } from "@/payload-types";
+import { cn } from "@/src/lib/utils";
+import { Nullable } from "@/src/lib/type-utils";
+import { CheckIcon, XIcon } from "lucide-react";
+import { AppRouterOutput } from "@/src/server/root";
 
 type CompareProps<T extends Record<string, unknown>> = T & {};
 
@@ -221,5 +226,129 @@ export function LGBTQFriendliness({
       min={-23}
       max={13}
     />
+  );
+}
+
+type DriversPermitsProps = CompareProps<{
+  driverPermits: NonNullable<
+    NonNullable<NonNullable<Country>["navTransport"]>["driverPermits"]
+  >;
+}>;
+
+const localLicenseLabel: Record<
+  NonNullable<
+    AppRouterOutput["country"]["getCompareInfo"]["driversPermitType"]
+  >,
+  string
+> = {
+  internationalDp: "International DP",
+  iaDp: "Inter-American DP",
+  aseanDp: "ASEAN DP",
+  euDp: "EU DP",
+};
+export function DriversPermits({ driverPermits }: DriversPermitsProps) {
+  const compareData = useCompareInfo();
+  const localLicenseAvailable = !!compareData.driversPermitType;
+  const localLicenseAccepted =
+    (compareData.driversPermitType === "euDp" && driverPermits.euOk === true) ||
+    (compareData.driversPermitType === "iaDp" &&
+      driverPermits.iadpOk === true) ||
+    (compareData.driversPermitType === "aseanDp" &&
+      driverPermits.aseanOk === true) ||
+    (compareData.driversPermitType === "internationalDp" &&
+      driverPermits.idpOk === true);
+
+  const description = localLicenseAvailable ? (
+    <>
+      Your Countries drivers license (
+      {localLicenseLabel[compareData.driversPermitType!]}) is{" "}
+      {localLicenseAccepted ? "accepted" : <strong>not accepted</strong>} here.
+    </>
+  ) : (
+    "Check if international and regional driving permits are accepted here"
+  );
+
+  return (
+    <InfoCard.Container
+      title="Driving Permits"
+      description={description}
+      className={cn(
+        "md:col-span-2",
+        "md:group-has-[>:nth-child(3)]:row-span-4",
+        "md:group-not-has-[>:nth-child(2)]:col-span-3",
+      )}
+    >
+      <InfoCard.List.ListContent className="md:row-span-3">
+        <ListItemDriverPermit
+          title="IDP"
+          description="International Driving Permit"
+          accepted={driverPermits.idpOk}
+          className={
+            compareData?.driversPermitType === "internationalDp" &&
+            (driverPermits.idpOk ? "border-green-500" : "border-destructive")
+          }
+        />
+        <ListItemDriverPermit
+          title="EU Drivers Permit"
+          description="EU Drivers Permit"
+          accepted={driverPermits.euOk}
+          className={
+            compareData?.driversPermitType === "euDp" &&
+            (driverPermits.euOk ? "border-green-500" : "border-destructive")
+          }
+        />
+        <ListItemDriverPermit
+          title="IADP"
+          description="Inter-American Driving Permit"
+          accepted={driverPermits.iadpOk}
+          className={
+            compareData?.driversPermitType === "iaDp" &&
+            (driverPermits.iadpOk ? "border-green-500" : "border-destructive")
+          }
+        />
+        <ListItemDriverPermit
+          title="ASEAN Drivers Permit"
+          description="ASEAN Drivers Permit"
+          accepted={driverPermits.aseanOk}
+          className={
+            compareData?.driversPermitType === "aseanDp" &&
+            (driverPermits.aseanOk ? "border-green-500" : "border-destructive")
+          }
+        />
+      </InfoCard.List.ListContent>
+    </InfoCard.Container>
+  );
+}
+
+function ListItemDriverPermit({
+  title,
+  description,
+  accepted,
+  className,
+}: {
+  title: string;
+  description?: string;
+  accepted: Nullable<boolean>;
+  className?: string | false;
+}) {
+  const isAccepted = accepted === true;
+  const acceptedString = isAccepted ? "is accepted" : "is not accepted";
+
+  return (
+    <InfoCard.List.ListItem
+      className={cn("flex items-center gap-2", className)}
+    >
+      {isAccepted && <CheckIcon className="stroke-2.5 size-5 text-green-500" />}
+      {!isAccepted && <XIcon className="stroke-2.5 size-5 text-red-500" />}
+
+      <div className="flex flex-col">
+        <h4 className="font-semibold">{title}</h4>
+        {description && (
+          <p className="text-xs font-medium text-muted-foreground">
+            {description} {acceptedString}
+          </p>
+        )}
+      </div>
+    </InfoCard.List.ListItem>
   );
 }
