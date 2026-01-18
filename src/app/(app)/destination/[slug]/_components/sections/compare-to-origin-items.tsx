@@ -41,13 +41,21 @@ export function CostOfLiving({
 }>) {
   const data = useCompareInfo();
 
+  const hasCompareCountry = !!data?.compareTo;
+
   return (
     <InfoCard.Text
       title="Cost of Living"
       description="Average in €/month"
       size="large"
       variant="primary"
-      tooltip="Note that the value is based on the average cost of single appartments. Most important is the comparison to your home country, so select one and check!"
+      tooltip={
+        <>
+          Note that the value is based on the average cost of single
+          appartments. Most important is the comparison to your home country
+          {hasCompareCountry ? "." : ", so select one and check!"}
+        </>
+      }
       className="flex-row gap-8"
       as="div"
     >
