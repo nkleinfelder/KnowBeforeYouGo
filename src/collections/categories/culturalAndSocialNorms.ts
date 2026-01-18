@@ -40,5 +40,12 @@ export const culturalAndSocialNorms: Field = {
       type: "number",
       min: 1,
     },
+    {
+      name: "erasmusFunding",
+      label: "Erasmus funding group",
+      type: "relationship",
+      relationTo: "erasmusfundings",
+      hasMany: false,
+    },
   ],
 };

@@ -1,3 +1,4 @@
+import { cn } from "@/src/lib/utils";
 import { ComponentProps, PropsWithChildren } from "react";
 
 export function Section({
@@ -11,9 +12,17 @@ export function Section({
   );
 }
 
-export function Grid({ children }: PropsWithChildren) {
+export function Grid({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) {
   return (
-    <div className="group grid grid-cols-1 grid-rows-[auto_1fr] gap-3 md:grid-cols-[repeat(auto-fill,minmax(min(100%,15rem),1fr))]">
+    <div
+      className={cn(
+        "group grid grid-cols-1 grid-rows-[auto_1fr] gap-3 md:grid-cols-[repeat(auto-fill,minmax(min(100%,15rem),1fr))]",
+        className,
+      )}
+    >
       {children}
     </div>
   );

@@ -1,3 +1,4 @@
+import { Tooltip } from "@/src/components/data-elements/tooltip";
 import {
   Card,
   CardDescription,
@@ -39,6 +40,7 @@ export type InfoCardProps = PropsWithChildren<{
   description?: Nullable<string | ReactNode>;
   image?: string;
   cardVariant?: CardProps["variant"];
+  tooltip?: Nullable<string>;
 }> &
   VariantProps<typeof containerVariants> &
   Pick<CardProps, "as">;
@@ -51,6 +53,7 @@ export function InfoCard({
   size,
   image,
   variant,
+  tooltip,
   as,
 }: InfoCardProps) {
   const showImage =
@@ -65,9 +68,19 @@ export function InfoCard({
       variant={cardVariant}
       as={as}
     >
-      <CardHeader className="col-span-full items-start">
+      <CardHeader className={cn("col-span-full items-start")}>
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
+        {tooltip && (
+          <Tooltip
+            className={cn(
+              "col-start-3 col-end-4 row-start-1 justify-self-end self-start",
+              description && "row-end-3",
+            )}
+          >
+            {tooltip}
+          </Tooltip>
+        )}
       </CardHeader>
       {children}
       {showImage && (

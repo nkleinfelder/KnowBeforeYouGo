@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { getPayload } from "payload";
-import config from "@payload-config";
 import type {
   Country,
   EnglishLevel,
   LgbtqLevel,
   HazardsIndex,
 } from "@/payload-types";
+import { getConfiguredPayload } from "@/src/lib/payload";
 
-const payload = await getPayload({ config });
+const payload = await getConfiguredPayload();
 
 // User preferences from quiz (1-5 scale)
 interface UserPreferences {
