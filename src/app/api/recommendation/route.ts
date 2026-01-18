@@ -26,6 +26,12 @@ interface CountryScore {
   matchScore: number;
 }
 
+interface HiddenGem {
+  country: string;
+  slug: string;
+  image?: string;
+}
+
 // Helper to get image URL from country
 function getCountryImage(images: Country["images"]): string | undefined {
   const firstImage = images?.[0];
@@ -195,7 +201,7 @@ function calculateMatchScore(
 async function getRecommendations(
   preferences: UserPreferences,
   topN: number = 3,
-): Promise<CountryScore[]> {
+): Promise<{ recommendations: CountryScore[]; hiddenGems: HiddenGem[] }> {
   const data = await payload.find({
     collection: "countries",
     limit: 100,
@@ -203,38 +209,39 @@ async function getRecommendations(
   });
 
   if (data.docs.length === 0) {
-    return [];
+    return { recommendations: [], hiddenGems: [] };
   }
 
-  const scored: CountryScore[] = data.docs.map((country) => {
-    const countryValues = {
-      costOfLiving: normalizeCostOfLiving(
-        country.culturalAndSocialNorms?.avgCostOfLiving,
-      ),
-      englishProficiency: normalizeEnglishLevel(
-        country.languageAndCommunication,
-      ),
-      lgbtqFriendliness: normalizeLgbtqLevel(country.culturalAndSocialNorms),
-      safety: normalizeHazardsIndex(country.safetyAndLegal),
-      dietaryFriendliness: normalizeDietaryFriendliness(
-        country.culturalAndSocialNorms,
-      ),
-      cashlessPayment: normalizeCashlessPayment(country.moneyAndPayments),
-    };
-    const matchScore = calculateMatchScore(country, preferences);
+  const scored: (CountryScore & { isHiddenGem: boolean })[] = data.docs.map(
+    (country) => {
+      const matchScore = calculateMatchScore(country, preferences);
 
-    return {
-      country: country.name,
-      slug: country.slug ?? country.name.toLowerCase().replace(/\s+/g, "-"),
-      image: getCountryImage(country.images),
-      matchScore,
-    };
-  });
+      return {
+        country: country.name,
+        slug: country.slug ?? country.name.toLowerCase().replace(/\s+/g, "-"),
+        image: getCountryImage(country.images),
+        matchScore,
+        isHiddenGem: country.hiddenGem ?? false,
+      };
+    },
+  );
 
   // Sort by match score descending
   scored.sort((a, b) => b.matchScore - a.matchScore);
 
-  return scored.slice(0, topN);
+  // Get top N recommendations
+  const recommendations = scored
+    .slice(0, topN)
+    .map(({ isHiddenGem, ...rest }) => rest);
+  const recommendedSlugs = new Set(recommendations.map((r) => r.slug));
+
+  // Get hidden gems that are NOT in the top recommendations (max 2)
+  const hiddenGems: HiddenGem[] = scored
+    .filter((c) => c.isHiddenGem && !recommendedSlugs.has(c.slug))
+    .slice(0, 2)
+    .map(({ country, slug, image }) => ({ country, slug, image }));
+
+  return { recommendations, hiddenGems };
 }
 
 export async function GET() {
@@ -280,10 +287,14 @@ export async function POST(request: Request) {
     };
 
     const topN = body.topN || 3;
-    const recommendations = await getRecommendations(preferences, topN);
+    const { recommendations, hiddenGems } = await getRecommendations(
+      preferences,
+      topN,
+    );
 
     return NextResponse.json({
       recommendations,
+      hiddenGems,
       userPreferences: preferences,
     });
   } catch (error) {

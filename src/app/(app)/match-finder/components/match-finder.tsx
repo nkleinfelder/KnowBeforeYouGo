@@ -33,6 +33,12 @@ type Recommendation = {
   image?: string;
 };
 
+type HiddenGem = {
+  country: string;
+  slug: string;
+  image?: string;
+};
+
 // Constants
 const FALLBACK_IMAGE = "/images/destinations/fallback.webp";
 const BACKGROUND_IMAGE = "/images/home-hero-background.jpg";
@@ -129,12 +135,6 @@ const QUESTIONS: {
   },
 ];
 
-// TODO: Fetch hidden gems from CMS
-const HIDDEN_GEMS = [
-  { country: "Slovenia", slug: "slovenia", image: FALLBACK_IMAGE },
-  { country: "Estonia", slug: "estonia", image: FALLBACK_IMAGE },
-];
-
 // Components
 function RankBadge({ index }: { index: number }) {
   const config = RANK_CONFIG[index] || RANK_CONFIG[2];
@@ -194,7 +194,7 @@ function RecommendationCard({
   );
 }
 
-function HiddenGemCard({ gem }: { gem: (typeof HIDDEN_GEMS)[number] }) {
+function HiddenGemCard({ gem }: { gem: HiddenGem }) {
   const tags: CountryCardProps["tags"] = [
     { icon: GemIcon, name: "Hidden Gem" },
   ];
@@ -207,7 +207,7 @@ function HiddenGemCard({ gem }: { gem: (typeof HIDDEN_GEMS)[number] }) {
       <CountryCard
         name={gem.country}
         slug={gem.slug}
-        image={gem.image}
+        image={gem.image || FALLBACK_IMAGE}
         tags={tags}
       />
     </div>
@@ -222,6 +222,7 @@ export function MatchFinder() {
   const [recommendations, setRecommendations] = useState<
     Recommendation[] | null
   >(null);
+  const [hiddenGems, setHiddenGems] = useState<HiddenGem[]>([]);
   const [showHiddenGems, setShowHiddenGems] = useState(false);
 
   const currentQuestion = QUESTIONS[currentStep];
@@ -240,6 +241,7 @@ export function MatchFinder() {
       });
       const data = await response.json();
       setRecommendations(data.recommendations);
+      setHiddenGems(data.hiddenGems || []);
     } catch (error) {
       console.error("Failed to get recommendations:", error);
     } finally {
@@ -249,6 +251,7 @@ export function MatchFinder() {
 
   const handleReset = () => {
     setRecommendations(null);
+    setHiddenGems([]);
     setPreferences({});
     setCurrentStep(0);
     setShowHiddenGems(false);
@@ -392,7 +395,7 @@ export function MatchFinder() {
                 </div>
 
                 {/* Hidden Gems Toggle */}
-                {!showHiddenGems && (
+                {!showHiddenGems && hiddenGems.length > 0 && (
                   <Button
                     variant="outline"
                     onClick={() => setShowHiddenGems(true)}
@@ -404,7 +407,7 @@ export function MatchFinder() {
                 )}
 
                 {/* Hidden Gems */}
-                {showHiddenGems && (
+                {showHiddenGems && hiddenGems.length > 0 && (
                   <div className="flex w-full flex-col items-center gap-4">
                     <div className="flex items-center justify-center gap-2">
                       <GemIcon className="size-4 text-purple-400" />
@@ -414,7 +417,7 @@ export function MatchFinder() {
                       <GemIcon className="size-4 text-purple-400" />
                     </div>
                     <div className="grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
-                      {HIDDEN_GEMS.map((gem) => (
+                      {hiddenGems.map((gem) => (
                         <HiddenGemCard key={gem.country} gem={gem} />
                       ))}
                     </div>
