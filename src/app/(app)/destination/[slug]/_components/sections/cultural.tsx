@@ -8,6 +8,7 @@ import {
   VegetarianPopulationShare,
 } from "./compare-to-origin-items";
 import { cn } from "@/src/lib/utils";
+import { TipsFromLocals } from "../info-cards/list";
 
 export function Cultural({
   id,
@@ -15,9 +16,7 @@ export function Cultural({
   Icon,
   data,
   countryName,
-}: CountrySectionProps<"culturalAndSocialNorms"> & {
-  countryName: string;
-}) {
+}: CountrySectionProps<"culturalAndSocialNorms">) {
   return (
     <DetailInfo
       id={id}
@@ -25,8 +24,18 @@ export function Cultural({
       Icon={Icon}
       description={data?.description}
       className={cn(
+        "group",
         "md:has-[>article:nth-child(2n):not(:nth-child(3n)):last-child]:grid-cols-2",
-        "md:has-[>article:nth-child(5):last-child]:grid-cols-6 md:has-[>article:nth-child(5):last-child]:[&>article]:col-span-2 md:has-[>article:nth-child(5):last-child]:[&>article:last-child]:col-span-3 md:has-[>article:nth-child(5):last-child]:[&>article:nth-last-child(2)]:col-span-3",
+        "md:has-[>article:nth-child(6)]:grid-cols-6 md:has-[>article:nth-child(6)]:[&>article:not(:last-child)]:col-span-2 md:has-[>article:nth-child(6)]:[&>article:nth-last-child(3)]:col-span-3 md:has-[>article:nth-child(6)]:[&>article:nth-last-child(2)]:col-span-3",
+        data?.culturalTips &&
+          data.culturalTips.length > 0 &&
+          "md:has-[>article:nth-child(5):last-child]:grid-cols-2",
+        data?.culturalTips &&
+          data.culturalTips.length > 0 &&
+          "md:has-[>article:nth-child(4):last-child]:grid-cols-3!",
+        data?.culturalTips &&
+          data.culturalTips.length > 0 &&
+          "md:has-[>article:nth-child(3):last-child]:grid-cols-2",
       )}
     >
       {data?.veganPopulationShare && (
@@ -48,7 +57,9 @@ export function Cultural({
             description={data.lgbtqFriendliness.description ?? ""}
           />
         )}
-      {data?.avgCostOfLiving && <CostOfLiving value={data.avgCostOfLiving} />}
+      {data?.avgCostOfLiving && (
+        <CostOfLiving value={data.avgCostOfLiving} data-half-on-desktop />
+      )}
       {data?.erasmusFunding && typeof data.erasmusFunding === "object" && (
         <InfoCard.Text
           title="Erasmus Funding"
@@ -56,11 +67,19 @@ export function Cultural({
           size="large"
           tooltip="The exact amount depends on your country of origin."
           className="flex-row gap-2"
+          data-half-on-desktop
         >
           <span>{data.erasmusFunding.monthlyFunding.min}€</span>
           <span>–</span>
           <span>{data.erasmusFunding.monthlyFunding.max}€</span>
         </InfoCard.Text>
+      )}
+      {data?.culturalTips && data.culturalTips.length > 0 && (
+        <TipsFromLocals
+          items={data.culturalTips}
+          countryName={countryName}
+          className="col-span-full"
+        />
       )}
     </DetailInfo>
   );

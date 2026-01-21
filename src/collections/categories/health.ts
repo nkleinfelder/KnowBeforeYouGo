@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { tipsFromLocalsComponent } from "../custom-fields/TipsFromLocals";
 
 export const health: Field = {
   name: "health",
@@ -159,6 +160,10 @@ export const health: Field = {
           type: "text",
         },
       ],
+    },
+    {
+      ...tipsFromLocalsComponent,
+      name: "healthTips",
     },
   ],
 };

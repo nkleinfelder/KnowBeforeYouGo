@@ -8,6 +8,7 @@ export function Language({
   title,
   Icon,
   data,
+  countryName,
 }: CountrySectionProps<"languageAndCommunication">) {
   return (
     <DetailInfo
@@ -15,7 +16,7 @@ export function Language({
       title={title}
       Icon={Icon}
       description={data?.description}
-      className="md:has-[&>:nth-child(4):last-child]:grid-cols-2 md:has-[&>:nth-child(2):last-child]:grid-cols-2"
+      className="md:has-[&>:nth-child(4):last-child]:grid-cols-2 md:has-[&>:nth-child(2):last-child]:grid-cols-2 group"
     >
       <InfoCard.List.List
         title="Languages"
@@ -32,6 +33,13 @@ export function Language({
         )}
       {data?.messengerApps && data.messengerApps.length > 0 && (
         <InfoCard.Apps title="Messenger Apps" apps={data.messengerApps} />
+      )}
+      {data?.languageTips && data.languageTips.length > 0 && (
+        <InfoCard.List.TipsFromLocals
+          items={data.languageTips}
+          countryName={countryName}
+          className="group-has-[>:nth-child(3):last-child]:col-span-full"
+        />
       )}
     </DetailInfo>
   );

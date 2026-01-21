@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { tipsFromLocalsComponent } from "../custom-fields/TipsFromLocals";
 
 export const dailyLifeAndLifestyle: Field = {
   name: "dailyLifeAndLifestyle",
@@ -84,6 +85,10 @@ export const dailyLifeAndLifestyle: Field = {
         { label: "Friday", value: "5" },
         { label: "Saturday", value: "6" },
       ],
+    },
+    {
+      ...tipsFromLocalsComponent,
+      name: "dailyTips",
     },
   ],
 };

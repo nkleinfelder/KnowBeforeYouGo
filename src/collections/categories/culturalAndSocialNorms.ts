@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { tipsFromLocalsComponent } from "../custom-fields/TipsFromLocals";
 
 export const culturalAndSocialNorms: Field = {
   name: "culturalAndSocialNorms",
@@ -46,6 +47,10 @@ export const culturalAndSocialNorms: Field = {
       type: "relationship",
       relationTo: "erasmusfundings",
       hasMany: false,
+    },
+    {
+      ...tipsFromLocalsComponent,
+      name: "culturalTips",
     },
   ],
 };

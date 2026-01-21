@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { tipsFromLocalsComponent } from "../custom-fields/TipsFromLocals";
 
 export const navigationAndTransportation: Field = {
   name: "navTransport",
@@ -69,6 +70,10 @@ export const navigationAndTransportation: Field = {
       type: "relationship",
       relationTo: "apps",
       hasMany: true,
+    },
+    {
+      ...tipsFromLocalsComponent,
+      name: "transportTips",
     },
   ],
 };

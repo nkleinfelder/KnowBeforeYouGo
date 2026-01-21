@@ -36,8 +36,11 @@ function useCompareInfo() {
 
 export function CostOfLiving({
   value,
+  className,
+  ...props
 }: CompareProps<{
   value: number;
+  className?: string;
 }>) {
   const data = useCompareInfo();
 
@@ -56,8 +59,9 @@ export function CostOfLiving({
           {hasCompareCountry ? "." : ", so select one and check!"}
         </>
       }
-      className="flex-row gap-8"
+      className={cn("flex-row gap-8", className)}
       as="div"
+      {...props}
     >
       <p>{value.toFixed(0)}€</p>
       {data?.costOfLiving && (
@@ -268,6 +272,7 @@ type DriversPermitsProps = CompareProps<{
   driverPermits: NonNullable<
     NonNullable<NonNullable<Country>["navTransport"]>["driverPermits"]
   >;
+  className?: string;
 }>;
 
 const localLicenseLabel: Record<
@@ -281,7 +286,10 @@ const localLicenseLabel: Record<
   aseanDp: "ASEAN DP",
   euDp: "EU DP",
 };
-export function DriversPermits({ driverPermits }: DriversPermitsProps) {
+export function DriversPermits({
+  driverPermits,
+  className,
+}: DriversPermitsProps) {
   const compareData = useCompareInfo();
   const localLicenseAvailable = !!compareData.driversPermitType;
   const localLicenseAccepted =
@@ -312,11 +320,7 @@ export function DriversPermits({ driverPermits }: DriversPermitsProps) {
     <InfoCard.Container
       title="Driving Permits"
       description={description}
-      className={cn(
-        "md:col-span-2",
-        "md:group-has-[>:nth-child(3)]:row-span-4",
-        "md:group-not-has-[>:nth-child(2)]:col-span-3",
-      )}
+      className={cn("md:col-span-2", className)}
     >
       <InfoCard.List.ListContent className="md:row-span-3">
         <ListItemDriverPermit

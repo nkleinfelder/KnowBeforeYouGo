@@ -201,6 +201,22 @@ export interface Country {
     lgbtqFriendlinessScore?: number | null;
     avgCostOfLiving?: number | null;
     erasmusFunding?: (string | null) | Erasmusfunding;
+    culturalTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   languageAndCommunication?: {
     description?: string | null;
@@ -213,6 +229,22 @@ export interface Country {
     englishLevels?: (string | null) | EnglishLevel;
     englishLevelScore?: number | null;
     messengerApps?: (string | App)[] | null;
+    languageTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   navTransport?: {
     desc?: string | null;
@@ -225,6 +257,22 @@ export interface Country {
     };
     driverPermitType?: ("internationalDp" | "euDp" | "iaDp" | "aseanDp") | null;
     navApps?: (string | App)[] | null;
+    transportTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   moneyAndPayments?: {
     description?: string | null;
@@ -242,6 +290,22 @@ export interface Country {
     };
     paymentApps?: (string | App)[] | null;
     onlineShoppingApps?: (string | App)[] | null;
+    moneyTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   safetyAndLegal?: {
     description?: string | null;
@@ -253,6 +317,22 @@ export interface Country {
     };
     naturalHazardsIndexEnum?: (string | null) | HazardsIndex;
     naturalHazardsIndexValue?: number | null;
+    safetyTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   dailyLifeAndLifestyle?: {
     description?: string | null;
@@ -275,6 +355,22 @@ export interface Country {
     socialMediaApps?: (string | App)[] | null;
     datingApps?: (string | App)[] | null;
     openingDays?: ("0" | "1" | "2" | "3" | "4" | "5" | "6")[] | null;
+    dailyTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   health?: {
     description?: string | null;
@@ -320,6 +416,22 @@ export interface Country {
       phone?: string | null;
       website?: string | null;
     };
+    healthTips?:
+      | {
+          tip: {
+            title: string;
+            description: string;
+            link?:
+              | {
+                  title: string;
+                  url: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -618,6 +730,24 @@ export interface CountriesSelect<T extends boolean = true> {
         lgbtqFriendlinessScore?: T;
         avgCostOfLiving?: T;
         erasmusFunding?: T;
+        culturalTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
       };
   languageAndCommunication?:
     | T
@@ -632,6 +762,24 @@ export interface CountriesSelect<T extends boolean = true> {
         englishLevels?: T;
         englishLevelScore?: T;
         messengerApps?: T;
+        languageTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
       };
   navTransport?:
     | T
@@ -648,6 +796,24 @@ export interface CountriesSelect<T extends boolean = true> {
             };
         driverPermitType?: T;
         navApps?: T;
+        transportTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
       };
   moneyAndPayments?:
     | T
@@ -669,6 +835,24 @@ export interface CountriesSelect<T extends boolean = true> {
             };
         paymentApps?: T;
         onlineShoppingApps?: T;
+        moneyTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
       };
   safetyAndLegal?:
     | T
@@ -684,6 +868,24 @@ export interface CountriesSelect<T extends boolean = true> {
             };
         naturalHazardsIndexEnum?: T;
         naturalHazardsIndexValue?: T;
+        safetyTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
       };
   dailyLifeAndLifestyle?:
     | T
@@ -708,6 +910,24 @@ export interface CountriesSelect<T extends boolean = true> {
         socialMediaApps?: T;
         datingApps?: T;
         openingDays?: T;
+        dailyTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
       };
   health?:
     | T
@@ -764,6 +984,24 @@ export interface CountriesSelect<T extends boolean = true> {
               name?: T;
               phone?: T;
               website?: T;
+            };
+        healthTips?:
+          | T
+          | {
+              tip?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    link?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
             };
       };
   updatedAt?: T;
