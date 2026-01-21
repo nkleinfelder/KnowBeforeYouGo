@@ -391,11 +391,12 @@ export interface PlugType {
  */
 export interface UserRequest {
   id: string;
-  title?: string | null;
+  countryName?: string | null;
   countryExperience?: {
     hasVisited?: ("yes" | "no") | null;
     durationOfStay?: string | null;
   };
+  Category?: string | null;
   issue?: {
     issueType?: string | null;
     description?: string | null;
@@ -727,13 +728,14 @@ export interface CountriesSelect<T extends boolean = true> {
  * via the `definition` "user-requests_select".
  */
 export interface UserRequestsSelect<T extends boolean = true> {
-  title?: T;
+  countryName?: T;
   countryExperience?:
     | T
     | {
         hasVisited?: T;
         durationOfStay?: T;
       };
+  Category?: T;
   issue?:
     | T
     | {

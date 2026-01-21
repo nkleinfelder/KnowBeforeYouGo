@@ -1,4 +1,4 @@
-import { CollectionConfig } from "payload";
+import type { CollectionConfig } from "payload";
 
 export const UserRequests: CollectionConfig = {
   slug: "user-requests",
@@ -6,13 +6,10 @@ export const UserRequests: CollectionConfig = {
     singular: "User Request",
     plural: "User Requests",
   },
-  admin: {
-    useAsTitle: "title",
-  },
   fields: [
     {
-      name: "title",
-      label: "Request title",
+      name: "countryName",
+      label: "Country name",
       type: "text",
     },
     {
@@ -31,10 +28,14 @@ export const UserRequests: CollectionConfig = {
         },
         {
           name: "durationOfStay",
-          label: "Length of stay",
+          label: "Length of stay (in months)",
           type: "text",
         },
       ],
+    },
+    {
+      name: "Category",
+      type: "text",
     },
     {
       name: "issue",
