@@ -36,6 +36,7 @@ const containerVariants = cva("grid grid-rows-subgrid row-span-2", {
 
 export type InfoCardProps = PropsWithChildren<{
   className?: string;
+  descriptionClassName?: string;
   title: string | ReactNode;
   description?: Nullable<string | ReactNode>;
   image?: string;
@@ -49,6 +50,7 @@ export function InfoCard({
   title,
   description,
   className,
+  descriptionClassName,
   cardVariant,
   size,
   image,
@@ -70,7 +72,11 @@ export function InfoCard({
     >
       <CardHeader className={cn("col-span-full items-start")}>
         <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
+        {description && (
+          <CardDescription className={descriptionClassName}>
+            {description}
+          </CardDescription>
+        )}
         {tooltip && (
           <Tooltip
             className={cn(

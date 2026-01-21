@@ -270,7 +270,12 @@ export function DriversPermits({ driverPermits }: DriversPermitsProps) {
     <>
       Your Countries drivers license (
       {localLicenseLabel[compareData.driversPermitType!]}) is{" "}
-      {localLicenseAccepted ? "accepted" : <strong>not accepted</strong>} here.
+      {localLicenseAccepted ? (
+        <strong className="text-green-600">accepted</strong>
+      ) : (
+        <strong className="text-red-500">not accepted</strong>
+      )}{" "}
+      here.
     </>
   ) : (
     "Check if international and regional driving permits are accepted here"
