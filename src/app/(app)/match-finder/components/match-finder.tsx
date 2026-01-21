@@ -52,12 +52,14 @@ const RANK_CONFIG = [
 const QUESTIONS: {
   key: keyof Preferences;
   label: string;
+  question: string;
   options: string[];
   extraInfo?: string;
 }[] = [
   {
     key: "costOfLiving",
     label: "Budget Constraints",
+    question: "How strict are you with your budget?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -71,6 +73,7 @@ const QUESTIONS: {
   {
     key: "englishProficiency",
     label: "English Usage",
+    question: "How important is it that locals speak English?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -84,6 +87,7 @@ const QUESTIONS: {
   {
     key: "lgbtqFriendliness",
     label: "LGBTQ+ Acceptance",
+    question: "How important is LGBTQ+ acceptance to you?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -97,6 +101,7 @@ const QUESTIONS: {
   {
     key: "safety",
     label: "Personal Safety",
+    question: "How much do you prioritize personal safety?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -110,6 +115,7 @@ const QUESTIONS: {
   {
     key: "dietaryFriendliness",
     label: "Dietary Needs",
+    question: "How important is finding food that meets your dietary needs?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -123,6 +129,7 @@ const QUESTIONS: {
   {
     key: "cashlessPayment",
     label: "Payment Methods",
+    question: "How important is being able to pay without cash?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -298,6 +305,9 @@ export function MatchFinder() {
                   </InfoPopover>
                 )}
               </div>
+              <p className="mt-1 text-sm text-stone-500">
+                {currentQuestion.question}
+              </p>
             </div>
 
             {/* Options */}

@@ -63,7 +63,9 @@ export function ShareExperience({
       countryName,
       countryExperience: {
         hasVisited: data.hasVisited,
-        durationOfStay: data.durationOfStay,
+        durationOfStay: Number.isNaN(data.durationOfStay)
+          ? undefined
+          : data.durationOfStay,
       },
       category: data.category,
       issue: {
