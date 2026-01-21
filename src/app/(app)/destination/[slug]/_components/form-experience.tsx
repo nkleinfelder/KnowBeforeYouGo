@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/src/components/ui/card";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   Field,
   FieldDescription,
@@ -10,7 +10,13 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/src/components/ui/field";
-import { CheckIcon, Loader2Icon, SendIcon, SquarePenIcon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  CheckIcon,
+  Loader2Icon,
+  SendIcon,
+  SquarePenIcon,
+} from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 import {
   Select,
@@ -21,13 +27,15 @@ import {
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Button } from "@/src/components/ui/button";
-import { useState } from "react";
+import { api } from "@/src/server/react";
+import { COUNTRY_CATEGORIES } from "@/src/lib/categories";
 
 type Inputs = {
-  name: string;
-  email: string;
+  hasVisited: boolean;
+  durationOfStay: number | undefined;
   category: string;
-  message: string;
+  issueType: string;
+  description: string;
 };
 
 export function ShareExperience({
@@ -36,19 +44,44 @@ export function ShareExperience({
   countryId: string;
   countryName: string;
 }) {
-  const { register, handleSubmit } = useForm<Inputs>();
-  const [state, setState] = useState<"initial" | "submitting" | "success">(
-    "initial",
-  );
+  const { register, handleSubmit, control, watch } = useForm<Inputs>({
+    defaultValues: {
+      hasVisited: true,
+    },
+  });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setState("submitting");
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const hasVisited = watch("hasVisited");
+  const selectedCategory = watch("category");
+  const selectedIssue = watch("issueType");
+  const text = watch("description");
 
-    setTimeout(() => {
-      console.log(data);
-      setState("success");
-    }, 2000);
+  const {
+    mutateAsync: submitExperience,
+    isPending,
+    isError,
+    isSuccess,
+  } = api.experience.submitExperience.useMutation();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await submitExperience({
+      countryName,
+      countryExperience: {
+        hasVisited: data.hasVisited,
+        durationOfStay: Number.isNaN(data.durationOfStay)
+          ? undefined
+          : data.durationOfStay,
+      },
+      category: data.category,
+      issue: {
+        issueType: data.issueType,
+        description: data.description,
+      },
+    });
   };
+
+  const canSubmit =
+    !!selectedCategory && !!selectedIssue && text && text.length > 5;
 
   return (
     <section className="w-2xl max-w-full">
@@ -65,46 +98,111 @@ export function ShareExperience({
             </FieldDescription>
             <FieldGroup className="grid md:grid-cols-2">
               <Field>
-                <FieldLabel htmlFor="name">Name</FieldLabel>
-                <Input
-                  {...register("name")}
-                  id="name"
-                  placeholder="Your name"
-                  className="w-full"
+                <FieldLabel htmlFor="hasVisited">
+                  Have you visited {countryName}?
+                </FieldLabel>
+                <Controller
+                  name="hasVisited"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value ? "yes" : "no"}
+                      onValueChange={(value) => field.onChange(value === "yes")}
+                      disabled={isSuccess || isPending}
+                    >
+                      <SelectTrigger id="hasVisited">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes">Yes</SelectItem>
+                        <SelectItem value="no">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </Field>
+              {hasVisited && (
+                <Field>
+                  <FieldLabel htmlFor="durationOfStay">
+                    Duration of stay (months)
+                  </FieldLabel>
+                  <Input
+                    {...register("durationOfStay", { valueAsNumber: true })}
+                    id="durationOfStay"
+                    type="number"
+                    min={1}
+                    placeholder="e.g. 6"
+                    className="w-full"
+                    disabled={isSuccess || isPending}
+                  />
+                </Field>
+              )}
+            </FieldGroup>
+            <FieldGroup className="grid md:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="category">Category</FieldLabel>
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isSuccess || isPending}
+                    >
+                      <SelectTrigger id="category">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COUNTRY_CATEGORIES?.map((category) => (
+                          <SelectItem
+                            key={category.value}
+                            value={category.value}
+                          >
+                            {category.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  {...register("email")}
-                  id="email"
-                  placeholder="Your email"
-                  className="w-full"
+                <FieldLabel htmlFor="issueType">Issue Type</FieldLabel>
+                <Controller
+                  name="issueType"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isSuccess || isPending}
+                    >
+                      <SelectTrigger id="issueType">
+                        <SelectValue placeholder="Select issue type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Add Data">Add Data</SelectItem>
+                        <SelectItem value="Improve Data">
+                          Improve Data
+                        </SelectItem>
+                        <SelectItem value="Misleading Info">
+                          Misleading Info
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </Field>
             </FieldGroup>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="category">Category</FieldLabel>
-                <Select defaultValue="">
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="add-data">Add Data</SelectItem>
-                    <SelectItem value="improve-data">Improve Data</SelectItem>
-                    <SelectItem value="misleading-info">
-                      Misleading Info
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="message">Message</FieldLabel>
+                <FieldLabel htmlFor="description">Description</FieldLabel>
                 <Textarea
-                  {...register("message")}
-                  id="message"
-                  placeholder="Your message"
+                  {...register("description")}
+                  disabled={isSuccess || isPending}
+                  id="description"
+                  placeholder="Describe your experience or the information you want to share..."
                   className="min-h-24 w-full"
                 />
               </Field>
@@ -113,29 +211,40 @@ export function ShareExperience({
               <Button
                 size="lg"
                 type="submit"
-                data-state={state}
-                disabled={state !== "initial"}
+                disabled={isPending || isSuccess || !canSubmit}
                 className="w-full gap-2 transition-all duration-200 ease-out data-[state=success]:bg-green-700 data-[state=success]:text-green-50"
               >
-                {state === "initial" && (
+                {!isPending && !isSuccess && !isError && (
                   <>
                     <SendIcon className="size-4" />
                     Submit Information
                   </>
                 )}
-                {state === "submitting" && (
+                {isPending && (
                   <>
                     <Loader2Icon className="size-4 animate-spin" />
                     Submitting...
                   </>
                 )}
-                {state === "success" && (
+                {isSuccess && (
                   <>
                     <CheckIcon className="size-4" />
                     Thanks for sharing!
                   </>
                 )}
+                {isError && (
+                  <>
+                    <SendIcon className="size-4" />
+                    Retry
+                  </>
+                )}
               </Button>
+              {isError && (
+                <p className="flex items-center gap-1 w-full justify-center mt-1 text-sm">
+                  <AlertTriangleIcon className="text-destructive size-4" />
+                  Something went wrong.
+                </p>
+              )}
             </Field>
           </FieldSet>
         </form>

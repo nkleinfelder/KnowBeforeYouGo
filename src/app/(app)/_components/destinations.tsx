@@ -16,7 +16,7 @@ export async function Destinations() {
         avgCostOfLiving: true,
       },
     },
-    sort: ["name"],
+    sort: "name",
     limit: 100,
   });
 
