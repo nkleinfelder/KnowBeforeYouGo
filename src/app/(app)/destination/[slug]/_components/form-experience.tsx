@@ -108,6 +108,7 @@ export function ShareExperience({
                     <Select
                       value={field.value ? "yes" : "no"}
                       onValueChange={(value) => field.onChange(value === "yes")}
+                      disabled={isSuccess || isPending}
                     >
                       <SelectTrigger id="hasVisited">
                         <SelectValue placeholder="Select" />
@@ -132,6 +133,7 @@ export function ShareExperience({
                     min={1}
                     placeholder="e.g. 6"
                     className="w-full"
+                    disabled={isSuccess || isPending}
                   />
                 </Field>
               )}
@@ -143,7 +145,11 @@ export function ShareExperience({
                   name="category"
                   control={control}
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isSuccess || isPending}
+                    >
                       <SelectTrigger id="category">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
@@ -167,7 +173,11 @@ export function ShareExperience({
                   name="issueType"
                   control={control}
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isSuccess || isPending}
+                    >
                       <SelectTrigger id="issueType">
                         <SelectValue placeholder="Select issue type" />
                       </SelectTrigger>
@@ -190,6 +200,7 @@ export function ShareExperience({
                 <FieldLabel htmlFor="description">Description</FieldLabel>
                 <Textarea
                   {...register("description")}
+                  disabled={isSuccess || isPending}
                   id="description"
                   placeholder="Describe your experience or the information you want to share..."
                   className="min-h-24 w-full"
