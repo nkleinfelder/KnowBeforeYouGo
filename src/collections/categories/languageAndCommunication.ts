@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { tipsFromLocalsComponent } from "../custom-fields/TipsFromLocals";
 
 export const languageAndCommunication: Field = {
   name: "languageAndCommunication",
@@ -6,13 +7,6 @@ export const languageAndCommunication: Field = {
   label: "Language & Communication",
   fields: [
     { name: "description", type: "text", localized: true },
-    // {
-    //   name: "languageLearningApps",
-    //   label: "Language Learning Apps",
-    //   type: "relationship",
-    //   relationTo: "apps",
-    //   hasMany: true,
-    // },
     {
       name: "localLanguages",
       label: "Local Languages",
@@ -47,6 +41,10 @@ export const languageAndCommunication: Field = {
       type: "relationship",
       relationTo: "apps",
       hasMany: true,
+    },
+    {
+      ...tipsFromLocalsComponent,
+      name: "languageTips",
     },
   ],
 };

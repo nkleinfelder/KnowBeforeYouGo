@@ -11,6 +11,7 @@ export function Safety({
   title,
   Icon,
   data,
+  countryName,
 }: CountrySectionProps<"safetyAndLegal">) {
   return (
     <DetailInfo
@@ -18,6 +19,7 @@ export function Safety({
       title={title}
       Icon={Icon}
       description={data?.description}
+      className="group"
     >
       {data?.visaRequired && (
         <InfoCard.Text title="Visa Required" size="medium">
@@ -36,7 +38,7 @@ export function Safety({
           title="Emergency Numbers"
           description="Important numbers for emergency calls"
           cardVariant="warning"
-          className="max-md:row-start-1 md:col-span-2 md:row-span-4"
+          className="max-md:row-start-1 md:col-span-2 md:row-span-4 md:group-has-[>article:nth-child(3):is(.tips-from-locals)]:row-span-2"
         >
           <InfoCard.List.ListContent className="md:row-span-3">
             <InfoCard.List.ListItem className="flex flex-1 items-center justify-between gap-2 text-lg">
@@ -69,6 +71,13 @@ export function Safety({
             value={data.naturalHazardsIndexValue}
           />
         )}
+      {data?.safetyTips && data.safetyTips.length > 0 && (
+        <InfoCard.List.TipsFromLocals
+          items={data.safetyTips}
+          countryName={countryName}
+          className="col-span-full tips-from-locals"
+        />
+      )}
     </DetailInfo>
   );
 }

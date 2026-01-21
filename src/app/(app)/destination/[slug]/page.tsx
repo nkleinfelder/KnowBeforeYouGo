@@ -127,36 +127,42 @@ export default async function Page({
         title={SECTIONS.LANGUAGE.title}
         Icon={SECTIONS.LANGUAGE.Icon}
         data={country.languageAndCommunication}
+        countryName={country.name}
       />
       <InfoSection.Transport
         id={SECTIONS.TRANSPORT.id}
         title={SECTIONS.TRANSPORT.title}
         Icon={SECTIONS.TRANSPORT.Icon}
         data={country.navTransport}
+        countryName={country.name}
       />
       <InfoSection.Money
         id={SECTIONS.MONEY.id}
         title={SECTIONS.MONEY.title}
         Icon={SECTIONS.MONEY.Icon}
         data={country.moneyAndPayments}
+        countryName={country.name}
       />
       <InfoSection.Safety
         id={SECTIONS.SAFETY.id}
         title={SECTIONS.SAFETY.title}
         Icon={SECTIONS.SAFETY.Icon}
         data={country.safetyAndLegal}
+        countryName={country.name}
       />
       <InfoSection.Health
         id={SECTIONS.HEALTH.id}
         title={SECTIONS.HEALTH.title}
         Icon={SECTIONS.HEALTH.Icon}
         data={country.health}
+        countryName={country.name}
       />
       <InfoSection.Daily
         id={SECTIONS.DAILY.id}
         title={SECTIONS.DAILY.title}
         Icon={SECTIONS.DAILY.Icon}
         data={country.dailyLifeAndLifestyle}
+        countryName={country.name}
       />
 
       <Sections.ShareExperience countryId={slug} countryName={country.name} />
