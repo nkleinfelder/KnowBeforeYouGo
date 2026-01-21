@@ -66,8 +66,8 @@ export function CostOfLiving({
       <p>{value.toFixed(0)}€</p>
       {data?.costOfLiving && (
         <section className="text-chart-4 flex flex-col">
-          <p className="leading-none">{data?.costOfLiving}€</p>
-          <p className="text-xs text-muted-foreground font-normal leading-none">
+          <p>{data?.costOfLiving}€</p>
+          <p className="text-xs text-muted-foreground font-normal leading-none -translate-y-0.5">
             {data.compareTo}
           </p>
         </section>
