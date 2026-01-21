@@ -1,6 +1,7 @@
 import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-cards";
 import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
 import { CountrySectionProps } from "./props";
+import { HazardsIndex } from "./compare-to-origin-items";
 
 export function Safety({
   id,
@@ -50,17 +51,13 @@ export function Safety({
         </InfoCard.Container>
       )}
       {data?.naturalHazardsIndexEnum &&
-        typeof data.naturalHazardsIndexEnum !== "string" && (
-          <InfoCard.Text
-            title="Natural hazards index"
-            size="medium"
-            className="flex flex-col"
-          >
-            <span>{data.naturalHazardsIndexEnum.name}</span>
-            <span className="text-xs font-medium text-muted-foreground">
-              {data.naturalHazardsIndexEnum.description}
-            </span>
-          </InfoCard.Text>
+        typeof data.naturalHazardsIndexEnum !== "string" &&
+        data.naturalHazardsIndexValue && (
+          <HazardsIndex
+            name={data.naturalHazardsIndexEnum.name}
+            description={data.naturalHazardsIndexEnum.description}
+            value={data.naturalHazardsIndexValue}
+          />
         )}
     </DetailInfo>
   );

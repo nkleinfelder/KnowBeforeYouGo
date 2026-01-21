@@ -55,6 +55,9 @@ export const countryRouter = createTRPCRouter({
           navTransport: {
             driverPermitType: true,
           },
+          safetyAndLegal: {
+            naturalHazardsIndexValue: true,
+          },
         },
       });
 
@@ -103,6 +106,8 @@ export const countryRouter = createTRPCRouter({
         paymentMethods: data.moneyAndPayments?.paymentMethods,
         costOfLiving: data.culturalAndSocialNorms?.avgCostOfLiving ?? undefined,
         driversPermitType: data.navTransport?.driverPermitType ?? undefined,
+        naturalHazardsIndexValue:
+          data.safetyAndLegal?.naturalHazardsIndexValue ?? undefined,
       };
     }),
 });

@@ -100,6 +100,33 @@ export function EnglishLevel({
   );
 }
 
+export function HazardsIndex({
+  name,
+  description,
+  value,
+}: CompareProps<{
+  name: string;
+  description?: Nullable<string>;
+  value: number;
+}>) {
+  const compareInfo = useCompareInfo();
+
+  return (
+    <InfoCard.Rating
+      title="Natural hazards index"
+      description={description}
+      rating={value}
+      referenceScore={compareInfo?.naturalHazardsIndexValue}
+      customLabels={{
+        title: value.toFixed(0),
+        description: name,
+      }}
+      min={0}
+      max={10}
+    />
+  );
+}
+
 const colors = [
   "var(--color-primary)",
   "var(--color-indigo-300)",
