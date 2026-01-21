@@ -22,7 +22,7 @@ export async function Destinations() {
 
   return (
     <section
-      className="grid-cols-destinations breakout grid w-full scroll-mt-20 auto-rows-fr gap-2 p-inline pt-6"
+      className="grid-cols-destinations breakout grid w-full scroll-mt-20 auto-rows-fr gap-2 p-inline py-6"
       id="destinations-grid"
     >
       {data.docs.map((country) => {

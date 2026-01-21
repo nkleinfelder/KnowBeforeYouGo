@@ -85,7 +85,7 @@ export default async function Page({
 
   return (
     <main className="content-grid gap-y-12 pb-12">
-      <OriginPickerDialog onboardingVariant />
+      <OriginPickerDialog />
       <Sections.Header
         image={getCountryImage(country.images)}
         name={country.name}

@@ -34,12 +34,7 @@ export function OriginCountryPicker() {
   );
 }
 
-export function OriginPickerDialog({
-  children,
-  onboardingVariant,
-}: PropsWithChildren<{
-  onboardingVariant?: boolean;
-}>) {
+export function OriginPickerDialog({ children }: PropsWithChildren) {
   const [dialogSeen, setDialogSeen] = useLocalStorage<boolean>(
     "origin-country-picker-dialog-seen",
     false,
@@ -50,13 +45,9 @@ export function OriginPickerDialog({
 
   return (
     <Dialog
-      defaultOpen={
-        !dialogSeen &&
-        pathname.split("/").at(1) === "/destination" &&
-        onboardingVariant
-      }
+      defaultOpen={!dialogSeen && pathname.split("/").at(1) === "destination"}
       onOpenChange={(open) => {
-        if (onboardingVariant && !open && !dialogSeen) setDialogSeen(true);
+        if (!open && !dialogSeen) setDialogSeen(true);
       }}
     >
       {children}
