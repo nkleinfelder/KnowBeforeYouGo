@@ -12,6 +12,7 @@ export function Daily({
   title,
   Icon,
   data,
+  countryName,
 }: CountrySectionProps<"dailyLifeAndLifestyle">) {
   const openingDays = data?.openingDays?.map((item) => parseInt(item));
 
@@ -21,12 +22,13 @@ export function Daily({
       title={title}
       description={data?.description}
       Icon={Icon}
+      className="group"
     >
-      {data?.findingFlatResources && (
+      {data?.findingFlatResources && data?.findingFlatResources.length > 0 && (
         <InfoCard.Container
           title="Finding Flats"
           description="Resources to find a place to live"
-          className="md:col-span-2"
+          className="md:col-span-2 finding-flats"
         >
           <InfoCard.List.ListContent>
             {data.findingFlatResources.map(
@@ -45,7 +47,7 @@ export function Daily({
       {data?.electricalPlugTypes && data.electricalPlugTypes.length > 0 && (
         <InfoCard.Container
           title="Electrical Plug Types"
-          className="md:col-span-2"
+          className="md:col-span-2 md:group-not-has-[>article.finding-flats]:row-span-4"
         >
           <InfoCard.List.ListContent className="md:grid md:grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))]">
             {data.electricalPlugTypes.map(
@@ -88,6 +90,21 @@ export function Daily({
         <InfoCard.Apps
           title="Food Delivery Apps"
           apps={data.foodDeliveryApps}
+        />
+      )}
+      {data?.dailyTips && data.dailyTips.length > 0 && (
+        <InfoCard.List.TipsFromLocals
+          items={data.dailyTips}
+          countryName={countryName}
+          className={cn(
+            "md:group-has-[>:nth-child(7):last-child]:col-span-full md:group-has-[>:nth-child(6):last-child]:group-not-has-[>article.finding-flats]:col-span-full md:group-has-[>:nth-child(5):last-child]:group-has-[>article.finding-flats]:col-span-2 md:group-has-[>:nth-child(4):last-child]:group-has-[>article.finding-flats]:col-span-full md:group-has-[>:nth-child(4):last-child]:col-span-2",
+            "md:group-not-has-[>article.finding-flats]:group-has-[>article:nth-child(5):last-child]:col-start-2",
+            "md:group-not-has-[>article.finding-flats]:group-has-[>article:nth-child(5):last-child]:col-end-4",
+            "md:group-not-has-[>article.finding-flats]:group-has-[>article:nth-child(5):last-child]:row-start-5",
+            "md:group-not-has-[>article.finding-flats]:group-has-[>article:nth-child(5):last-child]:row-end-9",
+            "md:group-not-has-[>article.finding-flats]:group-has-[>article:nth-child(5):last-child]:flex",
+            "md:group-not-has-[>article.finding-flats]:group-has-[>article:nth-child(5):last-child]:flex-col",
+          )}
         />
       )}
     </DetailInfo>

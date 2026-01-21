@@ -19,6 +19,7 @@ export function Money({
   title,
   Icon,
   data,
+  countryName,
 }: CountrySectionProps<"moneyAndPayments">) {
   const paymentMethods = data?.paymentMethods;
   const allPaymentMethodsPresent = checkPaymentMethodsType(paymentMethods);
@@ -29,6 +30,7 @@ export function Money({
       title={title}
       Icon={Icon}
       description={data?.description}
+      className="md:grid-cols-3 group"
     >
       {data?.acceptedCurrencies && data.acceptedCurrencies.length > 0 && (
         <InfoCard.List.List
@@ -47,6 +49,13 @@ export function Money({
           title="Online Shopping Apps"
           apps={data.onlineShoppingApps}
           className="md:col-span-2"
+        />
+      )}
+      {data?.moneyTips && data.moneyTips.length > 0 && (
+        <InfoCard.List.TipsFromLocals
+          items={data.moneyTips}
+          countryName={countryName}
+          className="col-span-full md:group-has-[>:nth-child(4):last-child]:col-span-2"
         />
       )}
     </DetailInfo>

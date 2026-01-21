@@ -4,6 +4,9 @@ import { cn } from "@/src/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import { AlertTriangleIcon } from "lucide-react";
 import { Nullable } from "@/src/lib/type-utils";
+import { Country } from "@/payload-types";
+import Link from "next/link";
+import { buttonVariants } from "@/src/components/ui/button";
 
 export function List({
   items,
@@ -103,5 +106,52 @@ export function ListItemWithTitle({
         </p>
       )}
     </ListItem>
+  );
+}
+
+type TipsFromLocals = NonNullable<
+  Country["culturalAndSocialNorms"]
+>["culturalTips"];
+export function TipsFromLocals({
+  items,
+  className,
+  countryName,
+}: {
+  items: TipsFromLocals;
+  countryName: string;
+  className?: string;
+}) {
+  if (!items) return null;
+
+  return (
+    <InfoCard
+      title="Local Guidance"
+      description={`These tips come from locals, or previous students that have visited ${countryName}.`}
+      className={cn(className, "@container")}
+    >
+      <ListContent className="@2xl:grid @2xl:grid-cols-2 gap-3">
+        {items.map((item, index) => (
+          <ListItem key={index} className="flex-col">
+            <h4 className="font-semibold text-balance">{item.tip.title}</h4>
+            <p className="text-sm font-normal text-muted-foreground text-pretty">
+              {item.tip.description}
+            </p>
+            {item.tip.link &&
+              item.tip.link.map((link, index) => (
+                <Link
+                  key={link.id ?? index}
+                  href={link.url}
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "mt-3 w-full",
+                  )}
+                >
+                  {link.title}
+                </Link>
+              ))}
+          </ListItem>
+        ))}
+      </ListContent>
+    </InfoCard>
   );
 }

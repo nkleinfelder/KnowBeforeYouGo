@@ -17,6 +17,7 @@ export function Health({
   title,
   Icon,
   data,
+  countryName,
 }: CountrySectionProps<"health">) {
   const helplines: {
     label: string;
@@ -128,6 +129,13 @@ export function Health({
           />
         )}
       </InfoCard.Container>
+      {data?.healthTips && data.healthTips.length > 0 && (
+        <InfoCard.List.TipsFromLocals
+          items={data.healthTips}
+          countryName={countryName}
+          className="col-span-full"
+        />
+      )}
     </DetailInfo>
   );
 }

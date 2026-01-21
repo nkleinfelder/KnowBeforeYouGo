@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { tipsFromLocalsComponent } from "../custom-fields/TipsFromLocals";
 
 export const safetyAndLegal: Field = {
   name: "safetyAndLegal",
@@ -45,6 +46,10 @@ export const safetyAndLegal: Field = {
       type: "number",
       min: 0,
       max: 10,
+    },
+    {
+      ...tipsFromLocalsComponent,
+      name: "safetyTips",
     },
   ],
 };
