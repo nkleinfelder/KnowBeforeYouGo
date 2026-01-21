@@ -219,6 +219,7 @@ export interface Country {
       iadpOk?: boolean | null;
       aseanOk?: boolean | null;
     };
+    driverPermitType?: ("internationalDp" | "euDp" | "iaDp" | "aseanDp") | null;
     navApps?: (string | App)[] | null;
   };
   moneyAndPayments?: {
@@ -579,6 +580,7 @@ export interface CountriesSelect<T extends boolean = true> {
               iadpOk?: T;
               aseanOk?: T;
             };
+        driverPermitType?: T;
         navApps?: T;
       };
   moneyAndPayments?:

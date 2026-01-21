@@ -5,7 +5,6 @@ import { Nullable } from "@/src/lib/type-utils";
 import {
   AlertTriangleIcon,
   AwardIcon,
-  Link2Icon,
   LinkIcon,
   LucideIcon,
   PhoneIcon,

@@ -33,18 +33,24 @@ export function Text({
   size,
   alignment,
   cardVariant,
+  as,
   ...props
 }: PropsWithChildren<{
   cardVariant?: InfoCardProps["variant"];
   cardSize?: InfoCardProps["size"];
+  as?: React.ElementType;
 }> &
   Omit<InfoCardProps, "variant" | "size"> &
   VariantProps<typeof textVariants>) {
+  const Comp = as ?? ("p" satisfies React.ElementType);
+
   return (
     <InfoCard variant={cardVariant} {...props}>
-      <p className={cn(textVariants({ variant, size, alignment }), className)}>
+      <Comp
+        className={cn(textVariants({ variant, size, alignment }), className)}
+      >
         {children}
-      </p>
+      </Comp>
     </InfoCard>
   );
 }

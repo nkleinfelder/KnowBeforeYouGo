@@ -40,7 +40,7 @@ export type InfoCardProps = PropsWithChildren<{
   description?: Nullable<string | ReactNode>;
   image?: string;
   cardVariant?: CardProps["variant"];
-  tooltip?: Nullable<string>;
+  tooltip?: Nullable<ReactNode>;
 }> &
   VariantProps<typeof containerVariants> &
   Pick<CardProps, "as">;
