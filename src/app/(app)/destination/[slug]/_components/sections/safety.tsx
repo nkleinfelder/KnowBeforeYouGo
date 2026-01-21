@@ -2,6 +2,9 @@ import * as InfoCard from "@/src/app/(app)/destination/[slug]/_components/info-c
 import { DetailInfo } from "@/src/app/(app)/destination/[slug]/_components/detail-info";
 import { CountrySectionProps } from "./props";
 import { HazardsIndex } from "./compare-to-origin-items";
+import Link from "next/link";
+import { buttonVariants } from "@/src/components/ui/button";
+import { LinkIcon } from "lucide-react";
 
 export function Safety({
   id,
@@ -18,7 +21,14 @@ export function Safety({
     >
       {data?.visaRequired && (
         <InfoCard.Text title="Visa Required" size="medium">
-          {data.visaRequired}
+          <Link
+            href={data?.visaRequired}
+            target="_blank"
+            className={buttonVariants()}
+          >
+            <LinkIcon className="size-4" />
+            <span>View on Project Visa</span>
+          </Link>
         </InfoCard.Text>
       )}
       {data?.emergencyNumbers && (
