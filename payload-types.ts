@@ -76,6 +76,7 @@ export interface Config {
     plugTypes: PlugType;
     media: Media;
     erasmusfundings: Erasmusfunding;
+    "legal-pages": LegalPage;
     "payload-kv": PayloadKv;
     users: User;
     "payload-locked-documents": PayloadLockedDocument;
@@ -93,6 +94,7 @@ export interface Config {
     plugTypes: PlugTypesSelect<false> | PlugTypesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     erasmusfundings: ErasmusfundingsSelect<false> | ErasmusfundingsSelect<true>;
+    "legal-pages": LegalPagesSelect<false> | LegalPagesSelect<true>;
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     "payload-locked-documents":
@@ -404,6 +406,47 @@ export interface UserRequest {
   createdAt: string;
 }
 /**
+ * Legal texts such as AGB and Data Privacy
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages".
+ */
+export interface LegalPage {
+  id: string;
+  agb: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ("ltr" | "rtl") | null;
+      format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  dataPrivacy: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ("ltr" | "rtl") | null;
+      format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -486,6 +529,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: "erasmusfundings";
         value: string | Erasmusfunding;
+      } | null)
+    | ({
+        relationTo: "legal-pages";
+        value: string | LegalPage;
       } | null)
     | ({
         relationTo: "users";
@@ -817,6 +864,16 @@ export interface ErasmusfundingsSelect<T extends boolean = true> {
         min?: T;
         max?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages_select".
+ */
+export interface LegalPagesSelect<T extends boolean = true> {
+  agb?: T;
+  dataPrivacy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
