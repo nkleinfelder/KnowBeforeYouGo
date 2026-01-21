@@ -120,6 +120,7 @@ export default async function Page({
         title={SECTIONS.CULTURE.title}
         Icon={SECTIONS.CULTURE.Icon}
         data={country.culturalAndSocialNorms}
+        countryName={country.name}
       />
       <InfoSection.Language
         id={SECTIONS.LANGUAGE.id}
