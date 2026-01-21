@@ -41,13 +41,16 @@ export function Rating({
   };
   rating: number;
 } & InfoCardProps) {
+  const adjustedRating = rating - min;
+  const adjustedMax = max - rating;
+
   return (
     <InfoCard className={cn(className, "pb-0")} {...props}>
       <RadialChartStacked
         maxValue={max}
         minValue={min}
         className="justify-self-center"
-        data={[{ value: rating, not: max - rating }]}
+        data={[{ value: adjustedRating, not: adjustedMax }]}
         dataKeys={["not", "value"]}
         innerText={{
           title: customLabels?.title ?? `${rating.toFixed(0)}%`,
