@@ -2,7 +2,6 @@ import { getConfiguredPayload } from "@/src/lib/payload";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import z from "zod";
 import { TRPCError } from "@trpc/server";
-import { COUNTRY_CATEGORIES } from "@/src/lib/categories";
 
 const payload = await getConfiguredPayload();
 
@@ -20,9 +19,6 @@ const experienceInputSchema = z.object({
 });
 
 export const experienceRouter = createTRPCRouter({
-  getCategories: publicProcedure.query(() => {
-    return COUNTRY_CATEGORIES;
-  }),
   submitExperience: publicProcedure
     .input(experienceInputSchema)
     .mutation(async ({ input }) => {

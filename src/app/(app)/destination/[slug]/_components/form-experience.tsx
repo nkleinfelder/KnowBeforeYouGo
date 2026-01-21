@@ -10,7 +10,13 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/src/components/ui/field";
-import { CheckIcon, Loader2Icon, SendIcon, SquarePenIcon } from "lucide-react";
+import {
+  CheckIcon,
+  Loader2Icon,
+  SendIcon,
+  SquarePenIcon,
+  XIcon,
+} from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 import {
   Select,
@@ -22,6 +28,7 @@ import {
 import { Textarea } from "@/src/components/ui/textarea";
 import { Button } from "@/src/components/ui/button";
 import { api } from "@/src/server/react";
+import { COUNTRY_CATEGORIES } from "@/src/lib/categories";
 
 type Inputs = {
   hasVisited: boolean;
@@ -50,16 +57,16 @@ export function ShareExperience({
   // eslint-disable-next-line react-hooks/incompatible-library
   const hasVisited = watch("hasVisited");
 
-  const { data: categories } = api.experience.getCategories.useQuery();
+  const {
+    mutateAsync: submitExperience,
+    isPending,
+    isError,
+    isSuccess,
+    error,
+  } = api.experience.submitExperience.useMutation();
 
-  const submitExperience = api.experience.submitExperience.useMutation({
-    onSuccess: () => {
-      // Success is handled by the mutation state
-    },
-  });
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    submitExperience.mutate({
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await submitExperience({
       countryName,
       countryExperience: {
         hasVisited: data.hasVisited,
@@ -72,12 +79,6 @@ export function ShareExperience({
       },
     });
   };
-
-  const state = submitExperience.isPending
-    ? "submitting"
-    : submitExperience.isSuccess
-      ? "success"
-      : "initial";
 
   return (
     <section className="w-2xl max-w-full">
@@ -144,7 +145,7 @@ export function ShareExperience({
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories?.map((category) => (
+                        {COUNTRY_CATEGORIES?.map((category) => (
                           <SelectItem
                             key={category.value}
                             value={category.value}
@@ -196,26 +197,31 @@ export function ShareExperience({
               <Button
                 size="lg"
                 type="submit"
-                data-state={state}
-                disabled={state !== "initial"}
+                disabled={isPending || isSuccess}
                 className="w-full gap-2 transition-all duration-200 ease-out data-[state=success]:bg-green-700 data-[state=success]:text-green-50"
               >
-                {state === "initial" && (
+                {!isPending && !isSuccess && !isError && (
                   <>
                     <SendIcon className="size-4" />
                     Submit Information
                   </>
                 )}
-                {state === "submitting" && (
+                {isPending && (
                   <>
                     <Loader2Icon className="size-4 animate-spin" />
                     Submitting...
                   </>
                 )}
-                {state === "success" && (
+                {isSuccess && (
                   <>
                     <CheckIcon className="size-4" />
                     Thanks for sharing!
+                  </>
+                )}
+                {isError && (
+                  <>
+                    <XIcon className="size-4 text-destructive" />
+                    Something went wrong. {error.message}
                   </>
                 )}
               </Button>
