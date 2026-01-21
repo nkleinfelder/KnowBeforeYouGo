@@ -11,7 +11,6 @@ import * as Primitives from "./primitives";
 import { InfoCard } from "./info-cards/container";
 import Link from "next/link";
 import { buttonVariants } from "@/src/components/ui/button";
-import { cn } from "@/src/lib/utils";
 
 type EssentialInfoProps = {
   id: string;

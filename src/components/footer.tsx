@@ -53,6 +53,7 @@ function FooterLink({
     <Link
       href={href}
       className="px-3 py-1.5 text-sm cursor-pointer hover:bg-stone-800 focus-visible:bg-stone-800 rounded-md flex justify-end min-w-full"
+      {...props}
     >
       {children}
     </Link>

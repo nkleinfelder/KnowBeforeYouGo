@@ -11,7 +11,6 @@ export function Transport({
   data,
   countryName,
 }: CountrySectionProps<"navTransport">) {
-  const showDriverPermits = data?.driverPermits;
   const showTransportApps =
     data?.transportApps && data.transportApps.length > 0;
   const showNavApps = data?.navApps && data.navApps.length > 0;
