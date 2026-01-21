@@ -14,10 +14,7 @@ import { ScrollAnchorLinks } from "./_components/scroll-anchor-links";
 import * as InfoSection from "./_components/sections";
 import { getCountryImage } from "@/src/lib/utils";
 import { getConfiguredPayload } from "@/src/lib/payload";
-import {
-  OriginCountryPicker,
-  OriginPickerDialog,
-} from "@/src/components/origin-country-picker";
+import { OriginPickerDialog } from "@/src/components/origin-country-picker";
 
 const payload = await getConfiguredPayload();
 
@@ -166,7 +163,6 @@ export default async function Page({
       />
 
       <Sections.ShareExperience countryId={slug} countryName={country.name} />
-      <OriginCountryPicker />
     </main>
   );
 }

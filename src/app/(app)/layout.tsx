@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/src/components/header";
 import { TRPCReactProvider } from "@/src/server/react";
+import { Footer } from "@/src/components/footer";
 
 const bodyFont = Manrope({
   variable: "--font-normal",
@@ -25,6 +26,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <Header />
           {children}
+          <Footer />
         </TRPCReactProvider>
       </body>
     </html>

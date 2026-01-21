@@ -265,7 +265,7 @@ export function MatchFinder() {
   };
 
   return (
-    <section className="full-width relative flex min-h-lvh items-center justify-center overflow-clip">
+    <section className="full-width relative flex min-h-lvh items-center justify-center overflow-clip rounded-b-4xl">
       <div
         className={`z-10 flex w-full flex-col items-center gap-4 px-4 ${
           recommendations ? "max-w-4xl pt-24" : "max-w-md"

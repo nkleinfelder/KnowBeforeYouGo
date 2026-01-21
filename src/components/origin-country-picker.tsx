@@ -15,18 +15,20 @@ import { useOriginCountry } from "../hooks/use-origin-country";
 import { api } from "../server/react";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 import { PropsWithChildren } from "react";
+import { usePathname } from "next/navigation";
 
 export function OriginCountryPicker() {
   const [originCountry] = useOriginCountry();
 
   return (
     <OriginPickerDialog>
-      <DialogTrigger suppressHydrationWarning asChild>
-        <Button variant="outline">
-          {originCountry
-            ? `Adjust home country (${originCountry?.name})`
-            : "Set your home country"}
-        </Button>
+      <DialogTrigger
+        suppressHydrationWarning
+        className="px-3 py-1.5 text-sm cursor-pointer hover:bg-stone-800 focus-visible:bg-stone-800 rounded-md"
+      >
+        {originCountry
+          ? `Adjust home country (${originCountry?.name})`
+          : "Set your home country"}
       </DialogTrigger>
     </OriginPickerDialog>
   );
@@ -44,10 +46,15 @@ export function OriginPickerDialog({
   );
   const [originCountry, setOriginCountry] = useOriginCountry();
   const { data: countries } = api.country.getCountrySlugs.useQuery();
+  const pathname = usePathname();
 
   return (
     <Dialog
-      defaultOpen={!dialogSeen && onboardingVariant}
+      defaultOpen={
+        !dialogSeen &&
+        pathname.split("/").at(1) === "/destination" &&
+        onboardingVariant
+      }
       onOpenChange={(open) => {
         if (onboardingVariant && !open && !dialogSeen) setDialogSeen(true);
       }}

@@ -89,7 +89,7 @@
   --card-foreground: oklch(0.985 0.001 106.423);
   --popover: oklch(0.216 0.006 56.043);
   --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.923 0.003 48.717);
+  --primary: #816bf4;
   --primary-foreground: oklch(0.216 0.006 56.043);
   --secondary: oklch(0.268 0.007 34.298);
   --secondary-foreground: oklch(0.985 0.001 106.423);
@@ -121,7 +121,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-linear-to-br from-stone-900 to-stone-950 text-foreground from-80%;
 
     --padding-inline: calc(1.5 * var(--spacing-inline));
     --content-max-width: 60rem;
@@ -130,6 +130,10 @@
     --breakout-size: calc(
       (var(--breakout-max-width) - var(--content-max-width)) / 2
     );
+  }
+
+  main {
+    @apply bg-background text-foreground rounded-b-4xl shadow-lg shadow-stone-50/5;
   }
 }
 
