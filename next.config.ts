@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   images: {
     qualities: [90, 75],
+    minimumCacheTTL: 60 * 60 * 24 * 14, // 14 days
   },
 };
 
