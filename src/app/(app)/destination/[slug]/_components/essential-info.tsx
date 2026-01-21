@@ -1,14 +1,17 @@
-import { Badge } from "@/src/components/ui/badge";
 import {
   EuroIcon,
   FileTextIcon,
   FlagIcon,
+  LinkIcon,
   LucideIcon,
   ShieldIcon,
 } from "lucide-react";
 import { PropsWithChildren } from "react";
 import * as Primitives from "./primitives";
 import { InfoCard } from "./info-cards/container";
+import Link from "next/link";
+import { buttonVariants } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
 
 type EssentialInfoProps = {
   id: string;
@@ -31,7 +34,14 @@ export function EssentialInfo({
       <Primitives.Title>{title}</Primitives.Title>
       <Primitives.Grid>
         <EssentialCard title="Visa Required" Icon={FileTextIcon}>
-          <Badge size="lg">{visaRequired}</Badge>
+          <Link
+            href={visaRequired}
+            target="_blank"
+            className={buttonVariants()}
+          >
+            <LinkIcon className="size-4" />
+            <span>View on Project Visa</span>
+          </Link>
         </EssentialCard>
         <EssentialCard title="Insurance" Icon={ShieldIcon}>
           <p>{insurance}</p>
