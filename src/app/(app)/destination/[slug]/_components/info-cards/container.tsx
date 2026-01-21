@@ -57,6 +57,8 @@ export function InfoCard({
   variant,
   tooltip,
   as,
+  color,
+  ...props
 }: InfoCardProps) {
   const showImage =
     image &&
@@ -66,9 +68,10 @@ export function InfoCard({
 
   return (
     <Card
-      className={cn(containerVariants({ variant, size }), className)}
+      className={cn(containerVariants({ variant, size, color }), className)}
       variant={cardVariant}
       as={as}
+      {...props}
     >
       <CardHeader className={cn("col-span-full items-start")}>
         <CardTitle>{title}</CardTitle>

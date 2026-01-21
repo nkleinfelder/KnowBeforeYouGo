@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 import { InfoCard, InfoCardProps } from "./container";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/src/lib/utils";
@@ -41,7 +41,8 @@ export function Text({
   as?: React.ElementType;
 }> &
   Omit<InfoCardProps, "variant" | "size"> &
-  VariantProps<typeof textVariants>) {
+  VariantProps<typeof textVariants> &
+  ComponentProps<"div">) {
   const Comp = as ?? ("p" satisfies React.ElementType);
 
   return (

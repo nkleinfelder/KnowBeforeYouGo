@@ -19,10 +19,10 @@ export function Safety({
       title={title}
       Icon={Icon}
       description={data?.description}
-      className="group"
+      className="group md:has-[>article:nth-child(2):last-child]:[&>article#visa-required]:row-span-4"
     >
       {data?.visaRequired && (
-        <InfoCard.Text title="Visa Required" size="medium">
+        <InfoCard.Text title="Visa Required" size="medium" id="visa-required">
           <Link
             href={data?.visaRequired}
             target="_blank"
