@@ -40,5 +40,11 @@ export const safetyAndLegal: Field = {
       relationTo: "hazards-index",
       hasMany: false,
     },
+    {
+      name: "naturalHazardsIndexValue",
+      type: "number",
+      min: 0,
+      max: 10,
+    },
   ],
 };

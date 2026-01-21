@@ -250,6 +250,7 @@ export interface Country {
       fire?: string | null;
     };
     naturalHazardsIndexEnum?: (string | null) | HazardsIndex;
+    naturalHazardsIndexValue?: number | null;
   };
   dailyLifeAndLifestyle?: {
     description?: string | null;
@@ -635,6 +636,7 @@ export interface CountriesSelect<T extends boolean = true> {
               fire?: T;
             };
         naturalHazardsIndexEnum?: T;
+        naturalHazardsIndexValue?: T;
       };
   dailyLifeAndLifestyle?:
     | T
