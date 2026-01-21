@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/src/components/ui/card";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   Field,
   FieldDescription,
@@ -21,13 +21,14 @@ import {
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Button } from "@/src/components/ui/button";
-import { useState } from "react";
+import { api } from "@/src/server/react";
 
 type Inputs = {
-  name: string;
-  email: string;
+  hasVisited: boolean;
+  durationOfStay: number | undefined;
   category: string;
-  message: string;
+  issueType: string;
+  description: string;
 };
 
 export function ShareExperience({
@@ -36,19 +37,47 @@ export function ShareExperience({
   countryId: string;
   countryName: string;
 }) {
-  const { register, handleSubmit } = useForm<Inputs>();
-  const [state, setState] = useState<"initial" | "submitting" | "success">(
-    "initial",
-  );
+  const { register, handleSubmit, control, watch } = useForm<Inputs>({
+    defaultValues: {
+      hasVisited: true,
+      durationOfStay: undefined,
+      category: "",
+      issueType: "",
+      description: "",
+    },
+  });
+
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const hasVisited = watch("hasVisited");
+
+  const { data: categories } = api.experience.getCategories.useQuery();
+
+  const submitExperience = api.experience.submitExperience.useMutation({
+    onSuccess: () => {
+      // Success is handled by the mutation state
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setState("submitting");
-
-    setTimeout(() => {
-      console.log(data);
-      setState("success");
-    }, 2000);
+    submitExperience.mutate({
+      countryName,
+      countryExperience: {
+        hasVisited: data.hasVisited,
+        durationOfStay: data.durationOfStay,
+      },
+      category: data.category,
+      issue: {
+        issueType: data.issueType,
+        description: data.description,
+      },
+    });
   };
+
+  const state = submitExperience.isPending
+    ? "submitting"
+    : submitExperience.isSuccess
+      ? "success"
+      : "initial";
 
   return (
     <section className="w-2xl max-w-full">
@@ -65,46 +94,100 @@ export function ShareExperience({
             </FieldDescription>
             <FieldGroup className="grid md:grid-cols-2">
               <Field>
-                <FieldLabel htmlFor="name">Name</FieldLabel>
-                <Input
-                  {...register("name")}
-                  id="name"
-                  placeholder="Your name"
-                  className="w-full"
+                <FieldLabel htmlFor="hasVisited">
+                  Have you visited {countryName}?
+                </FieldLabel>
+                <Controller
+                  name="hasVisited"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value ? "yes" : "no"}
+                      onValueChange={(value) => field.onChange(value === "yes")}
+                    >
+                      <SelectTrigger id="hasVisited">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes">Yes</SelectItem>
+                        <SelectItem value="no">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </Field>
+              {hasVisited && (
+                <Field>
+                  <FieldLabel htmlFor="durationOfStay">
+                    Duration of stay (months)
+                  </FieldLabel>
+                  <Input
+                    {...register("durationOfStay", { valueAsNumber: true })}
+                    id="durationOfStay"
+                    type="number"
+                    min={1}
+                    placeholder="e.g. 6"
+                    className="w-full"
+                  />
+                </Field>
+              )}
+            </FieldGroup>
+            <FieldGroup className="grid md:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="category">Category</FieldLabel>
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger id="category">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories?.map((category) => (
+                          <SelectItem
+                            key={category.value}
+                            value={category.value}
+                          >
+                            {category.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  {...register("email")}
-                  id="email"
-                  placeholder="Your email"
-                  className="w-full"
+                <FieldLabel htmlFor="issueType">Issue Type</FieldLabel>
+                <Controller
+                  name="issueType"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger id="issueType">
+                        <SelectValue placeholder="Select issue type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Add Data">Add Data</SelectItem>
+                        <SelectItem value="Improve Data">
+                          Improve Data
+                        </SelectItem>
+                        <SelectItem value="Misleading Info">
+                          Misleading Info
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </Field>
             </FieldGroup>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="category">Category</FieldLabel>
-                <Select defaultValue="">
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="add-data">Add Data</SelectItem>
-                    <SelectItem value="improve-data">Improve Data</SelectItem>
-                    <SelectItem value="misleading-info">
-                      Misleading Info
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="message">Message</FieldLabel>
+                <FieldLabel htmlFor="description">Description</FieldLabel>
                 <Textarea
-                  {...register("message")}
-                  id="message"
-                  placeholder="Your message"
+                  {...register("description")}
+                  id="description"
+                  placeholder="Describe your experience or the information you want to share..."
                   className="min-h-24 w-full"
                 />
               </Field>

@@ -13,6 +13,7 @@ import { UserRequests } from "@/src/collections/UserRequests";
 import { EnglishLevels } from "@/src/collections/EnglishLevels";
 import { LgbtqLevels } from "@/src/collections/LgbtqLevels";
 import ErasmusFundings from "@/src/collections/ErasmusFundings";
+import { LegalPages } from "./src/collections/LegalPages";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -50,6 +51,7 @@ export default buildConfig({
     PlugTypes,
     Media,
     ErasmusFundings,
+    LegalPages,
   ],
 
   plugins: [
