@@ -11,11 +11,11 @@ import {
   FieldSet,
 } from "@/src/components/ui/field";
 import {
+  AlertTriangleIcon,
   CheckIcon,
   Loader2Icon,
   SendIcon,
   SquarePenIcon,
-  XIcon,
 } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 import {
@@ -47,22 +47,20 @@ export function ShareExperience({
   const { register, handleSubmit, control, watch } = useForm<Inputs>({
     defaultValues: {
       hasVisited: true,
-      durationOfStay: undefined,
-      category: "",
-      issueType: "",
-      description: "",
     },
   });
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const hasVisited = watch("hasVisited");
+  const selectedCategory = watch("category");
+  const selectedIssue = watch("issueType");
+  const text = watch("description");
 
   const {
     mutateAsync: submitExperience,
     isPending,
     isError,
     isSuccess,
-    error,
   } = api.experience.submitExperience.useMutation();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -81,6 +79,9 @@ export function ShareExperience({
       },
     });
   };
+
+  const canSubmit =
+    !!selectedCategory && !!selectedIssue && text && text.length > 5;
 
   return (
     <section className="w-2xl max-w-full">
@@ -199,7 +200,7 @@ export function ShareExperience({
               <Button
                 size="lg"
                 type="submit"
-                disabled={isPending || isSuccess}
+                disabled={isPending || isSuccess || !canSubmit}
                 className="w-full gap-2 transition-all duration-200 ease-out data-[state=success]:bg-green-700 data-[state=success]:text-green-50"
               >
                 {!isPending && !isSuccess && !isError && (
@@ -222,11 +223,17 @@ export function ShareExperience({
                 )}
                 {isError && (
                   <>
-                    <XIcon className="size-4 text-destructive" />
-                    Something went wrong. {error.message}
+                    <SendIcon className="size-4" />
+                    Retry
                   </>
                 )}
               </Button>
+              {isError && (
+                <p className="flex items-center gap-1 w-full justify-center mt-1 text-sm">
+                  <AlertTriangleIcon className="text-destructive size-4" />
+                  Something went wrong.
+                </p>
+              )}
             </Field>
           </FieldSet>
         </form>
