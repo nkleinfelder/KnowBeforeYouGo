@@ -236,13 +236,6 @@ function CountryColumn({ slug }: { slug: string }) {
 
       {/* 6. Money */}
       <Section title="Money">
-        <div className="mb-2 flex flex-wrap gap-1">
-          {data.moneyAndPayments?.acceptedCurrencies?.map((c, i) => (
-            <Badge key={i} variant="outline">
-              {c.currency}
-            </Badge>
-          ))}
-        </div>
         <div className="space-y-1 text-sm">
           <InfoRow label="Card">
             {data.moneyAndPayments?.paymentMethods?.["Payment by Card (%)"] ??
@@ -254,6 +247,20 @@ function CountryColumn({ slug }: { slug: string }) {
               0}
             %
           </InfoRow>
+          <InfoRow label="App">
+            {data.moneyAndPayments?.paymentMethods?.["Payment by App (%)"] ?? 0}
+            %
+          </InfoRow>
+        </div>
+        <h4 className="text-xs font-semibold uppercase text-stone-500 mt-2">
+          Accepted Currencies
+        </h4>
+        <div className="mb-2 flex flex-wrap gap-1">
+          {data.moneyAndPayments?.acceptedCurrencies?.map((c, i) => (
+            <Badge key={i} variant="outline">
+              {c.currency}
+            </Badge>
+          ))}
         </div>
         <AppList
           title="Payment Apps"
@@ -263,26 +270,33 @@ function CountryColumn({ slug }: { slug: string }) {
 
       {/* 7. Safety */}
       <Section title="Safety">
-        <div className="mb-2 grid grid-cols-2 gap-2 text-sm">
-          <div className="rounded border border-red-100 bg-red-50 p-2 text-center">
+        <ul className="mb-2 grid grid-cols-2 gap-2 text-sm">
+          <li className="rounded border border-red-100 bg-red-50 p-2 text-center col-span-2">
             <span className="block text-xs font-medium text-red-400">
               Police
             </span>
             <span className="font-bold text-red-700">
-              {data.safetyAndLegal?.emergencyNumbers?.police || "112"}
+              {data.safetyAndLegal?.emergencyNumbers?.police || "?"}
             </span>
-          </div>
-          <div className="rounded border border-red-100 bg-red-50 p-2 text-center">
+          </li>
+          <li className="rounded border border-red-100 bg-red-50 p-2 text-center">
             <span className="block text-xs font-medium text-red-400">
               Ambulance
             </span>
             <span className="font-bold text-red-700">
-              {data.safetyAndLegal?.emergencyNumbers?.ambulance || "112"}
+              {data.safetyAndLegal?.emergencyNumbers?.ambulance || "?"}
             </span>
-          </div>
-        </div>
+          </li>
+          <li className="rounded border border-red-100 bg-red-50 p-2 text-center">
+            <span className="block text-xs font-medium text-red-400">Fire</span>
+            <span className="font-bold text-red-700">
+              {data.safetyAndLegal?.emergencyNumbers?.fire || "?"}
+            </span>
+          </li>
+        </ul>
         <InfoRow label="Hazards Index">
-          {data.safetyAndLegal?.naturalHazardsIndexValue ?? "N/A"}/10
+          {data.safetyAndLegal?.naturalHazardsIndexValue ?? "?"}
+          <span className="text-muted-foreground">/10</span>
         </InfoRow>
       </Section>
 
