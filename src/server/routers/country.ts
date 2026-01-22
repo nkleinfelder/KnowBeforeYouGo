@@ -110,4 +110,25 @@ export const countryRouter = createTRPCRouter({
           data.safetyAndLegal?.naturalHazardsIndexValue ?? undefined,
       };
     }),
+  getCountryBySlug: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const countries = await payload.find({
+        collection: "countries",
+        where: {
+          slug: {
+            equals: input,
+          },
+        },
+      });
+
+      if (!countries.docs[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Country not found",
+        });
+      }
+
+      return countries.docs[0];
+    }),
 });
