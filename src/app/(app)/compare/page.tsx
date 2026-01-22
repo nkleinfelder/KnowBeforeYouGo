@@ -28,18 +28,18 @@ export default function ComparePage() {
   };
 
   return (
-    <main className="content-grid gap-y-8 pb-8 pt-40">
-      <div className="flex flex-col items-center gap-4 text-center mb-8">
-        <h1 className="text-5xl font-bold text-foreground ">
+    <main className="content-grid md:gap-y-8 gap-y-4 pb-8 md:pt-40 pt-26">
+      <div className="flex flex-col items-center md:gap-4 gap-1 text-center mb-8">
+        <h1 className="md:text-5xl text-3xl font-bold text-foreground ">
           Compare Countries
         </h1>
-        <p className="max-w-lg text-lg text-muted-foreground ">
+        <p className="max-w-lg md:text-lg text-muted-foreground ">
           Select countries to view their details side-by-side.
         </p>
       </div>
 
       {/* Selectors */}
-      <section className="grid grid-cols-1 gap-8 md:grid-cols-3 w-full">
+      <section className="grid grid-cols-1 gap-x-8 gap-y-2 md:grid-cols-3 w-full">
         {slugs.map((slug, i) => (
           <div key={i} className="flex gap-2">
             <Select
@@ -78,7 +78,7 @@ export default function ComparePage() {
       {/* Comparison Grid */}
       {/* Defined rows: Header, Essential, Culture, Language, Transport, Money, Safety, Health, Daily */}
       <section
-        className="auto-rows-auto grid grid-cols-1 gap-8 md:grid-cols-3 w-full min-h-[60svh]"
+        className="auto-rows-auto grid md:gap-8 gap-6 md:grid-cols-3 grid-cols-[repeat(3,14rem)] w-full min-h-[60svh] overflow-x-auto"
         style={{
           gridTemplateRows: "auto auto auto auto auto auto auto auto auto",
         }}
@@ -89,7 +89,7 @@ export default function ComparePage() {
           ) : (
             <div
               key={i}
-              className="hidden row-span-9 rounded-xl border border-dashed border-stone-200 bg-stone-50/50 md:flex items-center pt-12 flex-col gap-4"
+              className="row-span-9 rounded-xl border border-dashed border-stone-200 bg-stone-50/50 flex items-center pt-12 flex-col gap-4"
             >
               <GhostIcon
                 className="size-12 text-muted-foreground"
@@ -144,6 +144,7 @@ function CountryColumn({ slug }: { slug: string }) {
             <Image
               src={heroImage}
               alt={data.name}
+              sizes="(max-width: 768px) 100vw, 1280px"
               fill
               className="object-cover"
             />
