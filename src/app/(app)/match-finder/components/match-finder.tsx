@@ -68,7 +68,7 @@ const QUESTIONS: {
       "Top priority",
     ],
     extraInfo:
-      "Reflect on how much emphasis you want to place on keeping overall trip costs low (accommodation, meals, transport, activities).",
+      "Reflect on how much emphasis you want to place on keeping overall trip costs low like accommodation, meals, transport, activities.",
   },
   {
     key: "englishProficiency",
@@ -110,12 +110,12 @@ const QUESTIONS: {
       "Top priority",
     ],
     extraInfo:
-      "Weigh how much you prioritize low crime, stable conditions, reliable healthcare, and overall security.",
+      "Weigh how much you prioritize low crime, stable conditions, reliable healthcare, and save traffic",
   },
   {
     key: "dietaryFriendliness",
     label: "Dietary Needs",
-    question: "How important is finding food that meets your dietary needs?",
+    question: "How important is finding food that is vegetarian or vegan?",
     options: [
       "Minimal priority",
       "Low priority",
@@ -124,7 +124,7 @@ const QUESTIONS: {
       "Top priority",
     ],
     extraInfo:
-      "Consider ease of finding food matching your preferences or requirements (e.g., plant-based, religious, allergies).",
+      "Consider ease of finding food matching your requirements for example vegan food labeled as such on a menu.",
   },
   {
     key: "cashlessPayment",
