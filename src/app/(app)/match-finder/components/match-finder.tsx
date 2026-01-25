@@ -61,11 +61,11 @@ const QUESTIONS: {
     label: "Budget Constraints",
     question: "How strict are you with your budget?",
     options: [
-      "Minimal priority",
-      "Low priority",
-      "Neutral",
-      "High priority",
-      "Top priority",
+      "I have a very strict budget",
+      "I have a strict budget",
+      "I balance cost and comfort",
+      "I am fine with spending a bit more",
+      "I don’t really care",
     ],
     extraInfo:
       "Reflect on how much emphasis you want to place on keeping overall trip costs low like accommodation, meals, transport, activities.",
@@ -73,13 +73,13 @@ const QUESTIONS: {
   {
     key: "englishProficiency",
     label: "English Usage",
-    question: "How important is it that locals speak English?",
+    question: "What level of English availability are you comfortable with?",
     options: [
-      "Minimal priority",
-      "Low priority",
-      "Neutral",
-      "High priority",
-      "Top priority",
+      "I don't care. I speak the official language",
+      "Basic English in tourist areas is fine",
+      "Moderate English availability is fine",
+      "English widely spoken",
+      "English spoken almost everywhere",
     ],
     extraInfo:
       "Consider how much you value destinations where English is commonly spoken by locals, staff, or on signage/menus.",
@@ -89,11 +89,11 @@ const QUESTIONS: {
     label: "LGBTQ+ Acceptance",
     question: "How important is LGBTQ+ acceptance to you?",
     options: [
-      "Minimal priority",
-      "Low priority",
-      "Neutral",
-      "High priority",
-      "Top priority",
+      "Not relevant to me",
+      "Somewhat important",
+      "Moderately important",
+      "Very important",
+      "Absolutely essential",
     ],
     extraInfo:
       "Think about how important a supportive environment (legal protections, social attitudes, visible inclusivity) is for you.",
@@ -103,11 +103,11 @@ const QUESTIONS: {
     label: "Personal Safety",
     question: "How much do you prioritize personal safety?",
     options: [
-      "Minimal priority",
-      "Low priority",
-      "Neutral",
-      "High priority",
-      "Top priority",
+      "I don't really care",
+      "It is generally safe with a few areas to avoid",
+      "A balanced mix of safety and experience",
+      "Very safe in most places",
+      "Consistently very safe everywhere",
     ],
     extraInfo:
       "Weigh how much you prioritize low crime, stable conditions, reliable healthcare, and save traffic",
@@ -117,11 +117,11 @@ const QUESTIONS: {
     label: "Dietary Needs",
     question: "How important is finding food that is vegetarian or vegan?",
     options: [
-      "Minimal priority",
-      "Low priority",
-      "Neutral",
-      "High priority",
-      "Top priority",
+      "Not important to me",
+      "Nice to have occasionally",
+      "Somewhat important",
+      "Very important",
+      "Essential for my diet",
     ],
     extraInfo:
       "Consider ease of finding food matching your requirements for example vegan food labeled as such on a menu.",
@@ -131,11 +131,11 @@ const QUESTIONS: {
     label: "Payment Methods",
     question: "How important is being able to pay without cash?",
     options: [
-      "Minimal priority",
-      "Low priority",
-      "Neutral",
-      "High priority",
-      "Top priority",
+      "I don't mind the payment method",
+      "I’m fine with mostly cash",
+      "I use both equally",
+      "I prefer card or mobile payments",
+      "Cashless payment is essential",
     ],
     extraInfo:
       "Reflect on your preference for card/mobile payments versus cash availability and acceptance.",
@@ -297,7 +297,7 @@ export function MatchFinder() {
             <div className="py-4 text-center">
               <div className="flex items-center justify-center gap-1">
                 <h2 className="text-2xl font-semibold text-stone-800">
-                  {currentQuestion.label}
+                  {currentQuestion.question}
                 </h2>
                 {currentQuestion.extraInfo && (
                   <InfoPopover contentClassName="max-w-xs text-stone-600">
@@ -305,9 +305,6 @@ export function MatchFinder() {
                   </InfoPopover>
                 )}
               </div>
-              <p className="mt-1 text-sm text-stone-500">
-                {currentQuestion.question}
-              </p>
             </div>
 
             {/* Options */}
