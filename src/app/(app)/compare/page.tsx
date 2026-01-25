@@ -16,6 +16,8 @@ import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
 import { App, Country } from "@/payload-types";
 import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
+import { Nullable } from "@/src/lib/type-utils";
+import Link from "next/link";
 
 export default function ComparePage() {
   const [slugs, setSlugs] = useState<(string | null)[]>([null, null, null]);
@@ -125,34 +127,37 @@ function CountryColumn({ slug }: { slug: string }) {
     );
 
   const getImageUrl = (
-    img: NonNullable<Country["images"]>[number]["image"],
+    img: Nullable<NonNullable<Country["images"]>[number]["image"]>,
   ) => {
     if (!img) return COUNTRY_FALLBACK_IMAGE;
     if (typeof img === "string") return img;
     return img.url;
   };
-  const heroImage = data.images?.[0]?.image
-    ? getImageUrl(data.images[0].image)
-    : COUNTRY_FALLBACK_IMAGE;
+  const heroImage =
+    getImageUrl(data.images?.[0]?.image) ?? COUNTRY_FALLBACK_IMAGE;
 
   return (
     <article className="grid row-span-9 grid-rows-subgrid gap-y-4">
       {/* 1. Header */}
       <header className="flex flex-col gap-4">
-        <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-stone-100 shadow-sm">
-          {heroImage && (
+        <Link
+          href={`/destination/${slug}`}
+          aria-label={`Detail page for ${data.name}`}
+          className="hover:opacity-90 focus-visible:opacity-90 transition-opacity duration-200 ease-in-out group"
+        >
+          <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-stone-100 shadow-sm">
             <Image
               src={heroImage}
               alt={data.name}
               sizes="(max-width: 768px) 100vw, 1280px"
               fill
-              className="object-cover"
+              className="object-cover group-hover:scale-105 group-focus-within:scale-105 transition-transform duration-200 ease-in-out"
             />
-          )}
-          <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/60 to-transparent p-4">
-            <h2 className="text-2xl font-bold text-white">{data.name}</h2>
+            <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/60 to-transparent p-4">
+              <h2 className="text-2xl font-bold text-white">{data.name}</h2>
+            </div>
           </div>
-        </div>
+        </Link>
       </header>
 
       {/* 2. Essential Info */}
