@@ -44,10 +44,10 @@ function getCountryImage(images: Country["images"]): string | undefined {
 function normalizeCostOfLiving(cost: number | null | undefined): number {
   if (!cost) return 3; // Default to middle
   // Assuming cost range roughly 400-2000€
-  if (cost <= 500) return 1; // Very cheap
-  if (cost <= 700) return 2; // Cheap
-  if (cost <= 1000) return 3; // Moderate
-  if (cost <= 1400) return 4; // Expensive
+  if (cost <= 700) return 1; // Very cheap
+  if (cost <= 800) return 2; // Cheap
+  if (cost <= 900) return 3; // Moderate
+  if (cost <= 1000) return 4; // Expensive
   return 5; // Very expensive
 }
 
@@ -60,12 +60,28 @@ function normalizeEnglishLevel(
 
   // If it's populated as an object
   if (typeof englishLevel === "object" && "name" in englishLevel) {
-    const name = (englishLevel as EnglishLevel).name.toLowerCase();
-    if (name.includes("very high") || name.includes("excellent")) return 5;
-    if (name.includes("high")) return 4;
-    if (name.includes("moderate") || name.includes("medium")) return 3;
-    if (name.includes("low")) return 2;
-    if (name.includes("very low") || name.includes("minimal")) return 1;
+    const raw = (englishLevel as EnglishLevel).name;
+    const name = String(raw).trim();
+
+    switch (name) {
+      case "Very Low Proficiency":
+        return 1;
+
+      case "Low Proficiency":
+        return 2;
+
+      case "Moderate Proficiency":
+        return 3;
+
+      case "High Proficiency":
+        return 4;
+
+      case "Very High Proficiency":
+        return 5;
+
+      default:
+        return 3;
+    }
   }
   return 3;
 }
@@ -78,24 +94,33 @@ function normalizeLgbtqLevel(
   if (!lgbtqLevel) return 3;
 
   if (typeof lgbtqLevel === "object" && "name" in lgbtqLevel) {
-    const name = (lgbtqLevel as LgbtqLevel).name.toLowerCase();
-    // Based on typical LGBTQ index naming
-    if (
-      name.includes("very friendly") ||
-      name.includes("excellent") ||
-      name.includes("high")
-    )
-      return 5;
-    if (name.includes("friendly") || name.includes("good")) return 4;
-    if (name.includes("moderate") || name.includes("mixed")) return 3;
-    if (name.includes("unfriendly") || name.includes("low")) return 2;
-    if (
-      name.includes("hostile") ||
-      name.includes("dangerous") ||
-      name.includes("very low")
-    )
-      return 1;
+    const raw = (lgbtqLevel as LgbtqLevel).name;
+    const name = String(raw).trim();
+
+    switch (name) {
+      case "Extremely Dangerous":
+        return 1;
+
+      case "Hostile / Dangerous":
+        return 1;
+
+      case "Restrictive / Tolerated but Unsafe":
+        return 2;
+
+      case "Moderately Accepting":
+        return 3;
+
+      case "LGBTQIA+ Friendly":
+        return 4;
+
+      case "Very LGBTQIA+ Friendly":
+        return 5;
+
+      default:
+        return 3;
+    }
   }
+
   return 3;
 }
 
@@ -205,7 +230,7 @@ async function getRecommendations(
   const data = await payload.find({
     collection: "countries",
     limit: 100,
-    depth: 1,
+    depth: 2,
   });
 
   if (data.docs.length === 0) {
