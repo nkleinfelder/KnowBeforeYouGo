@@ -30,10 +30,12 @@ export function Rating({
   referenceScore,
   className,
   customLabels,
+  fill,
   ...props
 }: {
   min?: number;
   max?: number;
+  fill?: string;
   referenceScore?: number;
   customLabels?: {
     title: string;
@@ -50,6 +52,11 @@ export function Rating({
         maxValue={max}
         minValue={min}
         className="justify-self-center"
+        colors={
+          fill
+            ? ["var(--color-secondary)", fill, "var(--color-indigo-700)"]
+            : undefined
+        }
         data={[{ value: adjustedRating, not: adjustedMax }]}
         dataKeys={["not", "value"]}
         innerText={{

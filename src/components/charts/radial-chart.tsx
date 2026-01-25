@@ -17,6 +17,7 @@ type Props<T extends Record<string, unknown>[]> = {
   data: T | undefined;
   dataKeys: (keyof T[number])[];
   cells?: React.ReactNode;
+  colors?: string[];
   referenceValue?: number;
   maxValue?: number;
   minValue?: number;
@@ -27,7 +28,7 @@ type Props<T extends Record<string, unknown>[]> = {
   };
 };
 
-const colors = [
+const defaultColors = [
   "var(--color-secondary)",
   "var(--color-primary)",
   "var(--color-indigo-700)",
@@ -39,6 +40,7 @@ export function RadialChartStacked<T extends Record<string, unknown>[]>({
   referenceValue,
   maxValue = 100,
   minValue = 0,
+  colors = defaultColors,
   className,
 }: Props<T>) {
   return (

@@ -240,6 +240,13 @@ export function VegetarianPopulationShare({
   );
 }
 
+function getLGBTQScoreColor(score: number) {
+  if (score >= 0) return undefined;
+  if (score <= -15) return "var(--color-red-600)";
+  if (score <= -5) return "var(--color-red-500)";
+  return "var(--color-red-400)";
+}
+
 export function LGBTQFriendliness({
   label,
   score,
@@ -262,6 +269,7 @@ export function LGBTQFriendliness({
         title: score.toFixed(0),
         description: label,
       }}
+      fill={getLGBTQScoreColor(score)}
       min={-23}
       max={13}
     />
