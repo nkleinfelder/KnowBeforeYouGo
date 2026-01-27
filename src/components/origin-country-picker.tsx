@@ -9,23 +9,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Button } from "./ui/button";
-import { useOriginCountry } from "../hooks/use-origin-country";
-import { api } from "../server/react";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
+} from "@/src/components/ui/dialog";
+import { Button } from "@/src/components/ui/button";
+import { useOriginCountry } from "@/src/hooks/use-origin-country";
+import { api } from "@/src/server/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/src/components/ui/select";
 import { PropsWithChildren } from "react";
 import { usePathname } from "next/navigation";
 
-export function OriginCountryPicker() {
+export default function OriginCountryPicker() {
   const [originCountry] = useOriginCountry();
 
   return (
     <OriginPickerDialog>
-      <DialogTrigger
-        suppressHydrationWarning
-        className="px-3 py-1.5 text-sm cursor-pointer hover:bg-stone-800 focus-visible:bg-stone-800 rounded-md"
-      >
+      <DialogTrigger className="px-3 py-1.5 text-sm cursor-pointer hover:bg-stone-800 focus-visible:bg-stone-800 rounded-md">
         {originCountry
           ? `Adjust home country (${originCountry?.name})`
           : "Set your home country"}
