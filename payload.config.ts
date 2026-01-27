@@ -51,8 +51,9 @@ export default buildConfig({
     PlugTypes,
     Media,
     ErasmusFundings,
-    LegalPages,
   ],
+
+  globals: [LegalPages],
 
   plugins: [
     s3Storage({

@@ -30,7 +30,7 @@ export async function Destinations() {
         if (country.culturalAndSocialNorms?.avgCostOfLiving) {
           tags.push({
             icon: EuroIcon,
-            name: country.culturalAndSocialNorms.avgCostOfLiving.toFixed(0),
+            name: `${country.culturalAndSocialNorms.avgCostOfLiving.toFixed(0)} / month`,
           });
         }
         return (

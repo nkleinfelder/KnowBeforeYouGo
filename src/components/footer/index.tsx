@@ -22,20 +22,7 @@ export function Footer() {
         <NewsletterSub />
         <ul className="items-end grid gap-0.5 text-muted-foreground text-sm w-fit justify-self-end [&>li]:min-w-full -col-start-2">
           <li>
-            <FooterLink
-              // href="/privacy"
-              href="/"
-            >
-              Privacy
-            </FooterLink>
-          </li>
-          <li>
-            <FooterLink
-              // href="/terms"
-              href="/"
-            >
-              Terms & Conditions
-            </FooterLink>
+            <FooterLink href="/data-privacy">Privacy</FooterLink>
           </li>
           <li>
             <OriginPickerClient />

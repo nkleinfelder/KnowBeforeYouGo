@@ -28,7 +28,7 @@ export function BlurElement() {
   const { contentHeight } = useCountryCardContext();
   return (
     <div
-      className="image-blur-element w-full self-end bg-stone-800 opacity-100 transition-opacity duration-200 ease-in-out group-focus-within:opacity-0 group-hover:opacity-0"
+      className="w-full self-end bg-linear-to-b from-transparent via-stone-800/40 via-30% to-stone-800/90 opacity-100 transition-opacity duration-200 ease-in-out group-focus-within:opacity-0 group-hover:opacity-0"
       style={{
         height: contentHeight + 16 * 2,
       }}

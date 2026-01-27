@@ -1,13 +1,9 @@
-import type { CollectionConfig } from "payload";
+import type { GlobalConfig } from "payload";
 
-export const LegalPages: CollectionConfig = {
+export const LegalPages: GlobalConfig = {
   slug: "legal-pages",
-  labels: {
-    singular: "Legal Content",
-    plural: "Legal Content",
-  },
+  label: "Legal Pages",
   admin: {
-    useAsTitle: "id",
     description: "Legal texts such as AGB and Data Privacy",
   },
   fields: [
