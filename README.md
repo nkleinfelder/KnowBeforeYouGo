@@ -1,5 +1,87 @@
 # Know Before You Go
 
+## About
+
+**Know Before You Go** is a web application that helps users prepare for traveling to different countries. It provides comprehensive destination information including cultural norms, daily life tips, health advice, language guides, payment methods, transportation options, and safety information. Users can compare destinations and find the best match based on their preferences.
+
+**Demo:** [example.com](https://example.com)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Tech Stack & Core Libraries
+
+### Frontend
+
+- **[Next.js](https://nextjs.org/)** (v16) - React framework with App Router
+- **[React](https://react.dev/)** (v19) - UI library
+- **[Tailwind CSS](https://tailwindcss.com/)** (v4) - Utility-first CSS framework
+- **[Radix UI](https://www.radix-ui.com/)** / **[shadcn/ui](https://ui.shadcn.com/)** - Accessible, unstyled UI primitives
+- **[Recharts](https://recharts.org/)** - Charting library
+
+### Backend & Data
+
+- **[PayloadCMS](https://payloadcms.com/)** (v3) - Headless CMS
+- **[tRPC](https://trpc.io/)** (v11) - End-to-end typesafe APIs
+- **[TanStack Query](https://tanstack.com/query/)** - Data fetching & caching
+- **[Zod](https://zod.dev/)** - TypeScript-first schema validation
+
+### Database
+
+- **PostgreSQL** - Primary database
+
+## Code Quality
+
+### Linting
+
+- **[ESLint](https://eslint.org/)** (v9) - JavaScript/TypeScript linting
+- **eslint-config-next** - Next.js specific ESLint rules
+- **eslint-plugin-tailwindcss** - Tailwind CSS class linting
+
+### Formatting
+
+- **[Prettier](https://prettier.io/)** - Code formatter
+- **prettier-plugin-tailwindcss** - Automatic Tailwind class sorting
+
+### Git Hooks
+
+- **[Husky](https://typicode.github.io/husky/)** - Git hooks management
+- **[lint-staged](https://github.com/lint-staged/lint-staged)** - Run linters on staged files
+- **[Commitlint](https://commitlint.js.org/)** - Enforce conventional commit messages
+
+## Folder Structure
+
+```
+KnowBeforeYouGo/
+├── public/                     # Static assets
+│   └── images/                 # Image assets
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── (app)/              # Main application routes
+│   │   │   ├── _components/    # Page-specific components
+│   │   │   ├── compare/        # Destination comparison page
+│   │   │   ├── destination/    # Destination detail pages
+│   │   │   │   └── [slug]/     # Dynamic destination routes
+│   │   │   ├── match-finder/   # Match finder feature
+│   │   │   └── data-privacy/   # Legal pages
+│   │   ├── (payload)/          # PayloadCMS admin routes
+│   │   │   ├── admin/          # CMS admin dashboard
+│   │   │   └── api/            # CMS API routes
+│   │   └── api/                # API routes
+│   │       └── trpc/           # tRPC handler
+│   ├── collections/            # PayloadCMS collection definitions
+│   │   ├── categories/         # Category collections
+│   │   └── custom-fields/      # Custom field definitions
+│   ├── components/             # Reusable UI components
+│   │   ├── ui/                 # Base UI components (shadcn/ui)
+│   │   └── charts/             # Chart components
+│   ├── hooks/                  # Custom React hooks
+│   ├── lib/                    # Utility functions & types
+│   └── server/                 # Server-side code
+│       └── routers/            # tRPC routers
+```
+
 ## Setup Local Development
 
 ### Prerequisites
