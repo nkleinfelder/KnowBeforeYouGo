@@ -4,7 +4,7 @@
 
 **Know Before You Go** is a web application that helps users prepare for traveling to different countries. It provides comprehensive destination information including cultural norms, daily life tips, health advice, language guides, payment methods, transportation options, and safety information. Users can compare destinations and find the best match based on their preferences.
 
-**Demo:** [example.com](https://example.com)
+**Demo:** [Know Before You Go]([https://example.com](https://know-before-you-go.simonbiel.com))
 
 ## License
 
