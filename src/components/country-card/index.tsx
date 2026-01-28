@@ -3,8 +3,13 @@ import { Button } from "@/src/components/ui/button";
 import { CountryCardContextProvider } from "./context";
 import { cn } from "@/src/lib/utils";
 import "./styles.css";
-import { LucideIcon } from "lucide-react";
-import { BlurElement, ContentWrapper, LinkWrapper } from "./client-elements";
+import { CheckIcon, LucideIcon } from "lucide-react";
+import {
+  BlurElement,
+  ContentWrapper,
+  LinkWrapper,
+  SelectableWrapper,
+} from "./client-elements";
 import { Nullable } from "@/src/lib/type-utils";
 import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
 
@@ -16,6 +21,9 @@ export type CountryCardProps = {
     name: string;
     icon: LucideIcon;
   }[];
+  selectable?: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
 };
 export function CountryCard({ ...props }: CountryCardProps) {
   return (
@@ -25,17 +33,37 @@ export function CountryCard({ ...props }: CountryCardProps) {
   );
 }
 
-function CountryCardInner({ name, slug, image, tags }: CountryCardProps) {
+function CountryCardInner({
+  name,
+  slug,
+  image,
+  tags,
+  selectable,
+  selected,
+  onSelect,
+}: CountryCardProps) {
+  const Wrapper = selectable ? SelectableWrapper : LinkWrapper;
+  const wrapperProps = selectable ? { onSelect } : { slug };
+
   return (
-    <LinkWrapper slug={slug}>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <Wrapper {...(wrapperProps as any)}>
       <article
         style={{ height: "var(--container-height)" }}
-        className="grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md transition-shadow duration-200 ease-in-out focus-within:shadow-xl hover:shadow-xl"
+        className={cn(
+          "grid-stack relative box-content rounded-4xl bg-white p-1.5 shadow-md transition-all duration-200 ease-in-out focus-within:shadow-xl hover:shadow-xl",
+          selected && "ring-3 ring-primary ring-offset-2",
+        )}
       >
+        {selected && (
+          <div className="absolute top-3 right-3 z-10 flex size-7 items-center justify-center rounded-full bg-primary text-white shadow-md">
+            <CheckIcon className="size-4" />
+          </div>
+        )}
         <BackgroundImage image={image} />
         <Content name={name} slogan="" tags={tags} />
       </article>
-    </LinkWrapper>
+    </Wrapper>
   );
 }
 

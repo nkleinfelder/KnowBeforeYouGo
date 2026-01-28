@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "@/src/server/react";
 import {
   Select,
@@ -19,8 +20,22 @@ import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
 import { Nullable } from "@/src/lib/type-utils";
 import Link from "next/link";
 
+function parseCountriesParam(param: string | null): (string | null)[] {
+  if (!param) return [null, null, null];
+  const parsed: (string | null)[] = param
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  while (parsed.length < 3) parsed.push(null);
+  return parsed;
+}
+
 export default function ComparePage() {
-  const [slugs, setSlugs] = useState<(string | null)[]>([null, null, null]);
+  const searchParams = useSearchParams();
+  const [slugs, setSlugs] = useState<(string | null)[]>(() =>
+    parseCountriesParam(searchParams.get("countries")),
+  );
   const { data: countryList } = api.country.getCountrySlugs.useQuery();
 
   const updateSlot = (index: number, slug: string | null) => {

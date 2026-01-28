@@ -45,7 +45,7 @@ export function EssentialInfo({
         <EssentialCard title="Insurance" Icon={ShieldIcon}>
           <p>{insurance}</p>
         </EssentialCard>
-        <EssentialCard title="Rent" Icon={EuroIcon}>
+        <EssentialCard title="Cost of Living" Icon={EuroIcon}>
           <p className="text-xl font-bold text-primary">{rentAverage}€</p>
         </EssentialCard>
         <EssentialCard title="English Level" Icon={FlagIcon}>
