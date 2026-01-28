@@ -2,9 +2,9 @@
 
 ## About
 
-**Know Before You Go** is a web application that helps users prepare for traveling to different countries. It provides comprehensive destination information including cultural norms, daily life tips, health advice, language guides, payment methods, transportation options, and safety information. Users can compare destinations and find the best match based on their preferences.
-
-**Demo:** [Know Before You Go]([https://example.com](https://know-before-you-go.simonbiel.com))
+**Know Before You Go** is a web application that helps users prepare for traveling to different countries. It provides comprehensive destination information including cultural norms, daily life tips, health advice, language guides, payment methods, transportation options, and safety information. Users can match with and compare destinations and find the most important information about the country.
+International Offices of Universities can mantain and update the information for each country based on feedback of students in a Content Management System (CMS).
+**Deployed Prod Branch:** [Know Before You Go]([https://example.com](https://know-before-you-go.simonbiel.com))
 
 ## License
 
@@ -22,7 +22,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ### Backend & Data
 
-- **[PayloadCMS](https://payloadcms.com/)** (v3) - Headless CMS
+- **[PayloadCMS](https://payloadcms.com/)** (v3) - Headless Content Management System
 - **[tRPC](https://trpc.io/)** (v11) - End-to-end typesafe APIs
 - **[TanStack Query](https://tanstack.com/query/)** - Data fetching & caching
 - **[Zod](https://zod.dev/)** - TypeScript-first schema validation
@@ -68,8 +68,8 @@ KnowBeforeYouGo/
 │   │   ├── (payload)/          # PayloadCMS admin routes
 │   │   │   ├── admin/          # CMS admin dashboard
 │   │   │   └── api/            # CMS API routes
-│   │   └── api/                # API routes
-│   │       └── trpc/           # tRPC handler
+│   │   └── api/                # general API routes handled by tRPC
+│   │       └── trpc/           
 │   ├── collections/            # PayloadCMS collection definitions
 │   │   ├── categories/         # Category collections
 │   │   └── custom-fields/      # Custom field definitions
