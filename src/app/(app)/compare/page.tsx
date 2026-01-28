@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/src/server/react";
 import {
@@ -32,6 +32,30 @@ function parseCountriesParam(param: string | null): (string | null)[] {
 }
 
 export default function ComparePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="content-grid md:gap-y-8 gap-y-4 pb-8 md:pt-40 pt-26">
+          <div className="flex flex-col items-center md:gap-4 gap-1 text-center mb-8">
+            <h1 className="md:text-5xl text-3xl font-bold text-foreground">
+              Compare Countries
+            </h1>
+            <p className="max-w-lg md:text-lg text-muted-foreground">
+              Select countries to view their details side-by-side.
+            </p>
+          </div>
+          <div className="flex items-center justify-center min-h-[60svh]">
+            <Loader2Icon className="size-8 animate-spin text-primary" />
+          </div>
+        </main>
+      }
+    >
+      <ComparePageContent />
+    </Suspense>
+  );
+}
+
+function ComparePageContent() {
   const searchParams = useSearchParams();
   const [slugs, setSlugs] = useState<(string | null)[]>(() =>
     parseCountriesParam(searchParams.get("countries")),
@@ -382,7 +406,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-800 dark:bg-stone-900">
+    <div className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
       <h3 className="border-b border-stone-100 pb-2 text-lg font-bold text-primary">
         {title}
       </h3>
@@ -401,7 +425,7 @@ function InfoRow({
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="font-medium text-stone-500">{label}</span>
-      <span className="font-semibold text-right text-stone-800 dark:text-stone-200">
+      <span className="font-semibold text-right text-stone-800">
         {children}
       </span>
     </div>
