@@ -7,10 +7,6 @@ International Offices of Universities can mantain and update the information for
 
 **Demo available under:** [Know Before You Go](https://know-before-you-go.simonbiel.com)
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
 ## Tech Stack & Core Libraries
 
 ### Frontend
@@ -193,3 +189,7 @@ Examples:
 - `hotfix/broken-link`
 - `release/v1.0.0`
 - `chore/update-deps`
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
