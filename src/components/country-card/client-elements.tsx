@@ -24,6 +24,35 @@ export function LinkWrapper({
   );
 }
 
+export function SelectableWrapper({
+  children,
+  onSelect,
+}: PropsWithChildren<{ onSelect?: () => void }>) {
+  const { contentHeight } = useCountryCardContext();
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect?.();
+        }
+      }}
+      className="country-card group cursor-pointer"
+      style={
+        {
+          "--content-height": `${contentHeight}px`,
+        } as CSSProperties
+      }
+    >
+      {children}
+    </div>
+  );
+}
+
 export function BlurElement() {
   const { contentHeight } = useCountryCardContext();
   return (

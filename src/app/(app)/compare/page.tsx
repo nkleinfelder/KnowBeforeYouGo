@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "@/src/server/react";
 import {
   Select,
@@ -19,8 +20,46 @@ import { COUNTRY_FALLBACK_IMAGE } from "@/src/lib/constants";
 import { Nullable } from "@/src/lib/type-utils";
 import Link from "next/link";
 
+function parseCountriesParam(param: string | null): (string | null)[] {
+  if (!param) return [null, null, null];
+  const parsed: (string | null)[] = param
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  while (parsed.length < 3) parsed.push(null);
+  return parsed;
+}
+
 export default function ComparePage() {
-  const [slugs, setSlugs] = useState<(string | null)[]>([null, null, null]);
+  return (
+    <Suspense
+      fallback={
+        <main className="content-grid md:gap-y-8 gap-y-4 pb-8 md:pt-40 pt-26">
+          <div className="flex flex-col items-center md:gap-4 gap-1 text-center mb-8">
+            <h1 className="md:text-5xl text-3xl font-bold text-foreground">
+              Compare Countries
+            </h1>
+            <p className="max-w-lg md:text-lg text-muted-foreground">
+              Select countries to view their details side-by-side.
+            </p>
+          </div>
+          <div className="flex items-center justify-center min-h-[60svh]">
+            <Loader2Icon className="size-8 animate-spin text-primary" />
+          </div>
+        </main>
+      }
+    >
+      <ComparePageContent />
+    </Suspense>
+  );
+}
+
+function ComparePageContent() {
+  const searchParams = useSearchParams();
+  const [slugs, setSlugs] = useState<(string | null)[]>(() =>
+    parseCountriesParam(searchParams.get("countries")),
+  );
   const { data: countryList } = api.country.getCountrySlugs.useQuery();
 
   const updateSlot = (index: number, slug: string | null) => {
@@ -367,7 +406,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-800 dark:bg-stone-900">
+    <div className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
       <h3 className="border-b border-stone-100 pb-2 text-lg font-bold text-primary">
         {title}
       </h3>
@@ -386,7 +425,7 @@ function InfoRow({
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="font-medium text-stone-500">{label}</span>
-      <span className="font-semibold text-right text-stone-800 dark:text-stone-200">
+      <span className="font-semibold text-right text-stone-800">
         {children}
       </span>
     </div>

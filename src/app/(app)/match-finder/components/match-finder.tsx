@@ -11,10 +11,13 @@ import {
   GemIcon,
   Loader2Icon,
   MapPinIcon,
+  ScaleIcon,
   SparklesIcon,
   TrophyIcon,
+  XIcon,
 } from "lucide-react";
 import { InfoPopover } from "@/src/components/ui-extensions/info-popover";
+import Link from "next/link";
 
 // Types
 type Preferences = {
@@ -175,13 +178,22 @@ function EmptyState() {
   );
 }
 
+type SelectableCardProps = {
+  selectable?: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
+};
+
 function RecommendationCard({
   rec,
   index,
+  selectable,
+  selected,
+  onSelect,
 }: {
   rec: Recommendation;
   index: number;
-}) {
+} & SelectableCardProps) {
   const config = RANK_CONFIG[index] || RANK_CONFIG[2];
   const tags: CountryCardProps["tags"] = [
     { icon: TrophyIcon, name: config.label },
@@ -196,12 +208,20 @@ function RecommendationCard({
         slug={rec.slug}
         image={rec.image || FALLBACK_IMAGE}
         tags={tags}
+        selectable={selectable}
+        selected={selected}
+        onSelect={onSelect}
       />
     </div>
   );
 }
 
-function HiddenGemCard({ gem }: { gem: HiddenGem }) {
+function HiddenGemCard({
+  gem,
+  selectable,
+  selected,
+  onSelect,
+}: { gem: HiddenGem } & SelectableCardProps) {
   const tags: CountryCardProps["tags"] = [
     { icon: GemIcon, name: "Hidden Gem" },
   ];
@@ -209,13 +229,16 @@ function HiddenGemCard({ gem }: { gem: HiddenGem }) {
   return (
     <div className="relative origin-top scale-90">
       <div className="absolute -top-2 left-4 z-10 rounded-full bg-gradient-to-r from-purple-400 to-violet-500 px-2 py-0.5 text-xs font-bold text-white shadow-md">
-        💎 Hidden Gem
+        Hidden Gem
       </div>
       <CountryCard
         name={gem.country}
         slug={gem.slug}
         image={gem.image || FALLBACK_IMAGE}
         tags={tags}
+        selectable={selectable}
+        selected={selected}
+        onSelect={onSelect}
       />
     </div>
   );
@@ -231,6 +254,8 @@ export function MatchFinder() {
   >(null);
   const [hiddenGems, setHiddenGems] = useState<HiddenGem[]>([]);
   const [showHiddenGems, setShowHiddenGems] = useState(false);
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([]);
 
   const currentQuestion = QUESTIONS[currentStep];
   const progress = ((currentStep + 1) / QUESTIONS.length) * 100;
@@ -262,10 +287,25 @@ export function MatchFinder() {
     setPreferences({});
     setCurrentStep(0);
     setShowHiddenGems(false);
+    setSelectMode(false);
+    setSelectedSlugs([]);
+  };
+
+  const toggleSelectMode = () => {
+    setSelectMode((prev) => !prev);
+    setSelectedSlugs([]);
+  };
+
+  const toggleSlug = (slug: string) => {
+    setSelectedSlugs((prev) => {
+      if (prev.includes(slug)) return prev.filter((s) => s !== slug);
+      if (prev.length >= 3) return prev;
+      return [...prev, slug];
+    });
   };
 
   return (
-    <section className="full-width relative flex min-h-lvh items-center justify-center overflow-clip rounded-b-4xl">
+    <section className="full-width relative flex min-h-lvh items-center justify-center overflow-clip rounded-b-4xl pb-16">
       <div
         className={`z-10 flex w-full flex-col items-center gap-4 px-4 ${
           recommendations ? "max-w-4xl pt-24" : "max-w-md"
@@ -382,9 +422,33 @@ export function MatchFinder() {
         ) : (
           // Results
           <div className="flex flex-col gap-6">
-            <h2 className="text-center text-xl font-semibold text-white drop-shadow-md">
-              Your Top Matches
-            </h2>
+            <div className="flex flex-col items-center gap-3">
+              <h2 className="text-center text-xl font-semibold text-white drop-shadow-md">
+                Your Top Matches
+              </h2>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleSelectMode}
+                className={
+                  selectMode
+                    ? "border-red-300 bg-red-50/90 text-red-700 backdrop-blur-sm hover:bg-red-100 hover:text-red-900"
+                    : "border-stone-300 bg-white/90 text-stone-700 backdrop-blur-sm hover:bg-white hover:text-stone-900"
+                }
+              >
+                {selectMode ? (
+                  <>
+                    <XIcon className="size-4" />
+                    Cancel Selection
+                  </>
+                ) : (
+                  <>
+                    <ScaleIcon className="size-4" />
+                    Select to Compare
+                  </>
+                )}
+              </Button>
+            </div>
 
             {!hasRecommendations ? (
               <EmptyState />
@@ -397,6 +461,9 @@ export function MatchFinder() {
                       key={rec.country}
                       rec={rec}
                       index={index}
+                      selectable={selectMode}
+                      selected={selectedSlugs.includes(rec.slug)}
+                      onSelect={() => toggleSlug(rec.slug)}
                     />
                   ))}
                 </div>
@@ -425,12 +492,38 @@ export function MatchFinder() {
                     </div>
                     <div className="grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
                       {hiddenGems.map((gem) => (
-                        <HiddenGemCard key={gem.country} gem={gem} />
+                        <HiddenGemCard
+                          key={gem.country}
+                          gem={gem}
+                          selectable={selectMode}
+                          selected={selectedSlugs.includes(gem.slug)}
+                          onSelect={() => toggleSlug(gem.slug)}
+                        />
                       ))}
                     </div>
                   </div>
                 )}
               </>
+            )}
+
+            {/* Floating Compare Button */}
+            {selectMode && selectedSlugs.length > 0 && (
+              <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
+                {selectedSlugs.length >= 2 ? (
+                  <Link
+                    href={`/compare?countries=${selectedSlugs.join(",")}`}
+                    className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-white shadow-lg transition-opacity hover:opacity-90"
+                  >
+                    <ScaleIcon className="size-4" />
+                    Compare ({selectedSlugs.length}/3)
+                  </Link>
+                ) : (
+                  <span className="inline-flex items-center gap-2 rounded-full bg-stone-400 px-6 py-3 font-semibold text-white shadow-lg">
+                    <ScaleIcon className="size-4" />
+                    Select at least 2 ({selectedSlugs.length}/3)
+                  </span>
+                )}
+              </div>
             )}
 
             <Button
